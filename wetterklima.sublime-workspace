@@ -1,0 +1,2501 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"mx",
+				"maxDate"
+			],
+			[
+				"st",
+				"style\tTag"
+			],
+			[
+				"da",
+				"data"
+			],
+			[
+				"pre",
+				"prev"
+			],
+			[
+				"day",
+				"dayjs"
+			],
+			[
+				"js",
+				"jsonData"
+			],
+			[
+				"dat",
+				"dates"
+			],
+			[
+				"tm",
+				"tempSum"
+			],
+			[
+				"tem",
+				"tempSum"
+			],
+			[
+				"d",
+				"data"
+			],
+			[
+				"loc",
+				"localizedFormat"
+			],
+			[
+				"ma",
+				"margin\tproperty"
+			],
+			[
+				"for",
+				"forecast"
+			],
+			[
+				"o",
+				"out"
+			],
+			[
+				"cv",
+				"csvParse"
+			],
+			[
+				"marg",
+				"margin\tproperty"
+			],
+			[
+				"max",
+				"max-width\tproperty"
+			],
+			[
+				"re",
+				"redirect"
+			],
+			[
+				"pro",
+				"props"
+			],
+			[
+				"visual",
+				"visualizations"
+			],
+			[
+				"front",
+				"frontendDomain"
+			],
+			[
+				"frone",
+				"frontendDomain"
+			],
+			[
+				"Data",
+				"Datawrapper"
+			],
+			[
+				"in",
+				"input\tTag"
+			],
+			[
+				"ch",
+				"chart"
+			],
+			[
+				"de",
+				"description"
+			],
+			[
+				"met",
+				"method"
+			],
+			[
+				"fork",
+				"forkResponse"
+			],
+			[
+				"a",
+				"attributes"
+			],
+			[
+				"cha",
+				"chartPublic"
+			],
+			[
+				"con",
+				"context"
+			],
+			[
+				"pub",
+				"publishResponse"
+			],
+			[
+				"cre",
+				"createResponse"
+			],
+			[
+				"res",
+				"result"
+			],
+			[
+				"pu",
+				"publicChart"
+			],
+			[
+				"find",
+				"findChartId"
+			],
+			[
+				"isF",
+				"isForkable"
+			],
+			[
+				"su",
+				"summary\tTag"
+			],
+			[
+				"op",
+				"option\tTag"
+			],
+			[
+				"source",
+				"source_name"
+			],
+			[
+				"ex",
+				"external_data"
+			],
+			[
+				"font",
+				"font-size\tproperty"
+			],
+			[
+				"sub",
+				"submenuItems"
+			],
+			[
+				"reg",
+				"registerHeaderLinks"
+			],
+			[
+				"sc",
+				"scrollY"
+			],
+			[
+				"co",
+				"column"
+			],
+			[
+				"ic",
+				"iconPath"
+			],
+			[
+				"fo",
+				"folder"
+			],
+			[
+				"folder",
+				"folderId"
+			],
+			[
+				"ti",
+				"title"
+			],
+			[
+				"pa",
+				"payload"
+			],
+			[
+				"org",
+				"organization_id"
+			],
+			[
+				"has",
+				"hasUser"
+			],
+			[
+				"th",
+				"throw"
+			],
+			[
+				"fol",
+				"folderTeam"
+			],
+			[
+				"has-",
+				"has-text-grey"
+			],
+			[
+				"doc",
+				"documentMode"
+			],
+			[
+				"new",
+				"newlyPublishedCharts"
+			],
+			[
+				"c",
+				"class\tAttr"
+			],
+			[
+				"is",
+				"is-narrow"
+			],
+			[
+				"cons",
+				"console"
+			],
+			[
+				"sv",
+				"svelte2-wrapper"
+			],
+			[
+				"ens",
+				"endsWith"
+			],
+			[
+				"s",
+				"style"
+			],
+			[
+				"load",
+				"loadStylesheet"
+			],
+			[
+				"is-o",
+				"is-one-quarter"
+			],
+			[
+				"sve",
+				"svelteChart"
+			],
+			[
+				"data",
+				"datawrapper"
+			],
+			[
+				"text",
+				"text-decoration\tproperty"
+			],
+			[
+				"col",
+				"column"
+			],
+			[
+				"ren",
+				"renderPlaces"
+			],
+			[
+				"def",
+				"defaultLanguage"
+			],
+			[
+				"lco",
+				"locale"
+			],
+			[
+				"cno",
+				"console"
+			],
+			[
+				"name",
+				"namespace"
+			],
+			[
+				"t",
+				"type"
+			],
+			[
+				"me",
+				"methods"
+			],
+			[
+				"trans",
+				"translate"
+			],
+			[
+				"fon",
+				"font-weight\tproperty"
+			],
+			[
+				"stat",
+				"statusCode"
+			],
+			[
+				"req",
+				"request"
+			],
+			[
+				"send",
+				"sendToDatawrapper"
+			],
+			[
+				"chart",
+				"chartData"
+			],
+			[
+				"log",
+				"login"
+			],
+			[
+				"tr",
+				"translate"
+			],
+			[
+				"ke",
+				"key"
+			],
+			[
+				"get",
+				"getUserLanguage"
+			],
+			[
+				"font-s",
+				"font-style\tproperty"
+			],
+			[
+				"mar",
+				"margin-bottom\tproperty"
+			],
+			[
+				"border",
+				"border\tproperty"
+			],
+			[
+				"padd",
+				"padding-top\tproperty"
+			],
+			[
+				"auto",
+				"autoTickFormatDate"
+			],
+			[
+				"ser",
+				"server"
+			],
+			[
+				"ss",
+				"ssrMap"
+			],
+			[
+				"k",
+				"key"
+			],
+			[
+				"magi",
+				"magicNumber"
+			],
+			[
+				"tran",
+				"transpiled"
+			],
+			[
+				"transp",
+				"transpiled"
+			],
+			[
+				"eve",
+				"eventList"
+			],
+			[
+				"cos",
+				"console"
+			],
+			[
+				"serv",
+				"service-utils"
+			],
+			[
+				"sto",
+				"stores"
+			],
+			[
+				"loca",
+				"location"
+			],
+			[
+				"mes",
+				"messages"
+			],
+			[
+				"SSR",
+				"SSR_HTML"
+			],
+			[
+				"SS",
+				"SSR_CSS"
+			],
+			[
+				"v",
+				"values"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"viis",
+				"visibleLabels"
+			],
+			[
+				"visi",
+				"visibleLabels"
+			],
+			[
+				"lab",
+				"label"
+			],
+			[
+				"sele",
+				"selectAll"
+			],
+			[
+				"aria-",
+				"aria-label"
+			],
+			[
+				"gLa",
+				"gLabels"
+			],
+			[
+				"ext",
+				"externalData"
+			],
+			[
+				"nmp",
+				"npmrc"
+			],
+			[
+				"num",
+				"numAnnotations"
+			],
+			[
+				"mu",
+				"multiple"
+			],
+			[
+				"range",
+				"rangeTo"
+			],
+			[
+				"ran",
+				"rangeFrom"
+			],
+			[
+				"sca",
+				"scaleType"
+			],
+			[
+				"he",
+				"height"
+			],
+			[
+				"fn",
+				"function"
+			],
+			[
+				"leg",
+				"legacyCSS"
+			],
+			[
+				"loadS",
+				"loadStylesheet"
+			],
+			[
+				"web",
+				"websocketClients"
+			],
+			[
+				"hot",
+				"hotreload"
+			],
+			[
+				"tmp",
+				"tmpSsr"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "app/src/app.html",
+			"settings":
+			{
+				"buffer_size": 338,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/index.svelte",
+			"settings":
+			{
+				"buffer_size": 669,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/stationen.json.js",
+			"settings":
+			{
+				"buffer_size": 562,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/svelte.config.js",
+			"settings":
+			{
+				"buffer_size": 216,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/static/css/global.css",
+			"settings":
+			{
+				"buffer_size": 2276,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/station/[slug].svelte",
+			"settings":
+			{
+				"buffer_size": 3861,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/_partials/Chart.svelte",
+			"settings":
+			{
+				"buffer_size": 2581,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/gka/projects/dwd-wetter/app/src/BaseChart.svelte",
+			"settings":
+			{
+				"buffer_size": 8607,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 40,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/tmp/mozilla_gka0/stations.csv",
+			"settings":
+			{
+				"buffer_size": 44486,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "wget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBlack.eot\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBlack.woff2\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBlack.woff\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBlack.ttf\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBlack.svg\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBold.eot\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBold.woff2\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBold.woff\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBold.ttf\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansBold.svg\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansLight.eot\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansLight.woff2\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansLight.woff\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansLight.ttf\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSansLight.svg\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSans.eot\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSans.woff2\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSans.woff\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSans.ttf\nwget https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSans.svg",
+			"settings":
+			{
+				"buffer_size": 1661,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/Nodejs/Nodejs.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Nodejs/Nodejs.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Makefile/Make.sublime-build",
+					""
+				],
+				[
+					"Packages/Makefile/Make.sublime-build",
+					"Clean"
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/Python 3/Python3.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python 3/Python3.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 401.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"jspr",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jsp",
+				"JsPrettier: Clear Cache"
+			],
+			[
+				"cop",
+				"Copy GitHubinator permalink..."
+			],
+			[
+				"sort",
+				"Sort Lines"
+			],
+			[
+				"js",
+				"JsPrettier: Format Code"
+			],
+			[
+				"json",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"blame",
+				"GitHubinator Blame"
+			],
+			[
+				"gitb",
+				"GitHubinator Blame"
+			],
+			[
+				"cpo",
+				"Copy GitHubinator master..."
+			],
+			[
+				"jspre",
+				"JsPrettier: Format Code"
+			],
+			[
+				"prett",
+				"JsPrettier: Format Code"
+			],
+			[
+				"diff",
+				"FileDiffs: Menu"
+			],
+			[
+				"add",
+				"Project: Add Folder"
+			],
+			[
+				"blam",
+				"Sublime Merge: Blame File"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"bl",
+				"GitHubinator Blame"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"bla",
+				"GitHubinator Blame"
+			],
+			[
+				"wo",
+				"Word Wrap: Toggle"
+			],
+			[
+				"wor",
+				"Word Wrap: Toggle"
+			],
+			[
+				"w",
+				"Word Wrap: Toggle"
+			],
+			[
+				"pret",
+				"JsPrettier: Format Code"
+			],
+			[
+				"pre",
+				"JsPrettier: Format Code"
+			],
+			[
+				"term",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"termin sth",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"termin",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"sele",
+				"UI: Select Color Scheme"
+			],
+			[
+				"schem",
+				"UI: Select Theme"
+			],
+			[
+				"shell tab",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"sel",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"termin the",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"termin tab",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"terminus tu",
+				"Terminus Utilities: Select Theme"
+			],
+			[
+				"terminusv",
+				"Terminus: Open Default Shell in Tab (View)"
+			],
+			[
+				"termi",
+				"Terminus: Open Default Shell in Panel"
+			],
+			[
+				"isnt",
+				"Package Control: Install Package"
+			],
+			[
+				"colo",
+				"UI: Select Color Scheme"
+			],
+			[
+				"pretti",
+				"JsPrettier: Format Code"
+			],
+			[
+				"histor",
+				"Sublime Merge: File History"
+			],
+			[
+				"git",
+				"GitHubinator Blame"
+			],
+			[
+				"html",
+				"HTMLBeautify"
+			],
+			[
+				"c",
+				"Copy GitHubinator..."
+			],
+			[
+				"g",
+				"GitHubinator on Master"
+			],
+			[
+				"format",
+				"Pretty JSON: Format and Sort JSON"
+			],
+			[
+				"xml ",
+				"Pretty JSON: JSON 2 XML"
+			],
+			[
+				"chm",
+				"Chmod a+x"
+			],
+			[
+				"esl",
+				"ESLint Fix: Fix this file"
+			],
+			[
+				"jso",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"retter",
+				"JsPrettier: Format Code"
+			],
+			[
+				"gith",
+				"GitHubinator"
+			],
+			[
+				"j",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"less",
+				"Set Syntax: Less"
+			],
+			[
+				"word wrap ",
+				"Word Wrap: Toggle"
+			],
+			[
+				"jon",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"co",
+				"Copy GitHubinator..."
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"copy ",
+				"Copy GitHubinator..."
+			],
+			[
+				"ch",
+				"Chmod a+x"
+			],
+			[
+				"git ",
+				"GitHubinator"
+			],
+			[
+				"lorem",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"wrap",
+				"Word Wrap: Toggle"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"git b",
+				"GitHubinator Blame"
+			],
+			[
+				"prettier",
+				"JsPrettier: Format Code"
+			],
+			[
+				"enab",
+				"Package Control: Enable Package"
+			],
+			[
+				"ena",
+				"Package Control: Enable Package"
+			],
+			[
+				"COP",
+				"Copy GitHubinator..."
+			],
+			[
+				"set sy mark",
+				"Set Syntax: Markdown GFM"
+			],
+			[
+				" blam",
+				"GitHubinator Blame"
+			],
+			[
+				"gt",
+				"GitHubinator"
+			],
+			[
+				"preview ",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"preview",
+				"Markdown Preview: Preview in Browser"
+			],
+			[
+				"pack d",
+				"Package Control: Disable Package"
+			],
+			[
+				"git cop",
+				"Copy GitHubinator..."
+			],
+			[
+				"s",
+				"Sort Lines"
+			],
+			[
+				"sor",
+				"Sort Lines"
+			],
+			[
+				"select",
+				"UI: Select Color Scheme"
+			],
+			[
+				"ui",
+				"UI: Select Theme"
+			],
+			[
+				"color",
+				"UI: Select Color Scheme"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"gi",
+				"GitHubinator"
+			],
+			[
+				"gu",
+				"GitHubinator Blame"
+			],
+			[
+				"form",
+				"JsPrettier: Format Code"
+			],
+			[
+				"disab",
+				"Package Control: Disable Package"
+			],
+			[
+				"enable",
+				"Package Control: Enable Package"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"list pac",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"package list",
+				"Package Control: List Packages"
+			],
+			[
+				"disa",
+				"Package Control: Disable Package"
+			],
+			[
+				"pack",
+				"Package Control: Upgrade Package"
+			],
+			[
+				"remov",
+				"Package Control: Remove Package"
+			],
+			[
+				"es",
+				"ESLint Fix: Fix this file"
+			],
+			[
+				"e",
+				"ESLint Fix: Fix this file"
+			],
+			[
+				"esli",
+				"ESLint Fix: Fix this file"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pretter",
+				"JsPrettier: Format Code"
+			],
+			[
+				"git bl",
+				"GitHubinator Blame"
+			],
+			[
+				"Lorem",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"inden",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"indent",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"gut",
+				"GitHubinator Blame"
+			],
+			[
+				"dis",
+				"Package Control: Disable Package"
+			],
+			[
+				"reind",
+				"JSON Reindent: reindent file or selection"
+			],
+			[
+				"men",
+				"View: Toggle Menu"
+			],
+			[
+				"theme",
+				"ayu: Activate theme"
+			],
+			[
+				"lor",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"select col",
+				"UI: Select Color Scheme"
+			],
+			[
+				"lore",
+				"Snippet: Lorem ipsum"
+			],
+			[
+				"synt",
+				"Set Syntax: Markdown"
+			],
+			[
+				"packdis",
+				"Package Control: Disable Package"
+			],
+			[
+				"packa",
+				"Package Control: Disable Package"
+			],
+			[
+				"refr",
+				"Project: Refresh Folders"
+			],
+			[
+				"inde",
+				"Indent JSON"
+			],
+			[
+				"h",
+				"HTMLBeautify"
+			],
+			[
+				"blm",
+				"GitHubinator Blame on Master"
+			],
+			[
+				"sort ",
+				"Sort Lines"
+			],
+			[
+				"ref",
+				"Project: Refresh Folders"
+			],
+			[
+				"javas",
+				"Set Syntax: JavaScript - EJS"
+			],
+			[
+				"markdo",
+				"Set Syntax: Markdown"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"markm",
+				"Markmon launch"
+			],
+			[
+				"giht",
+				"GitHubinator Blame"
+			],
+			[
+				"beau",
+				"HTMLBeautify"
+			],
+			[
+				"di",
+				"Package Control: Disable Package"
+			],
+			[
+				"re",
+				"Project: Refresh Folders"
+			],
+			[
+				"chmo",
+				"Chmod a+x"
+			]
+		],
+		"width": 960.0
+	},
+	"console":
+	{
+		"height": 266.0,
+		"history":
+		[
+			"print(42)",
+			"print 42",
+			"print ",
+			"f",
+			"df"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": false,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/home/gka/projects/quarks-wetterklima",
+		"/home/gka/projects/quarks-wetterklima/app",
+		"/home/gka/projects/quarks-wetterklima/app/src",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/_partials",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/station"
+	],
+	"file_history":
+	[
+		"/tmp/mozilla_gka0/10381-BEOB.csv",
+		"/home/gka/projects/dwd-scraper/data/04300-current.csv",
+		"/home/gka/projects/dwd-scraper/data/04169-current.csv",
+		"/home/gka/projects/dwd-scraper/data/03927-current.csv",
+		"/home/gka/projects/dwd-scraper/data/04704-current.csv",
+		"/home/gka/projects/dwd-scraper/data/04857-current.csv",
+		"/home/gka/projects/dwd-scraper/data/00131-current.csv",
+		"/home/gka/projects/dwd-scraper/data/00891-current.csv",
+		"/home/gka/.ssh/config",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/stationen.json.js",
+		"/home/gka/projects/dwd-scraper/out/stations/00596-fc.csv",
+		"/home/gka/projects/dwd-scraper/out/stations/00102-fc.csv",
+		"/tmp/mozilla_gka0/10338-BEOB.csv",
+		"/tmp/mozilla_gka0/01415-BEOB.csv",
+		"/tmp/mozilla_gka0/stations-1.csv",
+		"/tmp/mozilla_gka0/01210-BEOB.csv",
+		"/tmp/mozilla_gka0/E426_-BEOB.csv",
+		"/tmp/mozilla_gka0/stations.csv",
+		"/tmp/mozilla_gka0/00430.csv",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/bulma/Notification.svelte",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/bulma/Message.svelte",
+		"/home/gka/p/core/services/frontend/src/views/HelloWorld.svelte",
+		"/home/gka/projects/dwd-scraper/out/stations/00430.csv",
+		"/tmp/mozilla_gka0/dwdforecast.txt",
+		"/tmp/mozilla_gka0/08272-BEOB.csv",
+		"/home/gka/p/core/services/frontend/src/routes/preview/index.js",
+		"/home/gka/p/core/services/datawrapper/src/signin/main.js",
+		"/home/gka/p/core/libs/chart-core/package.json",
+		"/home/gka/p/core/services/api/src/routes/charts/index.js",
+		"/home/gka/p/core/services/api/package.json",
+		"/home/gka/p/core/services/api/node_modules/@datawrapper/service-utils/createChart.js",
+		"/home/gka/p/core/services/api/.github/workflows/lint-and-test.yaml",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/fork.test.js",
+		"/home/gka/p/core/services/api/test/helpers/setup.js",
+		"/home/gka/p/core/services/api/test/helpers/teardown.js",
+		"/home/gka/p/core/libs/orm/models/Chart.js",
+		"/home/gka/p/core/services/api/src/routes/charts/index.test.js",
+		"/home/gka/p/core/config.js",
+		"/home/gka/p/core/libs/service-utils/package.json",
+		"/home/gka/p/core/services/frontend/src/routes/index.js",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/copy.js",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/copy.test.js",
+		"/home/gka/p/core/services/api/src/publish/create-chart-website.js",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/index.test.js",
+		"/home/gka/p/core/libs/service-utils/checkUrl.js",
+		"/home/gka/p/core/libs/service-utils/checkUrl.test.js",
+		"/home/gka/p/core/services/api/.circleci/config.yml",
+		"/home/gka/p/core/services/api/test/_config.ci.js",
+		"/keybase/team/datawrapper.admin/logins/aws/testing_db.json",
+		"/home/gka/p/core/services/api/src/server.js",
+		"/home/gka/p/core/libs/service-utils/createChart.js",
+		"/home/gka/p/core/plugins/admin-users/src/shared/getUserProducts.js",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/fork.js",
+		"/home/gka/p/core/libs/controls/v2/utils/formats.js",
+		"/home/gka/p/core/libs/service-utils/l10n.js",
+		"/home/gka/p/core/libs/shared/autoTickFormat.test.js",
+		"/home/gka/p/core/libs/service-utils/.github/workflows/lint-and-test.yml",
+		"/home/gka/p/core/services/frontend/src/utils/index.js",
+		"/home/gka/p/core/libs/service-utils/test/helpers/setup-browser-env.js",
+		"/home/gka/p/core/services/frontend/src/utils/svelte-view/context.js",
+		"/home/gka/p/core/plugins/d3-maps/api.js",
+		"/home/gka/p/core/libs/shared/autoTickFormat.js",
+		"/home/gka/p/core/services/frontend/src/routes/create.js",
+		"/home/gka/p/core/services/api/src/utils/index.js",
+		"/home/gka/p/core/services/api/src/routes/charts/{id}/index.js",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/header/NavBar.svelte",
+		"/home/gka/p/core/services/frontend/src/server.js",
+		"/home/gka/p/core/services/frontend/src/views/Error.svelte",
+		"/home/gka/tmp/edit-chart-in-datawrapper/index.html",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/PageHeader.svelte",
+		"/home/gka/p/core/plugins/locator-maps/api.js",
+		"/home/gka/p/core/services/frontend/src/routes/stores.js",
+		"/home/gka/p/core/libs/chart-core/lib/dw/dataset/applyChanges.js",
+		"/home/gka/p/core/services/frontend/src/views/Create.svelte",
+		"/tmp/mozilla_gka0/data",
+		"/home/gka/p/core/plugins/river/frontend.js",
+		"/home/gka/p/core/services/frontend/src/utils/header-links.js",
+		"/home/gka/p/core/services/frontend/src/styles/index.scss",
+		"/home/gka/p/core/plugins/river/src/frontend/views/FAQ.svelte",
+		"/home/gka/p/core/services/frontend/src/views/layout/MainLayout.svelte",
+		"/home/gka/p/core/services/frontend/node_modules/bulma/sass/utilities/derived-variables.sass",
+		"/home/gka/p/core/plugins/river/svelte/AddChart.html",
+		"/home/gka/p/core/plugins/locator-maps/init.php",
+		"/home/gka/p/core/plugins/locator-maps/templates/create-map.twig",
+		"/home/gka/p/core/plugins/visualization-column-charts/api.js",
+		"/home/gka/p/core/services/frontend/src/routes/lib.js",
+		"/home/gka/p/core/plugins/visualization-pie-chart/shared.js",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/svelte2/Svelte2Wrapper.element.svelte",
+		"/home/gka/p/core/plugins/visualization-pie-chart/frontend.js",
+		"/home/gka/p/core/plugins/visualization-column-charts/shared.js",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/svelte2/Svelte2Wrapper.svelte",
+		"/home/gka/p/core/services/frontend/node_modules/bulma/sass/helpers/color.sass",
+		"/home/gka/p/core/services/frontend/node_modules/bulma/sass/elements/button.sass",
+		"/home/gka/tmp/chart-template/index.html",
+		"/home/gka/p/core/services/frontend/node_modules/@datawrapper/service-utils/createChart.js",
+		"/home/gka/p/core/services/frontend/src/utils/svelte-view/template.ejs",
+		"/home/gka/p/core/plugins/river/faq/faq.json",
+		"/home/gka/p/core/plugins/river/src/frontend/views/AddToRiver.svelte",
+		"/home/gka/p/core/plugins/river/src/frontend/views/partials/RiverHeader.svelte",
+		"/home/gka/p/core/plugins/river/src/frontend/views/River.svelte",
+		"/home/gka/p/core/services/frontend/src/styles/fonts/bitter.scss",
+		"/home/gka/p/core/services/frontend/src/styles/fonts.scss",
+		"/home/gka/p/core/services/frontend/src/routes/hello.js",
+		"/home/gka/p/core/libs/icons/package.json",
+		"/home/gka/p/core/services/frontend/package.json",
+		"/home/gka/p/configs/production/config.js",
+		"/home/gka/p/configs/staging/config.js",
+		"/home/gka/p/core/services/datawrapper/lib/utils/add_header_vars.php",
+		"/home/gka/p/core/.gitmodules",
+		"/home/gka/p/core/utils/docker/scripts/git-pull",
+		"/home/gka/p/core/package.json",
+		"/home/gka/p/core/plugins/simple-maps/plugin.php",
+		"/home/gka/p/core/plugins/tables/init.php",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/SvgIcon.svelte",
+		"/home/gka/p/core/plugins/visualization-column-charts/init.php",
+		"/home/gka/p/core/plugins/visualization-column-charts/frontend.js",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/Svelte2Wrapper.svelte",
+		"/home/gka/p/core/plugins/team-integrations/frontend.js",
+		"/home/gka/p/core/services/crons/src/index.js",
+		"/home/gka/p/core/services/frontend/src/styles/colors.scss",
+		"/home/gka/p/core/services/frontend/src/views/layout/partials/Svelte2Wrapper.element.svelte",
+		"/home/gka/p/core/libs/shared/fetch.js",
+		"/home/gka/p/core/plugins/stats/api.js",
+		"/home/gka/p/core/services/crons/src/tasks/chart-stats.js",
+		"/home/gka/projects/r-work/dw-stats/charts-created.csv",
+		"/home/gka/p/core/services/frontend/static/datawrapper.css",
+		"/home/gka/p/core/services/crons/src/tasks/user-team-stats.js",
+		"/home/gka/p/core/services/frontend/src/utils/svelte-view/rollup-runtime.js"
+	],
+	"find":
+	{
+		"height": 55.0
+	},
+	"find_in_files":
+	{
+		"height": 167.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": true,
+		"find_history":
+		[
+			"yTicks",
+			"innerWidth",
+			"chart",
+			"dataLinked",
+			"data",
+			"dayjs",
+			"date.getDate()",
+			"date.getFullYear()",
+			"&& ",
+			"temp",
+			"h1",
+			"from",
+			"212529",
+			"/css/",
+			"https://www.quarks.de/wp-content/themes/understrap",
+			"https",
+			"https://www.quarks.de/wp-content/themes/understrap/fonts/sans/WDRSa",
+			"https://www.quarks.de/wp-content/themes/understrap/fonts/sans/",
+			"../fonts/sans/",
+			"../"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": false,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 8,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "app/src/app.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 338,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								320,
+								320
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "app/src/routes/index.svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 669,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								187,
+								187
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "app/src/routes/stationen.json.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 562,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								35,
+								35
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/svelte.config.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 216,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								180,
+								180
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 12,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/home/gka/projects/quarks-wetterklima/app/static",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "app/static/css/global.css",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2276,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2013,
+								2013
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/home/gka/projects/quarks-wetterklima/app/src/routes/station",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "app/src/routes/station/[slug].svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3861,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3537,
+								3537
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2862.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/src/routes/_partials/Chart.svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2581,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								356,
+								356
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "/home/gka/projects/dwd-wetter/app/src/BaseChart.svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8607,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2657,
+								2657
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 990.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
+					"file": ".gitignore",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 40,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Git Formats/Git Ignore.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "/tmp/mozilla_gka0/stations.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 44486,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								38,
+								38
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1661,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1661,
+								1661
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 33.0
+	},
+	"input":
+	{
+		"height": 96.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.SublimeLinter":
+	{
+		"height": 0.0
+	},
+	"output.SublimeLinter Messages":
+	{
+		"height": 49.0
+	},
+	"output.Terminus":
+	{
+		"height": 325.0
+	},
+	"output.exec":
+	{
+		"height": 43.0
+	},
+	"output.find_results":
+	{
+		"height": 64.0
+	},
+	"output.nodejs":
+	{
+		"height": 90.0
+	},
+	"output.unsaved_changes":
+	{
+		"height": 162.0
+	},
+	"pinned_build_system": "Packages/User/python3.sublime-build",
+	"project": "wetterklima.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"getUser",
+				"core/plugins/admin-users/src/shared/getUserProducts.js"
+			],
+			[
+				"httpR",
+				"core/libs/shared/httpReq.js"
+			],
+			[
+				".svg",
+				"core/libs/twemoji-svg/svg/2196.svg"
+			],
+			[
+				"core.twig",
+				"core/services/datawrapper/templates/core.twig"
+			],
+			[
+				"svelte-si",
+				"core/services/datawrapper/templates/chart/visualize/svelte-sidebar.twig"
+			],
+			[
+				"dw/chartvisuali",
+				"core/services/datawrapper/www/static/js/dw/chart/visualize.js"
+			],
+			[
+				"visualize.js",
+				"core/services/datawrapper/www/static/js/svelte/visualize.js"
+			],
+			[
+				"datawrappervi",
+				"core/services/datawrapper/lib/visualization/DatawrapperVisualization.php"
+			],
+			[
+				"add_ed",
+				"core/services/datawrapper/lib/utils/add_editor_nav.php"
+			],
+			[
+				"svelte-side",
+				"core/services/datawrapper/templates/chart/visualize/svelte-sidebar.twig"
+			],
+			[
+				"sideba",
+				"core/services/datawrapper/templates/chart/visualize/sidebar.twig"
+			],
+			[
+				"side",
+				"core/services/datawrapper/templates/chart/visualize/sidebar.twig"
+			],
+			[
+				"svelte-sii",
+				"core/services/datawrapper/templates/chart/visualize/svelte-sidebar.twig"
+			],
+			[
+				"svelte-",
+				"core/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"Design.",
+				"core/plugins/d3-maps/src/controls/shared/Design.html"
+			],
+			[
+				"annotate.twig",
+				"core/services/datawrapper/templates/chart/visualize/annotate.twig"
+			],
+			[
+				"sidebar.tw",
+				"core/services/datawrapper/templates/chart/visualize/sidebar.twig"
+			],
+			[
+				"visualize.php",
+				"core/services/datawrapper/controller/chart/visualize.php"
+			],
+			[
+				"",
+				"core/plugins/d3-maps/api.js"
+			],
+			[
+				"theme.ba",
+				"core/libs/chart-core/lib/dw/theme.base.js"
+			],
+			[
+				"create-chart",
+				"core/services/api/src/publish/create-chart-website.js"
+			],
+			[
+				"Help.ht",
+				"core/libs/controls/v2/Help.html"
+			],
+			[
+				"themes/plug",
+				"core/plugins/themes/plugin.php"
+			],
+			[
+				"upload.tw",
+				"core-fabian/services/datawrapper/templates/chart/upload.twig"
+			],
+			[
+				"datawrapper plug",
+				"core-fabian/services/datawrapper/lib/plugin/DatawrapperPlugin.php"
+			],
+			[
+				"core build Plugin.php",
+				"core-fabian/services/datawrapper/lib/core/build/classes/datawrapper/Plugin.php"
+			],
+			[
+				"chart.php",
+				"core-fabian/services/datawrapper/lib/core/build/classes/datawrapper/Chart.php"
+			],
+			[
+				"user.php",
+				"core-fabian/services/datawrapper/lib/core/build/classes/datawrapper/User.php"
+			],
+			[
+				"svelte-op",
+				"core-fabian/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"svelteop",
+				"core-fabian/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"mapattr",
+				"core-fabian/plugins/d3-maps/src/v3/MapAttribution.svelte"
+			],
+			[
+				"Chart.php",
+				"core-fabian/services/datawrapper/lib/core/build/classes/datawrapper/Chart.php"
+			],
+			[
+				"liveU",
+				"core-fabian/services/datawrapper/www/static/js/dw/chart/visualize/liveUpdate.js"
+			],
+			[
+				"crons.js",
+				"core/plugins/external-data/crons.js"
+			],
+			[
+				"dataplug",
+				"core/services/datawrapper/lib/plugin/DatawrapperPlugin.php"
+			],
+			[
+				"userplq",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/UserPluginCacheQuery.php"
+			],
+			[
+				"DatawrapperPlu",
+				"core/services/datawrapper/lib/plugin/DatawrapperPlugin.php"
+			],
+			[
+				"visualize.ph",
+				"core/services/datawrapper/controller/chart/visualize.php"
+			],
+			[
+				"chart.pp",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Chart.php"
+			],
+			[
+				"svelte-o",
+				"core/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"theme.ph",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Theme.php"
+			],
+			[
+				"svelte op",
+				"core/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"dw.the",
+				"core/services/datawrapper/dw.js/src/dw.theme.base.js"
+			],
+			[
+				"dw.vis",
+				"core/services/datawrapper/dw.js/src/dw.visualization.base.js"
+			],
+			[
+				"baseuser",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/om/BaseUser.php"
+			],
+			[
+				"chart.hp",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Chart.php"
+			],
+			[
+				"core.tw",
+				"core/services/datawrapper/templates/core.twig"
+			],
+			[
+				"messages.tw",
+				"core/services/datawrapper/templates/messages.twig"
+			],
+			[
+				"edipro",
+				"core/services/datawrapper/src/v2/account/EditProfile.html"
+			],
+			[
+				"datasession",
+				"core/services/datawrapper/lib/session/DatawrapperSession.php"
+			],
+			[
+				"users.php",
+				"core/services/datawrapper/lib/api/users.php"
+			],
+			[
+				"initSi",
+				"core/services/datawrapper/www/static/js/dw/backend/initializeSignUp.js"
+			],
+			[
+				"svelte.tw",
+				"core/services/datawrapper/templates/svelte.twig"
+			],
+			[
+				"twig-",
+				"core/services/datawrapper/lib/utils/twig-init.php"
+			],
+			[
+				"baseobj",
+				"core/services/datawrapper/vendor/propel/propel1/runtime/lib/om/BaseObject.php"
+			],
+			[
+				"userbase.",
+				"core/plugins/admin-users/node_modules/diff/lib/diff/base.js"
+			],
+			[
+				"users.js",
+				"core/services/api/src/routes/users.js"
+			],
+			[
+				"d3-ba",
+				"core/plugins/d3-bars/static/d3-bars.js"
+			],
+			[
+				"load plug",
+				"core/services/api/src/plugin-loader.js"
+			],
+			[
+				"charts.js",
+				"core/services/api/src/routes/charts.js"
+			],
+			[
+				"charts.php",
+				"core/services/datawrapper/lib/api/charts.php"
+			],
+			[
+				"hooks.php",
+				"core/services/datawrapper/lib/hooks/DatawrapperHooks.php"
+			],
+			[
+				"chart_Content",
+				"core/services/datawrapper/lib/utils/chart_content.php"
+			],
+			[
+				"render/main",
+				"tables/src/render/main.js"
+			],
+			[
+				"chart_Cont",
+				"core/services/datawrapper/lib/utils/chart_content.php"
+			],
+			[
+				"chart.w",
+				"core/services/datawrapper/templates/chart.twig"
+			],
+			[
+				"chart_pu",
+				"core/services/datawrapper/lib/utils/chart_publish.php"
+			],
+			[
+				"chart_con",
+				"core/services/datawrapper/lib/utils/chart_content.php"
+			],
+			[
+				"preview",
+				"core/services/datawrapper/controller/chart/preview.php"
+			],
+			[
+				"previe",
+				"core/services/datawrapper/controller/chart/preview.php"
+			],
+			[
+				"check_ch",
+				"core/services/datawrapper/lib/utils/check_chart.php"
+			],
+			[
+				"datawrap hoo",
+				"core/services/datawrapper/lib/hooks/DatawrapperHooks.php"
+			],
+			[
+				"chart-sty",
+				"core/services/datawrapper/templates/chart-styles.less.twig"
+			],
+			[
+				"chart_",
+				"core/services/datawrapper/lib/utils/chart_publish.php"
+			],
+			[
+				"organ",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"chart_pub",
+				"core/services/datawrapper/lib/utils/chart_publish.php"
+			],
+			[
+				"publish-s3",
+				"core/plugins/publish-s3/plugin.php"
+			],
+			[
+				"currentTE",
+				"app/src/layers/CurrentTemperatures.svelte"
+			],
+			[
+				"month",
+				"app/src/MonthlyAnomalies.svelte"
+			],
+			[
+				"blinder",
+				"vis4net/themes/vis4/source/js/blinder.js"
+			],
+			[
+				"jobqueue",
+				"core/services/render-server/src/lib/JobQueue.js"
+			],
+			[
+				"d3-mapsinit",
+				"core/plugins/d3-maps/init.php"
+			],
+			[
+				"liveUpda",
+				"core/services/datawrapper/www/static/js/dw/chart/visualize/liveUpdate.js"
+			],
+			[
+				"chart-st",
+				"core/services/datawrapper/templates/chart-styles.less.twig"
+			],
+			[
+				"chart styles less",
+				"core/services/datawrapper/templates/chart-styles.less.twig"
+			],
+			[
+				"chart stless",
+				"core/services/datawrapper/templates/chart-styles.less.twig"
+			],
+			[
+				"rangeAnn",
+				"core/plugins/d3-lines/src/shared/rangeAnnotations.js"
+			],
+			[
+				"admin te",
+				"core/services/api/src/routes/teams-admin.js"
+			],
+			[
+				"teams.js",
+				"core/services/api/src/routes/teams.js"
+			],
+			[
+				"addhe",
+				"core/services/datawrapper/lib/utils/add_header_vars.php"
+			],
+			[
+				"datawrapsess",
+				"core/services/datawrapper/lib/session/DatawrapperSession.php"
+			],
+			[
+				"svele-opt",
+				"core/services/datawrapper/templates/chart/visualize/svelte-option.twig"
+			],
+			[
+				"shared/cha",
+				"core/libs/shared/chart.js"
+			],
+			[
+				"codeow",
+				"landing-page/node_modules/ecdsa-sig-formatter/CODEOWNERS"
+			],
+			[
+				"domtojson",
+				"core/plugins/export-pdf/src/lib/domToJSON.js"
+			],
+			[
+				"notifi init.php",
+				"core/plugins/notifications/init.php"
+			],
+			[
+				"column.js",
+				"core/libs/shared/dataset/column.js"
+			],
+			[
+				"organizaphp",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"chart.js",
+				"core/libs/orm/models/Chart.js"
+			],
+			[
+				"Organ",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"svelte.",
+				"core/services/datawrapper/templates/svelte.twig"
+			],
+			[
+				"svelte.t",
+				"core/services/datawrapper/templates/svelte.twig"
+			],
+			[
+				"orga",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"fetch",
+				"core/libs/shared/fetch.js"
+			],
+			[
+				"teams.",
+				"core/services/api/src/routes/teams.js"
+			],
+			[
+				"User.hp",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/User.php"
+			],
+			[
+				"userorg",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/UserOrganizationQuery.php"
+			],
+			[
+				"organphp",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"fet",
+				"core/libs/shared/fetch.js"
+			],
+			[
+				"Organization.ph",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Organization.php"
+			],
+			[
+				"add_he",
+				"core/services/datawrapper/lib/utils/add_header_vars.php"
+			],
+			[
+				"home-l",
+				"core/services/datawrapper/templates/home-login.twig"
+			],
+			[
+				"Folder.php",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Folder.php"
+			],
+			[
+				"add_edi",
+				"core/services/datawrapper/lib/utils/add_editor_nav.php"
+			],
+			[
+				"FormBlock",
+				"core/services/datawrapper/src/v2/shared/FormBlock.html"
+			],
+			[
+				"User.php",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/User.php"
+			],
+			[
+				"header",
+				"core/services/datawrapper/templates/header.twig"
+			],
+			[
+				"less colors.less",
+				"core/services/datawrapper/assets/styles/datawrapper/common/colors.less"
+			],
+			[
+				"colors.less",
+				"core/libs/blocks/node_modules/material-colors/dist/colors.less"
+			],
+			[
+				"checkPA",
+				"core/libs/shared/checkPassword.js"
+			],
+			[
+				"user.p",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/User.php"
+			],
+			[
+				"use.php",
+				"core/services/datawrapper/vendor/twig/twig/lib/Twig/TokenParser/Use.php"
+			],
+			[
+				"Router.php",
+				"core/services/datawrapper/vendor/slim/slim/Slim/Router.php"
+			],
+			[
+				"colorsc",
+				"core/libs/controls/v2/ColorScale.html"
+			],
+			[
+				"colorLege",
+				"core/libs/blocks/lib/colorLegend.js"
+			],
+			[
+				"initnum",
+				"core/plugins/d3-bars/src/shared/initNumeralLocales.js"
+			],
+			[
+				"core",
+				"core/services/datawrapper/templates/core.twig"
+			],
+			[
+				"theme.php",
+				"core/services/datawrapper/lib/core/build/classes/datawrapper/Theme.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 1000.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"~/projects/datawrapper/datawrapper.sublime-project"
+			],
+			[
+				"bl",
+				"~/projects/datawrapper/datawrapper-blog.sublime-workspace"
+			],
+			[
+				"cha",
+				"~/projects/chartmaker/chartmaker.sublime-workspace"
+			],
+			[
+				"blog",
+				"~/projects/datawrapper/datawrapper-blog.sublime-workspace"
+			],
+			[
+				"schna",
+				"~/projects/schnack/schnack.sublime-project"
+			],
+			[
+				"blg",
+				"~/blog/blog.sublime-project"
+			],
+			[
+				"chrom",
+				"~/projects/chroma.sublime-project"
+			],
+			[
+				"ch",
+				"~/projects/chroma.sublime-project"
+			],
+			[
+				"land",
+				"~/projects/datawrapper/landingpage.sublime-project"
+			],
+			[
+				"dri",
+				"~/projects/drivenbydata/drivenbydata.sublime-project"
+			],
+			[
+				"sch",
+				"~/projects/schnack/schnack.sublime-project"
+			],
+			[
+				"la",
+				"~/projects/datawrapper/landingpage.sublime-project"
+			],
+			[
+				"ln",
+				"~/projects/datawrapper/landingpage.sublime-project"
+			],
+			[
+				"l",
+				"~/projects/datawrapper/landingpage.sublime-project"
+			],
+			[
+				"lan",
+				"~/projects/datawrapper/landingpage.sublime-project"
+			],
+			[
+				"b",
+				"~/projects/datawrapper/datawrapper-blog.sublime-workspace"
+			]
+		],
+		"width": 760.0
+	},
+	"select_symbol":
+	{
+		"height": 372.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 1258.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 444.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
