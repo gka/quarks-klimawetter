@@ -50,6 +50,8 @@
     // import dayjs from 'dayjs';
     import localizedFormat from 'dayjs/plugin/localizedFormat';
     import 'dayjs/locale/de';
+    import { mean, quantileSorted, ascending } from 'd3-array'
+    import { maxDate } from '../_partials/stores';
 
     dayjs.extend(localizedFormat)
     dayjs.locale('de');
@@ -58,8 +60,6 @@
     export let data;
 
     let baseMinYear = 1991;
-
-    let date = new Date();
 
     function fmtTemp(temp) {
         return String(temp).replace('.',',')+'°C'
@@ -92,7 +92,7 @@
         dataLinked = data2;
     }
 
-    $: today = data.find(d => d.date - date < 10);
+    $: today = data.find(d => d.date - $maxDate < 10);
 
     let context = {};
     $: {
@@ -109,6 +109,7 @@
                 d.year < baseMinYear+30 &&
                 d.day === fmt
             );
+            let tempValues = dates.map(d => d.TXK).sort(ascending);
             let tempSum = 0;
             let tempRain = 0;
             dates.forEach(d => {
@@ -117,10 +118,19 @@
             })
             return {
                 day: fmt,
-                TXK: tempSum / dates.length,
+                TXK: mean(tempValues),
+                TXK_05: quantileSorted(tempValues, 0.05),
+                TXK_95: quantileSorted(tempValues, 0.95),
                 rain30days: tempRain / dates.length
             }
         }
+    }
+
+    $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
+
+    function moveDate(delta, by) {
+        // console.log('move', delta, dayjs(today.date).add(delta, 'day').toDate())
+        $maxDate = dayjs(today.date).add(delta, by).toDate()
     }
 
 </script>
@@ -134,15 +144,23 @@
     }
 </style>
 
+<button on:click={() => moveDate(-1, 'month')}>1 Monat zurück</button>
+<button on:click={() => moveDate(-1, 'day')}>1 Tag zurück</button>
+<button on:click={() => moveDate(+1, 'day')}>1 Tag vor</button>
+<button on:click={() => moveDate(+1, 'month')}>1 Monat vor</button>
+
 <h1>Ist das Wetter oder Klimawandel?</h1>
+<p>Heute, am <b>{dayjs($maxDate).format('LL')}</b> ist es in {station.name} {isForecast ? 'vorraussichtlich' : ''} max. {fmtTemp(today.TXK)} und es gibt {fmtRain(today.RSK)} Niederschlag.</p>
 
-<Chart data="{dataLinked}" yscaleVar="RSK" />
+Temperatur:
+<Chart data="{dataLinked}" {context} yMin={-5} yMax={30} show="TXK" />
 
-<pre>{JSON.stringify(context, null, 2)}</pre>
+Regen:
+<Chart data="{dataLinked}" includeZero={true} {context} ymax="{80}" show="rain30days" />
+
 <p>Heute ist es in {station.name}...</p>
-<p>Heute ist es in {station.name}...</p>
 
-<p>{dayjs(date).format('LL')}</p>
+<p>{dayjs($maxDate).format('LL')}</p>
 <p>max. {fmtTemp(today.TXK)}<br />{fmtRain(today.RSK)}</p>
 {today}
 {context[today.day]}

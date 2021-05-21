@@ -1,12 +1,20 @@
 <script>
     import { scaleTime, scaleLinear } from 'd3-scale';
+    import dayjs from 'dayjs';
+    import localizedFormat from 'dayjs/plugin/localizedFormat';
+    import 'dayjs/locale/de';
+    import { extent } from 'd3-array';
+
+	import MaxTemp from './MaxTemp.svelte';
+	import Rain30Days from './Rain30Days.svelte';
+
+    dayjs.extend(localizedFormat)
+    dayjs.locale('de');
 
 	let chart;
 	let chartWidth;
-	let innerWidth;
 
-	let yMin, yMax;
-	let minDate, maxDate;
+	import { innerWidth, minDate, maxDate } from './stores';
 
 	$: height = Math.max(
 	    450,
@@ -15,17 +23,30 @@
 
 	export let yScaleVar;
 	export let data = [];
+	export let context = [];
 	export let includeZero = true;
 
-	$: padding = { top: 20, right: 5, bottom: 30, left: innerWidth < 400 ? 30 : 40 };
+	export let show;
+
+	$: padding = { top: 20, right: 5, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
 	$: xScale = scaleTime()
-	    .domain([minDate, maxDate])
+	    .domain([$minDate, $maxDate])
 	    .range([padding.left, chartWidth - padding.right]);
 
 	$: yScale = scaleLinear()
-	    .domain([yMin, yMax])
+	    .domain(yExtent)
 	    .range([height - padding.bottom, padding.top]);
+
+	$: yValues = [
+		...dataFiltered.map(d => d[show]),
+		...dataFiltered.map(d => context[d.day][show]),
+		...dataFiltered.map(d => context[d.day][show+'_05']),
+		...dataFiltered.map(d => context[d.day][show+'_95']),
+		...(includeZero ? [0] : [])
+	].filter(d => d !== undefined);
+
+	$: yExtent = extent(yValues);
 
 	$: xTicks = xScale.ticks(8);
 	$: yTicks = yScale.ticks(8);
@@ -36,26 +57,20 @@
 	    );
 	};
 
-	$: format = (d, i) => d;
+	$: format = (d, i) => dayjs(d).format('D. MMM');
 	$: formatMobile = (d, i) => d;
+
+	$: dataFiltered = data.filter((d,i) => {
+		return d.date > $minDate && d.date <= $maxDate;
+	});
+
 
 </script>
 
-<style>
-	.chart {
-	    width: 100%;
-	    margin-left: auto;
-	    margin-right: auto;
-	}
 
-	svg {
-	    position: relative;
-	    width: 100%;
-	    overflow: visible;
-	}
-</style>
+<svelte:window bind:innerWidth={$innerWidth} />
 
-<svelte:window bind:innerWidth={innerWidth} />
+{@debug yExtent}
 
 <div
     bind:this={chart}
@@ -78,23 +93,74 @@
 		    <!-- x axis -->
 		    <g class="axis x-axis">
 		        {#each xTicks as tick, i}
-		            <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height})">
-		                <line y1="-{height}" y2="-{padding.bottom}" x1="0" x2="0" />
-		                {#if midMonth(tick) < maxDate}
-		                    <g transform="translate({xScale(midMonth(tick)) - xScale(tick)},-50)">
-		                        <text y="0">
-		                            {innerWidth > 400 ? format(tick, i) : formatMobile(tick, i)}
-		                        </text>
-		                        {#if (!i && tick.getMonth() < 11) || !tick.getMonth()}
-		                            <text class="year" y="20">{tick.getFullYear()}</text>
-		                        {/if}
-		                    </g>
-		                {/if}
+		            <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
+		                <line y1="-{height}" y2="0" />
+                        <text y="5">
+                            {$innerWidth > 400 ? format(tick, i) : formatMobile(tick, i)}
+                        </text>
+                        {#if !i || tick.getFullYear() !== xTicks[i-1].getFullYear()}
+                            <text class="year" y="25">{tick.getFullYear()}</text>
+                        {/if}>
 		            </g>
 		        {/each}
 		    </g>
 
 		    <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
+
+		    {#if show === 'TXK'}
+		    <MaxTemp {xScale} {yScale} data={dataFiltered} {context} />
+		    {:else if show === 'rain30days'}
+			<Rain30Days {xScale} {yScale} data={dataFiltered} {context} />
+		    {/if}
 		</g>
 	</svg>
 </div>
+
+
+<style>
+	.chart {
+	    width: 100%;
+	    margin-left: auto;
+	    margin-right: auto;
+	}
+
+	svg {
+	    position: relative;
+	    width: 100%;
+	    overflow: visible;
+	}
+
+	.tick {
+	    font-size: 0.725em;
+	    font-weight: 200;
+	}
+
+	.tick line {
+	    stroke: var(--tick-line);
+	    shape-rendering: crispEdges;
+	}
+
+	.tick text {
+	    fill: #666;
+	    font-weight: 500;
+	    font-size: 15px;
+	    text-anchor: start;
+	}
+
+	.x-axis .tick text {
+	    text-anchor: middle;
+	    dominant-baseline: hanging;
+	}
+
+	line.zero {
+	    shape-rendering: crispEdges;
+	    stroke: black;
+	    opacity: 0.25;
+	}
+
+	@media (max-width: 400px) {
+	    .tick text {
+	        font-size: 13px;
+	    }
+	}
+</style>
