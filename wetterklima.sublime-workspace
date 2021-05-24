@@ -4,16 +4,68 @@
 		"selected_items":
 		[
 			[
-				"mx",
-				"maxDate"
+				"d",
+				"data2"
 			],
 			[
-				"st",
-				"style\tTag"
+				"tod",
+				"today"
+			],
+			[
+				"stat",
+				"station"
 			],
 			[
 				"da",
 				"data"
+			],
+			[
+				"br",
+				"browser"
+			],
+			[
+				"sta",
+				"stations"
+			],
+			[
+				"st",
+				"station"
+			],
+			[
+				"q",
+				"tempQuartileRange"
+			],
+			[
+				"bel",
+				"belowRain"
+			],
+			[
+				"h",
+				"hidden\tvisibility"
+			],
+			[
+				"ext",
+				"extent"
+			],
+			[
+				"data",
+				"dataFiltered"
+			],
+			[
+				"te",
+				"tempValues"
+			],
+			[
+				"stroke",
+				"stroke-linecap\tproperty"
+			],
+			[
+				"path",
+				"pathData"
+			],
+			[
+				"mx",
+				"maxDate"
 			],
 			[
 				"pre",
@@ -38,10 +90,6 @@
 			[
 				"tem",
 				"tempSum"
-			],
-			[
-				"d",
-				"data"
 			],
 			[
 				"loc",
@@ -272,10 +320,6 @@
 				"svelteChart"
 			],
 			[
-				"data",
-				"datawrapper"
-			],
-			[
 				"text",
 				"text-decoration\tproperty"
 			],
@@ -318,10 +362,6 @@
 			[
 				"fon",
 				"font-weight\tproperty"
-			],
-			[
-				"stat",
-				"statusCode"
 			],
 			[
 				"req",
@@ -460,10 +500,6 @@
 				"gLabels"
 			],
 			[
-				"ext",
-				"externalData"
-			],
-			[
 				"nmp",
 				"npmrc"
 			],
@@ -478,42 +514,6 @@
 			[
 				"range",
 				"rangeTo"
-			],
-			[
-				"ran",
-				"rangeFrom"
-			],
-			[
-				"sca",
-				"scaleType"
-			],
-			[
-				"he",
-				"height"
-			],
-			[
-				"fn",
-				"function"
-			],
-			[
-				"leg",
-				"legacyCSS"
-			],
-			[
-				"loadS",
-				"loadStylesheet"
-			],
-			[
-				"web",
-				"websocketClients"
-			],
-			[
-				"hot",
-				"hotreload"
-			],
-			[
-				"tmp",
-				"tmpSsr"
 			]
 		]
 	},
@@ -523,7 +523,51 @@
 			"file": "app/src/app.html",
 			"settings":
 			{
-				"buffer_size": 338,
+				"buffer_size": 379,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/lib/findNearestStation.js",
+			"settings":
+			{
+				"buffer_size": 885,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/lib/parseStations.js",
+			"settings":
+			{
+				"buffer_size": 402,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/lib/parseStationData.js",
+			"settings":
+			{
+				"buffer_size": 287,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "    function latLonDist(lat1, lon1, lat2, lon2) {\n        const p = 0.017453292519943295; // This is  Math.PI / 180\n        const c = Math.cos;\n        const a =\n            0.5 -\n            c((lat2 - lat1) * p) / 2 +\n            (c(lat1 * p) * c(lat2 * p) * (1 - c((lon2 - lon1) * p))) / 2;\n        const R = 6371; //  Earth distance in km so it will return the distance in km\n        return 2 * R * Math.asin(Math.sqrt(a));\n    }",
+			"settings":
+			{
+				"buffer_size": 432,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/static/css/global.css",
+			"settings":
+			{
+				"buffer_size": 2299,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -532,16 +576,7 @@
 			"file": "app/src/routes/index.svelte",
 			"settings":
 			{
-				"buffer_size": 669,
-				"encoding": "UTF-8",
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/src/routes/stationen.json.js",
-			"settings":
-			{
-				"buffer_size": 562,
+				"buffer_size": 1295,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -550,40 +585,25 @@
 			"file": "app/svelte.config.js",
 			"settings":
 			{
-				"buffer_size": 216,
+				"buffer_size": 347,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"file": "app/package.json",
 			"settings":
 			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/static/css/global.css",
-			"settings":
-			{
-				"buffer_size": 2276,
+				"buffer_size": 1070,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
+			"file": "app/build/index.html",
 			"settings":
 			{
-				"buffer_size": 0,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "app/src/routes/station/[slug].svelte",
-			"settings":
-			{
-				"buffer_size": 3861,
-				"encoding": "UTF-8",
+				"buffer_size": 1019,
 				"line_ending": "Unix"
 			}
 		},
@@ -591,7 +611,68 @@
 			"file": "app/src/routes/_partials/Chart.svelte",
 			"settings":
 			{
-				"buffer_size": 2581,
+				"buffer_size": 3776,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/station/[slug].svelte",
+			"settings":
+			{
+				"buffer_size": 5508,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/__layout.svelte",
+			"settings":
+			{
+				"buffer_size": 212,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/.gitignore",
+			"settings":
+			{
+				"buffer_size": 67,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/_partials/MaxTemp.svelte",
+			"settings":
+			{
+				"buffer_size": 2310,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/_partials/stores.js",
+			"settings":
+			{
+				"buffer_size": 650,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/gka/projects/2019-too-warm/src/stores.js",
+			"settings":
+			{
+				"buffer_size": 2392,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -608,15 +689,24 @@
 			"file": ".gitignore",
 			"settings":
 			{
-				"buffer_size": 40,
+				"buffer_size": 46,
+				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "/tmp/mozilla_gka0/stations.csv",
+			"file": "/tmp/mozilla_gka0/00400-fc.csv",
 			"settings":
 			{
-				"buffer_size": 44486,
+				"buffer_size": 758293,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "app/src/routes/data/station/[file].csv.js",
+			"settings":
+			{
+				"buffer_size": 346,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -713,6 +803,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"jp",
+				"JsPrettier: Format Code"
+			],
 			[
 				"jspr",
 				"JsPrettier: Format Code"
@@ -1220,10 +1314,6 @@
 			[
 				"re",
 				"Project: Refresh Folders"
-			],
-			[
-				"chmo",
-				"Chmod a+x"
 			]
 		],
 		"width": 960.0
@@ -1253,13 +1343,38 @@
 	[
 		"/home/gka/projects/quarks-wetterklima",
 		"/home/gka/projects/quarks-wetterklima/app",
+		"/home/gka/projects/quarks-wetterklima/app/build",
 		"/home/gka/projects/quarks-wetterklima/app/src",
+		"/home/gka/projects/quarks-wetterklima/app/src/lib",
 		"/home/gka/projects/quarks-wetterklima/app/src/routes",
 		"/home/gka/projects/quarks-wetterklima/app/src/routes/_partials",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/data",
 		"/home/gka/projects/quarks-wetterklima/app/src/routes/station"
 	],
 	"file_history":
 	[
+		"/tmp/mozilla_gka0/stations-1.csv",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/data/stations.csv.js",
+		"/tmp/mozilla_gka0/stations.csv",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/data/station/[file].csv.js",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/station/[slug].json.js",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/stations.json.js",
+		"/home/gka/projects/quarks-wetterklima/app/node_modules/vite/dist/node/chunks/dep-e9a16784.js",
+		"/home/gka/projects/quarks-wetterklima/app/build/_app/pages/station/[slug].svelte-c98d148b.js",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/__layout.svelte",
+		"/home/gka/projects/2019-too-warm/src/partials/StationSelect.svelte",
+		"/home/gka/projects/quarks-wetterklima/app/.gitignore",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/_partials/Rain30Days.svelte",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/_partials/StationSelect.svelte",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/_utils/latLonDist.js",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/stationen.json.js",
+		"/home/gka/projects/quarks-wetterklima/app/src/routes/station/[slug].svelte",
+		"/home/gka/projects/2019-too-warm/src/BaseChart.svelte",
+		"/home/gka/projects/2019-too-warm/src/layers/CurrentTemperatures.svelte",
+		"/home/gka/projects/2019-too-warm/src/layers/NormalTemperature.svelte",
+		"/home/gka/projects/2019-too-warm/src/layers/NormalTemperatureRange.svelte",
+		"/home/gka/projects/quarks-wetterklima/app/svelte.config.js",
+		"/home/gka/projects/quarks-wetterklima/app/static/css/global.css",
 		"/tmp/mozilla_gka0/10381-BEOB.csv",
 		"/home/gka/projects/dwd-scraper/data/04300-current.csv",
 		"/home/gka/projects/dwd-scraper/data/04169-current.csv",
@@ -1269,15 +1384,12 @@
 		"/home/gka/projects/dwd-scraper/data/00131-current.csv",
 		"/home/gka/projects/dwd-scraper/data/00891-current.csv",
 		"/home/gka/.ssh/config",
-		"/home/gka/projects/quarks-wetterklima/app/src/routes/stationen.json.js",
 		"/home/gka/projects/dwd-scraper/out/stations/00596-fc.csv",
 		"/home/gka/projects/dwd-scraper/out/stations/00102-fc.csv",
 		"/tmp/mozilla_gka0/10338-BEOB.csv",
 		"/tmp/mozilla_gka0/01415-BEOB.csv",
-		"/tmp/mozilla_gka0/stations-1.csv",
 		"/tmp/mozilla_gka0/01210-BEOB.csv",
 		"/tmp/mozilla_gka0/E426_-BEOB.csv",
-		"/tmp/mozilla_gka0/stations.csv",
 		"/tmp/mozilla_gka0/00430.csv",
 		"/home/gka/p/core/services/frontend/src/views/layout/partials/bulma/Notification.svelte",
 		"/home/gka/p/core/services/frontend/src/views/layout/partials/bulma/Message.svelte",
@@ -1368,30 +1480,11 @@
 		"/home/gka/p/configs/production/config.js",
 		"/home/gka/p/configs/staging/config.js",
 		"/home/gka/p/core/services/datawrapper/lib/utils/add_header_vars.php",
-		"/home/gka/p/core/.gitmodules",
-		"/home/gka/p/core/utils/docker/scripts/git-pull",
-		"/home/gka/p/core/package.json",
-		"/home/gka/p/core/plugins/simple-maps/plugin.php",
-		"/home/gka/p/core/plugins/tables/init.php",
-		"/home/gka/p/core/services/frontend/src/views/layout/partials/SvgIcon.svelte",
-		"/home/gka/p/core/plugins/visualization-column-charts/init.php",
-		"/home/gka/p/core/plugins/visualization-column-charts/frontend.js",
-		"/home/gka/p/core/services/frontend/src/views/layout/partials/Svelte2Wrapper.svelte",
-		"/home/gka/p/core/plugins/team-integrations/frontend.js",
-		"/home/gka/p/core/services/crons/src/index.js",
-		"/home/gka/p/core/services/frontend/src/styles/colors.scss",
-		"/home/gka/p/core/services/frontend/src/views/layout/partials/Svelte2Wrapper.element.svelte",
-		"/home/gka/p/core/libs/shared/fetch.js",
-		"/home/gka/p/core/plugins/stats/api.js",
-		"/home/gka/p/core/services/crons/src/tasks/chart-stats.js",
-		"/home/gka/projects/r-work/dw-stats/charts-created.csv",
-		"/home/gka/p/core/services/frontend/static/datawrapper.css",
-		"/home/gka/p/core/services/crons/src/tasks/user-team-stats.js",
-		"/home/gka/p/core/services/frontend/src/utils/svelte-view/rollup-runtime.js"
+		"/home/gka/p/core/.gitmodules"
 	],
 	"find":
 	{
-		"height": 55.0
+		"height": 54.0
 	},
 	"find_in_files":
 	{
@@ -1405,6 +1498,49 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"s",
+			"today",
+			"TXK",
+			"dayjs",
+			"dayj",
+			"page",
+			"stationen",
+			"https://www.quarks.de/wp-content/themes/understrap/assets/fav/",
+			"25",
+			"tempQuartileRange",
+			"low",
+			"TXK_10",
+			"contextRainPath",
+			"Rain",
+			"curRainPath",
+			"Rain",
+			"vor",
+			"chartWidth",
+			"= area()",
+			" = area",
+			"curRainPath",
+			"d3.svg.",
+			"var",
+			"deb",
+			"dayjs",
+			"moveDay",
+			"date",
+			"moveDay",
+			"date",
+			"yMin",
+			"extent",
+			"dataFiltered",
+			"yScale",
+			"dataFiltered",
+			"{data}",
+			"dataFiltered",
+			"MaxTemp",
+			"context",
+			"dayjs",
+			"innerWidth",
+			"minDate",
+			"maxDate",
+			"maxDa",
 			"yTicks",
 			"innerWidth",
 			"chart",
@@ -1442,7 +1578,7 @@
 	"groups":
 	[
 		{
-			"selected": 8,
+			"selected": 11,
 			"sheets":
 			[
 				{
@@ -1451,77 +1587,51 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 338,
+						"buffer_size": 379,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								320,
-								320
+								379,
+								379
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "app/src/routes/index.svelte",
+					"file": "app/src/lib/findNearestStation.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 669,
+						"buffer_size": 885,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								187,
-								187
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.sublime-syntax"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 6,
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "app/src/routes/stationen.json.js",
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 562,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								35,
-								35
+								503,
+								503
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1531,20 +1641,48 @@
 					"type": "text"
 				},
 				{
-					"buffer": 3,
-					"file": "app/svelte.config.js",
+					"buffer": 2,
+					"file": "app/src/lib/parseStations.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 216,
+						"buffer_size": 402,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								180,
-								180
+								402,
+								402
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 11,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "app/src/lib/parseStationData.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 287,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								62,
+								62
 							]
 						],
 						"settings":
@@ -1563,27 +1701,29 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 432,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								432,
+								432
 							]
 						],
 						"settings":
 						{
-							"default_dir": "/home/gka/projects/quarks-wetterklima/app/static",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"default_dir": "/home/gka/projects/quarks-wetterklima/app/src/routes/_partials",
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 10,
+					"stack_index": 16,
 					"type": "text"
 				},
 				{
@@ -1592,15 +1732,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2276,
+						"buffer_size": 2299,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2013,
-								2013
+								2279,
+								2279
 							]
 						],
 						"settings":
@@ -1609,32 +1749,33 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 504.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 18,
 					"type": "text"
 				},
 				{
 					"buffer": 6,
+					"file": "app/src/routes/index.svelte",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 0,
+						"buffer_size": 1295,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								77,
+								77
 							]
 						],
 						"settings":
 						{
-							"default_dir": "/home/gka/projects/quarks-wetterklima/app/src/routes/station",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -1645,48 +1786,165 @@
 				},
 				{
 					"buffer": 7,
-					"file": "app/src/routes/station/[slug].svelte",
+					"file": "app/svelte.config.js",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 3861,
+						"buffer_size": 347,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3537,
-								3537
+								347,
+								347
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "app/package.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1070,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								21,
+								21
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JSON (JavaScriptNext).tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 10,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "app/build/index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1019,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								40,
+								40
 							]
 						],
 						"settings":
 						{
 							"syntax": "Packages/HTML/HTML.sublime-syntax",
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2862.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 19,
 					"type": "text"
 				},
 				{
-					"buffer": 8,
+					"buffer": 10,
 					"file": "app/src/routes/_partials/Chart.svelte",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2581,
+						"buffer_size": 3776,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								356,
-								356
+								817,
+								817
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 15,
+					"type": "text"
+				},
+				{
+					"buffer": 11,
+					"file": "app/src/routes/station/[slug].svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5508,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								5300,
+								5300
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3144.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 12,
+					"file": "app/src/routes/__layout.svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 212,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								196,
+								196
 							]
 						],
 						"settings":
@@ -1697,11 +1955,155 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 9,
+					"buffer": 13,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"default_dir": "/home/gka/projects/quarks-wetterklima/app/src/lib",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 13,
+					"type": "text"
+				},
+				{
+					"buffer": 14,
+					"file": "app/.gitignore",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 67,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								67,
+								67
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Git Formats/Git Ignore.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 15,
+					"file": "app/src/routes/_partials/MaxTemp.svelte",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2310,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1334,
+								1334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 936.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 17,
+					"type": "text"
+				},
+				{
+					"buffer": 16,
+					"file": "app/src/routes/_partials/stores.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 650,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								480,
+								480
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 14,
+					"type": "text"
+				},
+				{
+					"buffer": 17,
+					"file": "/home/gka/projects/2019-too-warm/src/stores.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2392,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								697,
+								697
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 20,
+					"type": "text"
+				},
+				{
+					"buffer": 18,
 					"file": "/home/gka/projects/dwd-wetter/app/src/BaseChart.svelte",
 					"semi_transient": false,
 					"settings":
@@ -1727,24 +2129,24 @@
 						"translation.y": 990.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 21,
 					"type": "text"
 				},
 				{
-					"buffer": 10,
+					"buffer": 19,
 					"file": ".gitignore",
-					"semi_transient": true,
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 40,
+						"buffer_size": 46,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								46,
+								46
 							]
 						],
 						"settings":
@@ -1755,24 +2157,24 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
-					"buffer": 11,
-					"file": "/tmp/mozilla_gka0/stations.csv",
+					"buffer": 20,
+					"file": "/tmp/mozilla_gka0/00400-fc.csv",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 44486,
+						"buffer_size": 758293,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								38,
-								38
+								789,
+								789
 							]
 						],
 						"settings":
@@ -1783,11 +2185,39 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 6,
 					"type": "text"
 				},
 				{
-					"buffer": 12,
+					"buffer": 21,
+					"file": "app/src/routes/data/station/[file].csv.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 346,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								308,
+								308
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScriptNext - ES6 Syntax/JavaScriptNext.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 8,
+					"type": "text"
+				},
+				{
+					"buffer": 22,
 					"semi_transient": false,
 					"settings":
 					{
@@ -1810,7 +2240,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 11,
+					"stack_index": 22,
 					"type": "text"
 				}
 			]
@@ -1818,7 +2248,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 33.0
+		"height": 32.0
 	},
 	"input":
 	{
@@ -1879,7 +2309,7 @@
 	"project": "wetterklima.sublime-project",
 	"replace":
 	{
-		"height": 62.0
+		"height": 60.0
 	},
 	"save_all_on_build": true,
 	"select_file":
@@ -2493,7 +2923,7 @@
 	"show_open_files": false,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 444.0,
+	"side_bar_width": 309.0,
 	"status_bar_visible": true,
 	"template_settings":
 	{

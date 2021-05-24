@@ -21,7 +21,7 @@
 	--light: #f8f9fa;
 	--dark: #343a40;
 
-	--tick-line: var(--gray);
+	--tick-line: #dedede;
 }
 
 @font-face { font-family: sans_black; src: url("fonts/sans/WDRSansBlack.eot?#iefix") format("embedded-opentype"), url("fonts/sans/WDRSansBlack.woff2") format("woff2"), url("fonts/sans/WDRSansBlack.woff") format("woff"), url("fonts/sans/WDRSansBlack.ttf") format("truetype"), url("fonts/sans/WDRSansBlack.svg#WDRSansBlack") format("svg"); font-style: normal; font-weight: 900; }
@@ -58,6 +58,6 @@ h2,h3 {
 	font-weight: normal;
 }
 #svelte {
-	max-width: 1080px;
+	max-width: 720px;
 	margin: 0 auto;
 }

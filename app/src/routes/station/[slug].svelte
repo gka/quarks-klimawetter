@@ -1,39 +1,32 @@
 <script context="module">
     import { csvParse } from 'd3-dsv';
-    import dayjs from 'dayjs';
-    import Chart from '../_partials/Chart.svelte';
+    import ChartDaily from '../_partials/ChartDaily.svelte';
+    import { browser } from '$app/env';
+    import parseStations from '$lib/parseStations';
+    import parseStationData from '$lib/parseStationData';
+
+    let stationen;
 
     /**
      * @type {import('@sveltejs/kit').Load}
      */
     export async function load({ page, fetch, session, context }) {
-        const res = await fetch('/stationen.json');
-        const stationen = await res.json();
+        if (!stationen) {
+            const res = await fetch('/data/stations.csv');
+            stationen = parseStations(await res.text())
+        }
 
         const station = stationen.find(s => s.slug === page.params.slug);
 
         if (station) {
-            const url = `https://data.vis4.net/dwd/stations/${station.id}-fc.csv`;
-            const res2 = await fetch(url);
-            if (!res2.ok) {
-                return {
-                    status: res.status,
-                    error: new Error(`Could not load ${url}`)
-                };
-            }
-            const resBody = await res2.text();
-            const data = csvParse(resBody, d => ({
-                date: new Date(d.date),
-                year: new Date(d.date).getFullYear(),
-                day: dayjs(d.date).format('MM-DD'),
-                TXK: +d.TXK,
-                RSK: +d.RSK
-            }));
+            const res2 = await fetch(`/data/stations/${station.id}-fc.csv`);
+            const data = parseStationData(await res2.text());
 
             return {
                 props: {
-                    data,
-                    station
+                    data: data.map(d => ({...d, date: new Date(d.date)})),
+                    station,
+                    stationen
                 }
             };
         }
@@ -47,19 +40,16 @@
 </script>
 
 <script>
-    // import dayjs from 'dayjs';
-    import localizedFormat from 'dayjs/plugin/localizedFormat';
-    import 'dayjs/locale/de';
+    import dayjs from 'dayjs';
     import { mean, quantileSorted, ascending } from 'd3-array'
-    import { maxDate } from '../_partials/stores';
+    import { maxDate, showDays, innerWidth } from '../_partials/stores';
+    import StationSelect from '../_partials/StationSelect.svelte';
 
-    dayjs.extend(localizedFormat)
-    dayjs.locale('de');
-
+    export let stationen;
     export let station;
     export let data;
 
-    let baseMinYear = 1991;
+    let baseMinYear = 1961;
 
     function fmtTemp(temp) {
         return String(temp).replace('.',',')+'°C'
@@ -94,6 +84,8 @@
 
     $: today = data.find(d => d.date - $maxDate < 10);
 
+    let tempQuartileRange = 50;
+
     let context = {};
     $: {
         context = {};
@@ -119,12 +111,15 @@
             return {
                 day: fmt,
                 TXK: mean(tempValues),
-                TXK_05: quantileSorted(tempValues, 0.05),
-                TXK_95: quantileSorted(tempValues, 0.95),
+                TXK_lo: quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5),
+                TXK_hi: quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5),
                 rain30days: tempRain / dates.length
             }
         }
     }
+
+    $: curMonth = today.date.getMonth()
+    $: curMonthName = dayjs(today.date).format('MMMM');
 
     $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
 
@@ -144,19 +139,43 @@
     }
 </style>
 
-<button on:click={() => moveDate(-1, 'month')}>1 Monat zurück</button>
-<button on:click={() => moveDate(-1, 'day')}>1 Tag zurück</button>
-<button on:click={() => moveDate(+1, 'day')}>1 Tag vor</button>
-<button on:click={() => moveDate(+1, 'month')}>1 Monat vor</button>
+<StationSelect {stationen} />
 
-<h1>Ist das Wetter oder Klimawandel?</h1>
+
+&lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
+<button on:click={() => moveDate(-1, 'day')}>1 Tag</button>
+-
+<button on:click={() => moveDate(+1, 'day')}>1 Tag</button>
+<button on:click={() => moveDate(+1, 'month')}>1 Monat</button> &gt;
+
+
+<input type="number" min="50" max="98" step="5" bind:value="{tempQuartileRange}" />
+<select bind:value="{baseMinYear}">
+    <option value="{1991}">1991-2020</option>
+    <option value="{1981}">1981-2010</option>
+    <option value="{1971}">1971-2000</option>
+    <option value="{1961}">1961-1990</option>
+</select>
+<hr />
+
+
+<h2>{station.name}, {station.state}</h2>
+
 <p>Heute, am <b>{dayjs($maxDate).format('LL')}</b> ist es in {station.name} {isForecast ? 'vorraussichtlich' : ''} max. {fmtTemp(today.TXK)} und es gibt {fmtRain(today.RSK)} Niederschlag.</p>
 
-Temperatur:
-<Chart data="{dataLinked}" {context} yMin={-5} yMax={30} show="TXK" />
+<h3>So warm war es die letzten {$showDays} Tage</h3>
+<ChartDaily data="{dataLinked}" {context} yMin={-5} yMax={30} show="TXK" />
 
-Regen:
-<Chart data="{dataLinked}" includeZero={true} {context} ymax="{80}" show="rain30days" />
+<p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
+
+<h3>Niederschlag</h3>
+<ChartDaily data="{dataLinked}" includeZero={true} {context} ymax="{80}" show="rain30days" />
+
+<h3>So warm war der {curMonthName} die letzten x Jahre</h3>
+<h3>So regnerisch war der {curMonthName} die letzten x Jahre</h3>
+<h3>Fazit</h3>
+<h3>Quellen und Datenhinweise</h3>
+
 
 <p>Heute ist es in {station.name}...</p>
 
@@ -166,5 +185,5 @@ Regen:
 {context[today.day]}
 
 <h1>{station.name}</h1>
-<h2>{station.state}</h2>
+
 {station.id}

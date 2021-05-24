@@ -3,12 +3,15 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
+    "build": "svelte-kit build --verbose",
     "preview": "svelte-kit preview",
     "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
-    "format": "prettier --write --plugin-search-dir=. ."
+    "format": "prettier --write --plugin-search-dir=. .",
+    "publish": "mv build/data data-tmp && scp -r build/ vis4.net:projects/quarks-klima/ && mv data-tmp build/data",
+    "sync-data": "aws s3 cp --recursive s3://data.vis4.net/dwd static/data --profile dwd-scraper"
   },
   "devDependencies": {
+    "@sveltejs/adapter-static": "^1.0.0-next.11",
     "@sveltejs/kit": "next",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
@@ -24,6 +27,7 @@
     "d3-scale": "^3.3.0",
     "d3-shape": "^2.1.0",
     "dayjs": "^1.10.4",
-    "slugify": "^1.5.2"
+    "slugify": "^1.5.2",
+    "svelte-typeahead": "^3.0.0"
   }
 }

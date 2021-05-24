@@ -1,24 +1,19 @@
 <script>
     import { scaleTime, scaleLinear } from 'd3-scale';
-    import dayjs from 'dayjs';
-    import localizedFormat from 'dayjs/plugin/localizedFormat';
-    import 'dayjs/locale/de';
     import { extent } from 'd3-array';
+	import dayjs from 'dayjs';
 
 	import MaxTemp from './MaxTemp.svelte';
 	import Rain30Days from './Rain30Days.svelte';
 
-    dayjs.extend(localizedFormat)
-    dayjs.locale('de');
-
 	let chart;
-	let chartWidth;
+	let chartWidth = 720;
 
 	import { innerWidth, minDate, maxDate } from './stores';
 
 	$: height = Math.max(
-	    450,
-	    Math.min(500, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
+	    350,
+	    Math.min(400, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
 	);
 
 	export let yScaleVar;
@@ -41,8 +36,8 @@
 	$: yValues = [
 		...dataFiltered.map(d => d[show]),
 		...dataFiltered.map(d => context[d.day][show]),
-		...dataFiltered.map(d => context[d.day][show+'_05']),
-		...dataFiltered.map(d => context[d.day][show+'_95']),
+		...dataFiltered.map(d => context[d.day][show+'_lo']),
+		...dataFiltered.map(d => context[d.day][show+'_hi']),
 		...(includeZero ? [0] : [])
 	].filter(d => d !== undefined);
 
@@ -70,8 +65,6 @@
 
 <svelte:window bind:innerWidth={$innerWidth} />
 
-{@debug yExtent}
-
 <div
     bind:this={chart}
     class="chart"
@@ -94,7 +87,7 @@
 		    <g class="axis x-axis">
 		        {#each xTicks as tick, i}
 		            <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
-		                <line y1="-{height}" y2="0" />
+		                <line y1="-{height-padding.bottom-padding.top}" y2="0" />
                         <text y="5">
                             {$innerWidth > 400 ? format(tick, i) : formatMobile(tick, i)}
                         </text>
@@ -108,9 +101,9 @@
 		    <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
 		    {#if show === 'TXK'}
-		    <MaxTemp {xScale} {yScale} data={dataFiltered} {context} />
+		    <MaxTemp {height} {xScale} {yScale} data={dataFiltered} {context} />
 		    {:else if show === 'rain30days'}
-			<Rain30Days {xScale} {yScale} data={dataFiltered} {context} />
+			<Rain30Days {height} {xScale} {yScale} data={dataFiltered} {context} />
 		    {/if}
 		</g>
 	</svg>
