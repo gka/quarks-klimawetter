@@ -11,7 +11,7 @@ dayjs.locale('de');
 export const maxDate = writable(new Date());
 
 export const innerWidth = writable(1000);
-export const chartWidth = writable(1000);
+export const chartWidth = writable(720);
 
 export const showDays = derived(innerWidth, $cw =>
     $cw < 500 ? 30 : 60

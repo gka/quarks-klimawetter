@@ -1,7 +1,9 @@
 <script>
     import { scaleTime, scaleLinear } from 'd3-scale';
     import { extent } from 'd3-array';
+    import { regressionLinear } from 'd3-regression';
 	import dayjs from 'dayjs';
+	import { line } from 'd3-shape';
 
 	import MaxTemp from './MaxTemp.svelte';
 	import Rain30Days from './Rain30Days.svelte';
@@ -13,55 +15,73 @@
 
 	$: height = Math.max(
 	    350,
-	    Math.min(400, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
+	    Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
 	);
 
 	export let yScaleVar;
+	export let month = 0;
 	export let data = [];
-	export let context = [];
-	export let includeZero = true;
+	export let context = {};
+	export let numYears = 10;
+	export let includeZero = false;
+	export let unit = '';
+	export let label = '';
+
+	const now = new Date();
+
+	$: maxYear = now.getFullYear() - 1;
+	$: minYear = maxYear - numYears;
 
 	export let show;
 
-	$: padding = { top: 20, right: 5, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+	$: padding = { top: 40, right: 35, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
-	$: xScale = scaleTime()
-	    .domain([$minDate, $maxDate])
+	$: xScale = scaleLinear()
+	    .domain([minYear, maxYear])
 	    .range([padding.left, chartWidth - padding.right]);
 
 	$: yScale = scaleLinear()
 	    .domain(yExtent)
 	    .range([height - padding.bottom, padding.top]);
 
+	$: contextShow = {
+		lo: context[show+'_lo'],
+		hi: context[show+'_hi'],
+	};
+
 	$: yValues = [
 		...dataFiltered.map(d => d[show]),
-		...dataFiltered.map(d => context[d.day][show]),
-		...dataFiltered.map(d => context[d.day][show+'_lo']),
-		...dataFiltered.map(d => context[d.day][show+'_hi']),
+		contextShow.lo,
+		contextShow.hi,
 		...(includeZero ? [0] : [])
 	].filter(d => d !== undefined);
 
-	$: yExtent = extent(yValues);
+	$: yExtent = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,2][i] : d);
 
 	$: xTicks = xScale.ticks(8);
 	$: yTicks = yScale.ticks(8);
 
-	const midMonth = d => {
-	    return new Date(
-	        d.getTime() + (new Date(d.getFullYear(), d.getMonth() + 1, d.getDate()) - d) / 2
-	    );
-	};
 
-	$: format = (d, i) => dayjs(d).format('D. MMM');
+	$: format = (d, i) => dayjs(d).format('MMM');
 	$: formatMobile = (d, i) => d;
 
+	$: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');;
+
 	$: dataFiltered = data.filter((d,i) => {
-		return d.date > $minDate && d.date <= $maxDate;
+		return d.year <= maxYear && d.year >= minYear;
 	});
+
+	$: regLin = regressionLinear()
+		.x(d => d.year)
+		.y(d => d[show])
+		.domain([minYear-1, maxYear+1])(data);
+
+	$: maxTempPath = line()
+	    .x(d => xScale(d.year))
+	    .y(d => yScale(d[show]));
 
 
 </script>
-
 
 <svelte:window bind:innerWidth={$innerWidth} />
 
@@ -70,7 +90,29 @@
     class="chart"
     bind:clientWidth={chartWidth}>
 	<svg {height}>
+		<defs>
+			<linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
+				<stop class="stop1" offset="0%"/>
+		        <stop class="stop2" offset="100%"/>
+			</linearGradient>
+		</defs>
 		<g>
+
+
+		    <!-- x axis -->
+		    <g class="axis x-axis">
+		        {#each xTicks as tick, i}
+		            <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
+		                <line y1="-{height-padding.bottom}" y2="0" />
+                        <text y="5">
+                        	{monthDisplay}
+                        </text>
+                        <text class="year" y="25">{tick}</text>
+		            </g>
+		        {/each}
+		    </g>
+		    <rect fill="url(#white)" width="100%" height="{padding.top+10}"></rect>
+
 		    <!-- y axis -->
 		    <g class="axis y-axis">
 		        {#each yTicks as tick, i}
@@ -83,28 +125,35 @@
 		        {/each}
 		    </g>
 
-		    <!-- x axis -->
-		    <g class="axis x-axis">
-		        {#each xTicks as tick, i}
-		            <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
-		                <line y1="-{height-padding.bottom-padding.top}" y2="0" />
-                        <text y="5">
-                            {$innerWidth > 400 ? format(tick, i) : formatMobile(tick, i)}
-                        </text>
-                        {#if !i || tick.getFullYear() !== xTicks[i-1].getFullYear()}
-                            <text class="year" y="25">{tick.getFullYear()}</text>
-                        {/if}>
-		            </g>
-		        {/each}
-		    </g>
-
 		    <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
-		    {#if show === 'TXK'}
-		    <MaxTemp {height} {xScale} {yScale} data={dataFiltered} {context} />
-		    {:else if show === 'rain30days'}
-			<Rain30Days {height} {xScale} {yScale} data={dataFiltered} {context} />
+		    {#if label}
+		    <text class="label" y="10">
+		    	{#each label.split('\\n') as line,i}
+		    	<tspan x="0" dy="{i?14:0}">{line}</tspan>
+		    	{/each}
+		    </text>
 		    {/if}
+
+		    <rect class="context" y={yScale(contextShow.hi)} width="{chartWidth}" height="{yScale(contextShow.lo)-yScale(contextShow.hi)}" />
+
+		    {#each dataFiltered as d}
+		    {#if show === 'precip'}
+		    <g transform="translate({[xScale(d.year), yScale(0)]})">
+	            <rect class="precip" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+	        </g>
+		    {:else if show === 'temp'}
+		    <g transform="translate({[xScale(d.year), yScale(d.temp)]})">
+	            <circle class="temp" r="5" />
+	        </g>
+		    {/if}
+		    {/each}
+		    {#if show === 'temp'}
+		    <path class="temp" d="{maxTempPath(dataFiltered)}" />
+		    {/if}
+
+		    <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
+
 		</g>
 	</svg>
 </div>
@@ -120,9 +169,11 @@
 	svg {
 	    position: relative;
 	    width: 100%;
-	    overflow: visible;
+	    overflow: hidden;
 	}
-
+	text.label {
+		font-size: 0.8rem;
+	}
 	.tick {
 	    font-size: 0.725em;
 	    font-weight: 200;
@@ -149,6 +200,38 @@
 	    shape-rendering: crispEdges;
 	    stroke: black;
 	    opacity: 0.25;
+	}
+
+	rect.context {
+		opacity: 0.06;
+	}
+
+	circle.temp {
+		fill: var(--red);
+	}
+	rect.precip {
+		fill: var(--blue);
+		opacity: 0.5;
+	}
+
+	path.trend {
+		fill: none;
+		stroke:  black;
+		stroke-dasharray: 3,3;
+	}
+	path.temp {
+		stroke: var(--red);
+		stroke-width:  2;
+		fill: none;
+	}
+
+	rect.white {
+	}
+	.stop1 {
+		stop-color: rgba(255,255,255,1);
+	}
+	.stop2 {
+		stop-color: rgba(255,255,255,0);
 	}
 
 	@media (max-width: 400px) {

@@ -11,8 +11,33 @@
     function handleSelect(item) {
         const station = item.detail.original;
         goto(`/station/${station.slug}`);
-        console.log('select', station)
     }
+    $: hl = [
+        {id: '02115', lbl: 'Helgoland'},
+        {id: '01975', lbl: 'Hamburg'},
+        {id: '00433', lbl: 'Berlin'},
+        {id: '00722', lbl: 'Brocken'},
+        {id: '02667', lbl: 'Köln'},
+        {id: '01420', lbl: 'Frankfurt'},
+        {id: '03379', lbl: 'München'},
+    ].map(d => ({...d, ...stationen.find(e => e.id === d.id)}))
 </script>
 
-<Typeahead data={stationen} {extract} bind:result on:select={handleSelect} />
+<style>
+    .small {
+        font-size: 0.85rem;
+    }
+</style>
+
+<Typeahead
+    label=""
+    placeholder="Station auswählen"
+    data={stationen}
+    {extract}
+    bind:result
+    on:select={handleSelect} />
+
+<div class="small">{#each hl as station}
+<a href="/station/{station.slug}">{station.lbl}</a> &nbsp;
+{/each}
+</div>

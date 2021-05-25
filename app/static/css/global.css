@@ -41,8 +41,9 @@ body {
 }
 
 h1 {
-	font-size: 3rem;
+	font-size: 2.5rem;
 	font-family: sans_black;
+	line-height: 3rem;
 }
 
 h2 {

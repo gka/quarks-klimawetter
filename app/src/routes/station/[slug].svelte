@@ -1,6 +1,5 @@
 <script context="module">
     import { csvParse } from 'd3-dsv';
-    import ChartDaily from '../_partials/ChartDaily.svelte';
     import { browser } from '$app/env';
     import parseStations from '$lib/parseStations';
     import parseStationData from '$lib/parseStationData';
@@ -41,9 +40,11 @@
 
 <script>
     import dayjs from 'dayjs';
-    import { mean, quantileSorted, ascending } from 'd3-array'
+    import { mean, quantileSorted, quantile, ascending, group, sum } from 'd3-array'
     import { maxDate, showDays, innerWidth } from '../_partials/stores';
     import StationSelect from '../_partials/StationSelect.svelte';
+    import ChartDaily from '../_partials/ChartDaily.svelte';
+    import ChartYearly from '../_partials/ChartYearly.svelte';
 
     export let stationen;
     export let station;
@@ -82,7 +83,7 @@
         dataLinked = data2;
     }
 
-    $: today = data.find(d => d.date - $maxDate < 10);
+    $: today = dataLinked.find(d => d.date - $maxDate < 10);
 
     let tempQuartileRange = 50;
 
@@ -121,12 +122,44 @@
     $: curMonth = today.date.getMonth()
     $: curMonthName = dayjs(today.date).format('MMMM');
 
+    let monthlyStats;
+    let monthlyBase;
+    $: {
+        monthlyStats = [];
+        group(dataLinked.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
+            const avgMaxTemp = mean(value, d => d.TXK);
+            const sumPrecip = sum(value, d => d.RSK);
+            monthlyStats.push({
+                year: key,
+                temp: avgMaxTemp,
+                precip: sumPrecip
+            })
+        });
+        const base = monthlyStats.filter(d => d.year >= baseMinYear && d.year < baseMinYear+30);
+        monthlyBase = {
+            temp_lo: quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.temp),
+            temp_hi: quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.temp),
+            precip_lo: quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.precip),
+            precip_hi: quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.precip),
+        }
+    }
+
     $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
 
     function moveDate(delta, by) {
         // console.log('move', delta, dayjs(today.date).add(delta, 'day').toDate())
         $maxDate = dayjs(today.date).add(delta, by).toDate()
     }
+
+    $: numYears = $innerWidth < 550 ? 10 : 20;
+
+    $: tempSentence = today.TXK > context[today.day].TXK_hi ? 'überdurchschnittlich warm' :
+        today.TXK < context[today.day].TXK_lo ? 'überdurchschnittlich kalt' :
+        'normal warm';
+
+    $: precipSentence = today.rain30days > context[today.day].rain30days * 1.1 ? 'überdurchschnittlich viel' :
+        today.rain30days < context[today.day].rain30days * 0.9 ? 'überdurchschnittlich wenig' :
+        'normal viel';
 
 </script>
 
@@ -137,11 +170,85 @@
     h2 {
         color: var(--gray);
     }
+    .flex {
+        display: flex;
+        width: 100%;
+        font-size: 1.5rem;
+    }
+    .flex div {
+        width: 50%;
+        text-align: center;
+    }
 </style>
 
 <StationSelect {stationen} />
 
+<h2>{station.name}, {station.state}</h2>
 
+<div class="flex">
+    <div>
+        <b>{dayjs($maxDate).format('LL')}</b><br>
+        max. {fmtTemp(today.TXK)}<br>
+        {fmtRain(today.RSK)}<br>
+    </div>
+    <div>
+        Heute ist es in {station.name} {tempSentence}. Außerdem regnet es gerade {precipSentence}.
+    </div>
+</div>
+
+<h3>So warm war es die letzten {$showDays} Tage</h3>
+<p>Tageshöchsttemperatur</p>
+<ChartDaily
+    unit=" °C"
+    label="Tageshöchst-\ntemperatur in °C"
+    data="{dataLinked}"
+    {context}
+    yMin={-5}
+    yMax={30}
+    show="TXK" />
+
+<p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
+
+<h3>Niederschlag</h3>
+<ChartDaily
+    label="Niederschlagshöhe\nin den letzten 30 Tagen"
+    unit="mm/30 Tage"
+    data="{dataLinked}"
+    includeZero={true}
+    {context}
+    ymax="{80}"
+    show="rain30days" />
+
+<h3>So warm war der {curMonthName} die letzten {numYears} Jahre</h3>
+<p></p>
+<ChartYearly
+    month={curMonth}
+    data="{monthlyStats}"
+    includeZero={false}
+    context={monthlyBase}
+    {numYears}
+    label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
+    unit=" °C"
+    show="temp" />
+
+
+<h3>So regnerisch war der {curMonthName} die letzten {numYears} Jahre</h3>
+<p>Monatssumme der Niederschlagshöhe im {curMonthName} (mm)</p>
+<ChartYearly
+    month={curMonth}
+    data="{monthlyStats}"
+    includeZero={true}
+    context={monthlyBase}
+    {numYears}
+    unit="mm/30 Tage"
+    show="precip" />
+
+<h3>Fazit</h3>
+
+<h3>Quellen und Datenhinweise</h3>
+
+
+{$innerWidth}
 &lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
 <button on:click={() => moveDate(-1, 'day')}>1 Tag</button>
 -
@@ -157,33 +264,3 @@
     <option value="{1961}">1961-1990</option>
 </select>
 <hr />
-
-
-<h2>{station.name}, {station.state}</h2>
-
-<p>Heute, am <b>{dayjs($maxDate).format('LL')}</b> ist es in {station.name} {isForecast ? 'vorraussichtlich' : ''} max. {fmtTemp(today.TXK)} und es gibt {fmtRain(today.RSK)} Niederschlag.</p>
-
-<h3>So warm war es die letzten {$showDays} Tage</h3>
-<ChartDaily data="{dataLinked}" {context} yMin={-5} yMax={30} show="TXK" />
-
-<p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
-
-<h3>Niederschlag</h3>
-<ChartDaily data="{dataLinked}" includeZero={true} {context} ymax="{80}" show="rain30days" />
-
-<h3>So warm war der {curMonthName} die letzten x Jahre</h3>
-<h3>So regnerisch war der {curMonthName} die letzten x Jahre</h3>
-<h3>Fazit</h3>
-<h3>Quellen und Datenhinweise</h3>
-
-
-<p>Heute ist es in {station.name}...</p>
-
-<p>{dayjs($maxDate).format('LL')}</p>
-<p>max. {fmtTemp(today.TXK)}<br />{fmtRain(today.RSK)}</p>
-{today}
-{context[today.day]}
-
-<h1>{station.name}</h1>
-
-{station.id}
