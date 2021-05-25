@@ -11,7 +11,7 @@
     $: curMaxTempPath = line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.TXK))
-        .defined(d => !isNaN(d.TXK));
+        .defined(d => !isNaN(d.TXK) && d.date <= $maxDate);
 
     $: contextMaxTempPath = line()
         .x(d => xScale(d.date))
@@ -30,13 +30,13 @@
         .x(curMaxTempPath.x())
         .y0(curMaxTempPath.y())
         .y1(0)
-        .defined(d => !isNaN(d.TXK));
+        .defined(d => !isNaN(d.TXK) && d.date <= $maxDate);
 
     $: belowMaxTempPath = area()
         .x(curMaxTempPath.x())
         .y0(curMaxTempPath.y())
         .y1(height)
-        .defined(d => !isNaN(d.TXK));
+        .defined(d => !isNaN(d.TXK) && d.date <= $maxDate);
 
     $: belowContextPath = area()
         .x(contextPath.x())
@@ -99,7 +99,7 @@
 <path class="line maxTemp" d="{curMaxTempPath(data)}" />
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
-    {#if !isNaN(d.TXK)}
+    {#if !isNaN(d.TXK) && d.date <= $maxDate}
     <g transform="translate({[xScale(d.date), yScale(d.TXK)]})">
         <circle r="4" />
     </g>

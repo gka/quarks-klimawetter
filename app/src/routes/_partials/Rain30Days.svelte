@@ -11,7 +11,7 @@
     $: curRainPath = line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.rain30days))
-        .defined(d => d.rain30days !== null);
+        .defined(d => d.rain30days !== null && d.date <= $maxDate);
 
     $: contextRainPath = area()
         .x(d => xScale(d.date))
@@ -22,13 +22,13 @@
         .x(curRainPath.x())
         .y0(curRainPath.y())
         .y1(0)
-        .defined(d => d.rain30days !== null);
+        .defined(d => d.rain30days !== null && d.date <= $maxDate);
 
     $: belowRainPath = area()
         .x(curRainPath.x())
         .y0(curRainPath.y())
         .y1(height)
-        .defined(d => d.rain30days !== null);
+        .defined(d => d.rain30days !== null && d.date <= $maxDate);
 
     $: belowContextPath = area()
         .x(contextRainPath.x())
