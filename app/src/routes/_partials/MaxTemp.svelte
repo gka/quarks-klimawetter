@@ -10,7 +10,8 @@
 
     $: curMaxTempPath = line()
         .x(d => xScale(d.date))
-        .y(d => yScale(d.TXK));
+        .y(d => yScale(d.TXK))
+        .defined(d => !isNaN(d.TXK));
 
     $: contextMaxTempPath = line()
         .x(d => xScale(d.date))
@@ -94,7 +95,9 @@
 <path class="line maxTemp" d="{curMaxTempPath(data)}" />
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
+    {#if !isNaN(d.TXK)}
     <g transform="translate({[xScale(d.date), yScale(d.TXK)]})">
         <circle r="4" />
     </g>
+    {/if}
 {/each}
