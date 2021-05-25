@@ -1,5 +1,4 @@
 <script context="module">
-    import parseStations from '$lib/parseStations';
     /**
      * @type {import('@sveltejs/kit').Load}
      */

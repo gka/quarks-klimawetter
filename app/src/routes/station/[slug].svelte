@@ -1,9 +1,4 @@
 <script context="module">
-    import { csvParse } from 'd3-dsv';
-    import { browser } from '$app/env';
-    import parseStations from '$lib/parseStations';
-    import parseStationData from '$lib/parseStationData';
-
     let stationen;
 
     /**
