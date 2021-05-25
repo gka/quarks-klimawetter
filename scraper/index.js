@@ -39,7 +39,7 @@ async function run() {
             await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
             (await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`)).body;
 
-        const stationData = csvParse(stationCsv.body, d => ({
+        const stationData = csvParse(stationCsv, d => ({
             date: new Date(d.date),
             year: new Date(d.date).getFullYear(),
             day: dayjs(d.date).format('MM-DD'),
