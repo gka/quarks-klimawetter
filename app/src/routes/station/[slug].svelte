@@ -73,7 +73,7 @@
             d.rain30days = 0;
             let x = d;
             for (let i = 0; i < 30; i++) {
-                d.rain30days += x.RSK && x.RSK !== -999 ? x.RSK : 0;
+                d.rain30days += x.RSK && x.RSK !== -999 && !isNaN(x.RSK) ? x.RSK : 0;
                 if (x.prev) x = x.prev;
                 else break;
             }
@@ -103,10 +103,8 @@
                 d.day === fmt
             );
             let tempValues = dates.map(d => d.TXK).sort(ascending);
-            let tempSum = 0;
             let tempRain = 0;
             dates.forEach(d => {
-                tempSum += d.TXK;
                 tempRain += d.rain30days;
             })
             return {
@@ -128,7 +126,7 @@
         monthlyStats = [];
         group(dataLinked.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
             const avgMaxTemp = mean(value, d => d.TXK);
-            const sumPrecip = sum(value, d => d.RSK);
+            const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
             monthlyStats.push({
                 year: key,
                 temp: avgMaxTemp,
@@ -220,7 +218,7 @@
     show="rain30days" />
 
 <h3>So warm war der {curMonthName} die letzten {numYears} Jahre</h3>
-<p></p>
+
 <ChartYearly
     month={curMonth}
     data="{monthlyStats}"
@@ -233,8 +231,9 @@
 
 
 <h3>So regnerisch war der {curMonthName} die letzten {numYears} Jahre</h3>
-<p>Monatssumme der Niederschlagshöhe im {curMonthName} (mm)</p>
+<p></p>
 <ChartYearly
+    label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
     month={curMonth}
     data="{monthlyStats}"
     includeZero={true}
