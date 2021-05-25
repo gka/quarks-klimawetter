@@ -34,7 +34,7 @@ async function run() {
         JSON.stringify(stations, null, 3));
 
     for (const station of stations) {
-
+        console.log(station.slug);
         const stationCsv = argv.data ?
             await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
             await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`);
