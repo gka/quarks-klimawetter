@@ -41,26 +41,44 @@
 <script>
     import dayjs from 'dayjs';
     import { mean, quantileSorted, quantile, ascending, group, sum } from 'd3-array'
-    import { maxDate, showDays, innerWidth } from '../_partials/stores';
+    import { maxDate, showDays, innerWidth } from '$lib/stores';
+    import { fmtTemp, fmtRain } from '$lib/formats';
     import StationSelect from '../_partials/StationSelect.svelte';
     import ChartDaily from '../_partials/ChartDaily.svelte';
     import ChartYearly from '../_partials/ChartYearly.svelte';
+    import TopInfo from '../_partials/TopInfo.svelte';
+    import { beforeUpdate, onMount } from 'svelte';
 
     export let stationen;
     export let station;
     export let data;
 
+    let _station = station;
+
+    onMount(() => {
+        updateData();
+    })
+
+    beforeUpdate(() => {
+        if (station !== _station) {
+            _station = station;
+            updateData();
+        }
+    })
+
     let baseMinYear = 1961;
 
-    function fmtTemp(temp) {
-        return String(temp).replace('.',',')+'°C'
-    }
-    function fmtRain(rain) {
-        return String(rain).replace('.',',')+' mm/Tag'
-    }
-
     let dataLinked = [];
-    $: {
+
+    let today = data[data.length-1];
+
+    let tempQuartileRange = 50;
+
+    let context = {};
+
+
+    function updateData() {
+        console.time('updateData')
         const data2 = data.map(d => ({
             ...d
         }));
@@ -81,48 +99,15 @@
         });
 
         dataLinked = data2;
-    }
 
-    $: today = dataLinked.find(d => d.date - $maxDate < 10);
+        today = dataLinked.find(d => d.date - $maxDate < 10)
 
-    let tempQuartileRange = 50;
-
-    let context = {};
-    $: {
         context = {};
         let day = dayjs('2021-01-01');
         while (day.year() === 2021) {
             context[day.format('MM-DD')] = getContext(day, dataLinked);
             day = day.add(1, 'day');
         }
-        function getContext(day, data) {
-            const fmt = day.format('MM-DD');
-            const dates = data.filter(d =>
-                d.year >= baseMinYear &&
-                d.year < baseMinYear+30 &&
-                d.day === fmt
-            );
-            let tempValues = dates.map(d => d.TXK).sort(ascending);
-            let tempRain = 0;
-            dates.forEach(d => {
-                tempRain += d.rain30days;
-            })
-            return {
-                day: fmt,
-                TXK: mean(tempValues),
-                TXK_lo: quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5),
-                TXK_hi: quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5),
-                rain30days: tempRain / dates.length
-            }
-        }
-    }
-
-    $: curMonth = today.date.getMonth()
-    $: curMonthName = dayjs(today.date).format('MMMM');
-
-    let monthlyStats;
-    let monthlyBase;
-    $: {
         monthlyStats = [];
         group(dataLinked.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
             const avgMaxTemp = mean(value, d => d.TXK);
@@ -140,7 +125,36 @@
             precip_lo: quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.precip),
             precip_hi: quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.precip),
         }
+
+        console.timeEnd('updateData')
+        function getContext(day, data) {
+            const fmt = day.format('MM-DD');
+            const dates = data.filter(d =>
+                d.year >= baseMinYear &&
+                d.year < baseMinYear+30 &&
+                d.day === fmt
+            );
+            let tempValues = dates.map(d => d.TXK).sort(ascending);
+            let tempRain = 0;
+            dates.forEach(d => {
+                tempRain += d.rain30days;
+            })
+            const res = {
+                day: fmt,
+                TXK: mean(tempValues),
+                TXK_lo: quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5),
+                TXK_hi: quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5),
+                rain30days: tempRain / dates.length
+            }
+            return res;
+        }
     }
+
+    $: curMonth = today.date.getMonth()
+    $: curMonthName = dayjs(today.date).format('MMMM');
+
+    let monthlyStats;
+    let monthlyBase;
 
     $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
 
@@ -151,13 +165,7 @@
 
     $: numYears = $innerWidth < 550 ? 10 : 20;
 
-    $: tempSentence = today.TXK > context[today.day].TXK_hi ? 'überdurchschnittlich warm' :
-        today.TXK < context[today.day].TXK_lo ? 'überdurchschnittlich kalt' :
-        'normal warm';
 
-    $: precipSentence = today.rain30days > context[today.day].rain30days * 1.1 ? 'überdurchschnittlich viel' :
-        today.rain30days < context[today.day].rain30days * 0.9 ? 'überdurchschnittlich wenig' :
-        'normal viel';
 
 </script>
 
@@ -168,34 +176,19 @@
     h2 {
         color: var(--gray);
     }
-    .flex {
-        display: flex;
-        width: 100%;
-        font-size: 1.5rem;
-    }
-    .flex div {
-        width: 50%;
-        text-align: center;
-    }
+
 </style>
 
 <StationSelect {stationen} />
 
 <h2>{station.name}, {station.state}</h2>
 
-<div class="flex">
-    <div>
-        <b>{dayjs($maxDate).format('LL')}</b><br>
-        max. {fmtTemp(today.TXK)}<br>
-        {fmtRain(today.RSK)}<br>
-    </div>
-    <div>
-        Heute ist es in {station.name} {tempSentence}. Außerdem regnet es gerade {precipSentence}.
-    </div>
-</div>
+{#if dataLinked.length}
+<TopInfo {station} {today} {context} />
+{/if}
 
 <h3>So warm war es die letzten {$showDays} Tage</h3>
-<p>Tageshöchsttemperatur</p>
+
 <ChartDaily
     unit=" °C"
     label="Tageshöchst-\ntemperatur in °C"
@@ -219,6 +212,7 @@
 
 <h3>So warm war der {curMonthName} die letzten {numYears} Jahre</h3>
 
+{#if monthlyStats}
 <ChartYearly
     month={curMonth}
     data="{monthlyStats}"
@@ -228,10 +222,11 @@
     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
     unit=" °C"
     show="temp" />
-
+{/if}
 
 <h3>So regnerisch war der {curMonthName} die letzten {numYears} Jahre</h3>
-<p></p>
+
+{#if monthlyStats}
 <ChartYearly
     label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
     month={curMonth}
@@ -241,6 +236,7 @@
     {numYears}
     unit="mm/30 Tage"
     show="precip" />
+{/if}
 
 <h3>Fazit</h3>
 

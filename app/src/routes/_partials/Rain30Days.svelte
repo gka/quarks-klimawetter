@@ -1,6 +1,6 @@
 <script>
     import { line, area, curveBasis } from 'd3-shape';
-    import { minDate, maxDate } from './stores';
+    import { minDate, maxDate } from '$lib/stores';
 
     export let xScale;
     export let yScale;

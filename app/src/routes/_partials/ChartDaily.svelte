@@ -2,14 +2,15 @@
     import { scaleTime, scaleLinear } from 'd3-scale';
     import { extent } from 'd3-array';
     import dayjs from 'dayjs';
-    import { onMount } from 'svelte';
+    import { onMount, beforeUpdate } from 'svelte';
     import MaxTemp from './MaxTemp.svelte';
     import Rain30Days from './Rain30Days.svelte';
 
     let chart;
     let chartWidth = 720;
+    let clientWidth;
 
-    import { innerWidth, minDate, maxDate } from './stores';
+    import { innerWidth, minDate, maxDate } from '$lib/stores';
 
     $: height = Math.max(
         350,
@@ -66,6 +67,12 @@
         padding.left = padding.left+1;
     });;
 
+    beforeUpdate(() => {
+        if (clientWidth && clientWidth !== chartWidth) {
+            chartWidth = clientWidth;
+        }
+    })
+
 </script>
 
 
@@ -74,7 +81,7 @@
 <div
     bind:this={chart}
     class="chart"
-    bind:clientWidth={chartWidth}>
+    bind:clientWidth >
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
@@ -83,8 +90,6 @@
             </linearGradient>
         </defs>
         <g>
-
-
             <!-- x axis -->
             <g class="axis x-axis">
                 {#each xTicks as tick, i}

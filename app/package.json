@@ -7,7 +7,7 @@
     "preview": "svelte-kit preview",
     "lint": "prettier --check --plugin-search-dir=. . && eslint --ignore-path .gitignore .",
     "format": "prettier --write --plugin-search-dir=. .",
-    "publish": "mv build/data data-tmp && scp -r build/ vis4.net:projects/quarks-klima/ && mv data-tmp build/data",
+    "publish": "scp -r build/ vis4.net:projects/quarks-klima/",
     "sync-data": "aws s3 cp --recursive s3://data.vis4.net/dwd static/data --profile dwd-scraper"
   },
   "devDependencies": {

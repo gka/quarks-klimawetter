@@ -11,7 +11,7 @@
     let chart;
     let chartWidth = 720;
 
-    import { innerWidth, minDate, maxDate } from './stores';
+    import { innerWidth, minDate, maxDate } from '$lib/stores';
 
     $: height = Math.max(
         350,
@@ -97,7 +97,6 @@
             </linearGradient>
         </defs>
         <g>
-
 
             <!-- x axis -->
             <g class="axis x-axis">
