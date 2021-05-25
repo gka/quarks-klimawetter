@@ -18,9 +18,9 @@ async function run() {
     // download and parse station index, write json
     const stationsCsv = argv.data ?
         await readFile(path.join(argv.data, 'stations.csv'), 'utf-8') :
-        await got('https://data.vis4.net/dwd/stations.csv');
+        (await got('https://data.vis4.net/dwd/stations.csv')).body;
 
-    const stations = csvParse(stationsCsv.body, d => ({
+    const stations = csvParse(stationsCsv, d => ({
         ...d,
         lat: +d.lat,
         lon: +d.lon,
@@ -37,7 +37,7 @@ async function run() {
         console.log(station.slug);
         const stationCsv = argv.data ?
             await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
-            await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`);
+            (await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`)).body;
 
         const stationData = csvParse(stationCsv.body, d => ({
             date: new Date(d.date),
