@@ -15,24 +15,28 @@
 
     $: contextMaxTempPath = line()
         .x(d => xScale(d.date))
-        .y(d => yScale(context[d.day].TXK))
+        .y(d => yScale(d.context.TXK))
+        .defined(d => !isNaN(d.context.TXK))
         .curve(curveBasis);
 
     $: contextPath = area()
     	.x(d => xScale(d.date))
-    	.y0(d => yScale(context[d.day].TXK_lo))
-    	.y1(d => yScale(context[d.day].TXK_hi))
+    	.y0(d => yScale(d.context.TXK_lo))
+    	.y1(d => yScale(d.context.TXK_hi))
+        .defined(d => !isNaN(d.context.TXK_hi))
     	.curve(curveBasis);
 
     $: aboveMaxTempPath = area()
         .x(curMaxTempPath.x())
         .y0(curMaxTempPath.y())
-        .y1(0);
+        .y1(0)
+        .defined(d => !isNaN(d.TXK));
 
     $: belowMaxTempPath = area()
         .x(curMaxTempPath.x())
         .y0(curMaxTempPath.y())
-        .y1(height);
+        .y1(height)
+        .defined(d => !isNaN(d.TXK));
 
     $: belowContextPath = area()
         .x(contextPath.x())

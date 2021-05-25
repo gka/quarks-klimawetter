@@ -11,21 +11,25 @@
      */
     export async function load({ page, fetch, session, context }) {
         if (!stationen) {
-            const res = await fetch('/data/stations.csv');
-            stationen = parseStations(await res.text())
+            const res = await fetch('/data/stations.json');
+            stationen = await res.json()
         }
-
         const station = stationen.find(s => s.slug === page.params.slug);
 
         if (station) {
-            const res2 = await fetch(`/data/stations/${station.id}-fc.csv`);
-            const data = parseStationData(await res2.text());
+            const res2 = await fetch(`/data/stations/${station.id}.json`);
+            const {data, monthlyStats} = await res2.json();
 
             return {
                 props: {
-                    data: data.map(d => ({...d, date: new Date(d.date)})),
+                    stationen,
+                    data: data.map(d => ({
+                        ...d,
+                        date: new Date(d.date),
+                        TXK: d.TXK === null ? Number.NaN : d.TXK
+                    })),
                     station,
-                    stationen
+                    monthlyStats
                 }
             };
         }
@@ -52,109 +56,15 @@
     export let stationen;
     export let station;
     export let data;
+    export let monthlyStats;
 
-    let _station = station;
-
-    onMount(() => {
-        updateData();
-    })
-
-    beforeUpdate(() => {
-        if (station !== _station) {
-            _station = station;
-            updateData();
-        }
-    })
 
     let baseMinYear = 1961;
-
-    let dataLinked = [];
-
     let today = data[data.length-1];
-
     let tempQuartileRange = 50;
-
-    let context = {};
-
-
-    function updateData() {
-        console.time('updateData')
-        const data2 = data.map(d => ({
-            ...d
-        }));
-
-        data2.forEach((d,i) => {
-            d.prev = data2.length > i ? data2[i+1] : null
-        });
-
-        data2.forEach(d => {
-            d.rain30days = 0;
-            let x = d;
-            for (let i = 0; i < 30; i++) {
-                d.rain30days += x.RSK && x.RSK !== -999 && !isNaN(x.RSK) ? x.RSK : 0;
-                if (x.prev) x = x.prev;
-                else break;
-            }
-            delete d.prev;
-        });
-
-        dataLinked = data2;
-
-        today = dataLinked.find(d => d.date - $maxDate < 10)
-
-        context = {};
-        let day = dayjs('2021-01-01');
-        while (day.year() === 2021) {
-            context[day.format('MM-DD')] = getContext(day, dataLinked);
-            day = day.add(1, 'day');
-        }
-        monthlyStats = [];
-        group(dataLinked.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
-            const avgMaxTemp = mean(value, d => d.TXK);
-            const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
-            monthlyStats.push({
-                year: key,
-                temp: avgMaxTemp,
-                precip: sumPrecip
-            })
-        });
-        const base = monthlyStats.filter(d => d.year >= baseMinYear && d.year < baseMinYear+30);
-        monthlyBase = {
-            temp_lo: quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.temp),
-            temp_hi: quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.temp),
-            precip_lo: quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.precip),
-            precip_hi: quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.precip),
-        }
-
-        console.timeEnd('updateData')
-        function getContext(day, data) {
-            const fmt = day.format('MM-DD');
-            const dates = data.filter(d =>
-                d.year >= baseMinYear &&
-                d.year < baseMinYear+30 &&
-                d.day === fmt
-            );
-            let tempValues = dates.map(d => d.TXK).sort(ascending);
-            let tempRain = 0;
-            dates.forEach(d => {
-                tempRain += d.rain30days;
-            })
-            const res = {
-                day: fmt,
-                TXK: mean(tempValues),
-                TXK_lo: quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5),
-                TXK_hi: quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5),
-                rain30days: tempRain / dates.length
-            }
-            return res;
-        }
-    }
 
     $: curMonth = today.date.getMonth()
     $: curMonthName = dayjs(today.date).format('MMMM');
-
-    let monthlyStats;
-    let monthlyBase;
 
     $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
 
@@ -183,8 +93,8 @@
 
 <h2>{station.name}, {station.state}</h2>
 
-{#if dataLinked.length}
-<TopInfo {station} {today} {context} />
+{#if data.length}
+<TopInfo {station} {today} />
 {/if}
 
 <h3>So warm war es die letzten {$showDays} Tage</h3>
@@ -192,8 +102,7 @@
 <ChartDaily
     unit=" °C"
     label="Tageshöchst-\ntemperatur in °C"
-    data="{dataLinked}"
-    {context}
+    data="{data}"
     yMin={-5}
     yMax={30}
     show="TXK" />
@@ -204,9 +113,8 @@
 <ChartDaily
     label="Niederschlagshöhe\nin den letzten 30 Tagen"
     unit="mm/30 Tage"
-    data="{dataLinked}"
+    data="{data}"
     includeZero={true}
-    {context}
     ymax="{80}"
     show="rain30days" />
 
@@ -215,9 +123,9 @@
 {#if monthlyStats}
 <ChartYearly
     month={curMonth}
-    data="{monthlyStats}"
+    data="{monthlyStats[curMonth].stats}"
+    context={monthlyStats[curMonth].base}
     includeZero={false}
-    context={monthlyBase}
     {numYears}
     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
     unit=" °C"
@@ -230,9 +138,9 @@
 <ChartYearly
     label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
     month={curMonth}
-    data="{monthlyStats}"
+    data="{monthlyStats[curMonth].stats}"
+    context={monthlyStats[curMonth].base}
     includeZero={true}
-    context={monthlyBase}
     {numYears}
     unit="mm/30 Tage"
     show="precip" />

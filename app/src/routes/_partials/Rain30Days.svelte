@@ -10,22 +10,25 @@
 
     $: curRainPath = line()
         .x(d => xScale(d.date))
-        .y(d => yScale(d.rain30days));
+        .y(d => yScale(d.rain30days))
+        .defined(d => d.rain30days !== null);
 
     $: contextRainPath = area()
         .x(d => xScale(d.date))
-        .y(d => yScale(context[d.day].rain30days))
+        .y(d => yScale(d.context.rain30days))
         .curve(curveBasis);
 
     $: aboveRainPath = area()
         .x(curRainPath.x())
         .y0(curRainPath.y())
-        .y1(0);
+        .y1(0)
+        .defined(d => d.rain30days !== null);
 
     $: belowRainPath = area()
         .x(curRainPath.x())
         .y0(curRainPath.y())
-        .y1(height);
+        .y1(height)
+        .defined(d => d.rain30days !== null);
 
     $: belowContextPath = area()
         .x(contextRainPath.x())

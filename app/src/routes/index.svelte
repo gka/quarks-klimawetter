@@ -4,12 +4,12 @@
      * @type {import('@sveltejs/kit').Load}
      */
     export async function load({ page, fetch, session, context }) {
-        const res = await fetch('/data/stations.csv');
+        const res = await fetch('/data/stations.json');
 
         if (res.ok) {
             return {
                 props: {
-                    stationen: parseStations(await res.text())
+                    stationen: (await res.json())
                 }
             };
         }

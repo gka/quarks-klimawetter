@@ -4,3 +4,4 @@
 .Ruserdata
 *.kml
 scraper/out/*
+data/*

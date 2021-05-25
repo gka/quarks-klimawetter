@@ -5,14 +5,13 @@
 
     export let station;
     export let today;
-    export let context;
 
-    $: tempSentence = today.TXK > context[today.day].TXK_hi ? 'überdurchschnittlich warm' :
-        today.TXK < context[today.day].TXK_lo ? 'überdurchschnittlich kalt' :
+    $: tempSentence = today.TXK > today.context.TXK_hi ? 'überdurchschnittlich warm' :
+        today.TXK < today.context.TXK_lo ? 'überdurchschnittlich kalt' :
         'normal warm';
 
-    $: precipSentence = today.rain30days > context[today.day].rain30days * 1.1 ? 'überdurchschnittlich viel' :
-        today.rain30days < context[today.day].rain30days * 0.9 ? 'überdurchschnittlich wenig' :
+    $: precipSentence = today.rain30days > today.context.rain30days * 1.1 ? 'überdurchschnittlich viel' :
+        today.rain30days < today.context.rain30days * 0.9 ? 'überdurchschnittlich wenig' :
         'normal viel';
 </script>
 

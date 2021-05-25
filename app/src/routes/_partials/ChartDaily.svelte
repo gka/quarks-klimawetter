@@ -19,7 +19,6 @@
 
     export let yScaleVar;
     export let data = [];
-    export let context = [];
     export let includeZero = true;
 
     export let show;
@@ -29,7 +28,7 @@
     $: padding = { top: 50, right: 25, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xScale = scaleTime()
-        .domain([$minDate, $maxDate])
+        .domain([$minDate, dayjs($maxDate).add(14, 'day').toDate()])
         .range([padding.left, chartWidth - padding.right]);
 
     $: yScale = scaleLinear()
@@ -38,9 +37,9 @@
 
     $: yValues = [
         ...dataFiltered.map(d => d[show]),
-        ...dataFiltered.map(d => context[d.day][show]),
-        ...dataFiltered.map(d => context[d.day][show+'_lo']),
-        ...dataFiltered.map(d => context[d.day][show+'_hi']),
+        ...dataFiltered.map(d => d.context[show]),
+        ...dataFiltered.map(d => d.context[show+'_lo']),
+        ...dataFiltered.map(d => d.context[show+'_hi']),
         ...(includeZero ? [0] : [])
     ].filter(d => d !== undefined);
 
@@ -59,7 +58,7 @@
     $: formatMobile = (d, i) => d;
 
     $: dataFiltered = data.filter((d,i) => {
-        return d.date > $minDate && d.date <= $maxDate;
+        return d.date > $minDate
     });
 
     onMount(() => {
@@ -129,9 +128,9 @@
             <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
             {#if show === 'TXK'}
-            <MaxTemp {height} {xScale} {yScale} data={dataFiltered} {context} />
+            <MaxTemp {height} {xScale} {yScale} data={dataFiltered} />
             {:else if show === 'rain30days'}
-            <Rain30Days {height} {xScale} {yScale} data={dataFiltered} {context} />
+            <Rain30Days {height} {xScale} {yScale} data={dataFiltered} />
             {/if}
         </g>
     </svg>
