@@ -1,7 +1,8 @@
+const argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 const path = require('path');
 const got = require('got');
 const dayjs = require('dayjs');
-const { writeFile } = require('fs/promises');
+const { readFile, writeFile } = require('fs/promises');
 const slugify = require('slugify');
 const { csvParse } = require('d3-dsv');
 const { mean, sum, quantileSorted, quantile, ascending, group,range} = require('d3-array');
@@ -9,12 +10,15 @@ const { ascendingKey, descendingKey } = require('d3-jetpack');
 
 run();
 
+const outDir = argv.out || path.join(__dirname, 'out');
 const baseMinYear = 1961;
 const tempQuartileRange = 50;
 
 async function run() {
     // download and parse station index, write json
-    const stationsCsv = await got('https://data.vis4.net/dwd/stations.csv');
+    const stationsCsv = argv.data ?
+        await readFile(path.join(argv.data, 'stations.csv'), 'utf-8') :
+        await got('https://data.vis4.net/dwd/stations.csv');
 
     const stations = csvParse(stationsCsv.body, d => ({
         ...d,
@@ -26,12 +30,14 @@ async function run() {
     })).filter(d => d.forecast).sort(ascendingKey('slug'));
 
     await writeFile(
-        path.join(__dirname, 'out/stations.json'),
+        path.join(outDir, 'stations.json'),
         JSON.stringify(stations, null, 3));
 
     for (const station of stations) {
-        console.log(station.id, station.slug);
-        const stationCsv = await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`);
+
+        const stationCsv = argv.data ?
+            await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
+            await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`);
 
         const stationData = csvParse(stationCsv.body, d => ({
             date: new Date(d.date),
@@ -43,7 +49,7 @@ async function run() {
 
         const r = updateData(stationData);
         await writeFile(
-            path.join(__dirname, `out/stations/${station.id}.json`),
+            path.join(outDir, `stations/${station.id}.json`),
             JSON.stringify({
                 station,
                 ...r
@@ -120,7 +126,6 @@ function updateData(data) {
             base: monthlyBase
         };
     }
-
 
     return {
         data: data2.map(d => ({
