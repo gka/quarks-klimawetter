@@ -55,7 +55,7 @@
 
 
     let baseMinYear = 1961;
-    let today = data[data.length-1];
+    $: today = data.find(d => d.date - $maxDate < 1000);
     let tempQuartileRange = 50;
 
     $: curMonth = today.date.getMonth()

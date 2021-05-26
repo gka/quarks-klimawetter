@@ -26,7 +26,7 @@
         text-align: center;
     }
 </style>
-
+{JSON.stringify(today)}
 <div class="flex">
     <div>
         <b>{dayjs($maxDate).format('LL')}</b><br>

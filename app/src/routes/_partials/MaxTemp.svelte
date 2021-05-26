@@ -1,6 +1,8 @@
 <script>
 	import { line, area, curveBasis } from 'd3-shape';
 	import { minDate, maxDate } from '$lib/stores';
+    import { fmtTemp } from '$lib/formats';
+    import dayjs from 'dayjs';
 
 	export let xScale;
     export let yScale;
@@ -49,6 +51,16 @@
         .y0(contextPath.y1())
         .y1(0)
         .curve(curveBasis);
+
+    let selected;
+
+    function select(d) {
+        selected = d;
+    }
+
+    function unselect() {
+        selected = undefined;
+    }
 </script>
 
 <style>
@@ -80,6 +92,25 @@
         fill: var(--blue);
         opacity: 0.25;
     }
+    text.buffer {
+        fill: white;
+        stroke: white;
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.8;
+    }
+    text {
+        font-size: 0.93rem;
+        text-anchor: middle;
+    }
+    .tooltip text tspan:last-child {
+        font-weight: bold;
+        font-family: sans_bold;
+    }
+    .tooltip {
+        pointer-events: none;
+    }
 </style>
 
 <defs>
@@ -100,8 +131,20 @@
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
     {#if !isNaN(d.TXK) && d.date <= $maxDate}
-    <g transform="translate({[xScale(d.date), yScale(d.TXK)]})">
-        <circle r="4" />
+    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.TXK)]})">
+        <circle r="15" style="opacity: 0" />
+        <circle r="{selected === d ? 6 : 4}" />
     </g>
     {/if}
 {/each}
+
+{#if selected}
+<g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-33]})">
+    {#each [0,1] as i}
+    <text class:buffer="{i===0}">
+        <tspan x="0">{dayjs(selected.date).format('D.MMM')}</tspan>
+        <tspan x="0" dy="20">{fmtTemp(selected.TXK)}</tspan>
+    </text>
+    {/each}
+</g>
+{/if}
