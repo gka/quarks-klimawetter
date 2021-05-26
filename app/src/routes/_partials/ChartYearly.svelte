@@ -4,12 +4,14 @@
     import { regressionLinear } from 'd3-regression';
     import dayjs from 'dayjs';
     import { line } from 'd3-shape';
+    import { beforeUpdate } from 'svelte';
 
     import MaxTemp from './MaxTemp.svelte';
     import Rain30Days from './Rain30Days.svelte';
 
     let chart;
     let chartWidth = 720;
+    let clientWidth = 720;
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
@@ -80,6 +82,11 @@
         .x(d => xScale(d.year))
         .y(d => yScale(d[show]));
 
+    beforeUpdate(() => {
+        if (clientWidth && clientWidth !== chartWidth) {
+            chartWidth = clientWidth;
+        }
+    })
 
 </script>
 
@@ -88,7 +95,7 @@
 <div
     bind:this={chart}
     class="chart"
-    bind:clientWidth={chartWidth}>
+    bind:clientWidth={clientWidth}>
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
