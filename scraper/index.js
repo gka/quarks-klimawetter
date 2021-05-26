@@ -5,7 +5,7 @@ const dayjs = require('dayjs');
 const { readFile, writeFile } = require('fs/promises');
 const slugify = require('slugify');
 const { csvParse } = require('d3-dsv');
-const { mean, sum, quantileSorted, quantile, ascending, group,range} = require('d3-array');
+const { mean, sum, quantileSorted, quantile, ascending, group, range, extent} = require('d3-array');
 const { ascendingKey, descendingKey } = require('d3-jetpack');
 
 run();
@@ -27,14 +27,14 @@ async function run() {
         altitude: +d.altitude,
         forecast: d.forecast === 'TRUE',
         slug: slugify(d.name, { lower: true, locale: 'de', remove: /[()\/]/ })
-    })).filter(d => d.forecast).sort(ascendingKey('slug'));
+    })).filter(d => d.forecast && dayjs(d.from).year() <= baseMinYear).sort(ascendingKey('slug'));
 
     await writeFile(
         path.join(outDir, 'stations.json'),
         JSON.stringify(stations, null, 3));
 
     for (const station of stations) {
-        console.log(station.slug);
+        console.log(station.id, station.slug);
         const stationCsv = argv.data ?
             await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
             (await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`)).body;
@@ -143,18 +143,29 @@ function updateData(data) {
         const dates = data.filter(d =>
             d.year >= baseMinYear &&
             d.year < baseMinYear+30 &&
-            d.day === fmt
+            d.day === fmt &&
+            d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
         );
         let tempValues = dates.map(d => d.TXK).sort(ascending);
         let tempRain = 0;
         dates.forEach(d => {
             tempRain += d.rain30days;
         })
+        const records = data.filter(d =>
+            d.day === fmt && d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
+        ).sort(ascendingKey('TXK')).map(d => ({ year: d.date.getFullYear(), TXK: d.TXK }));
+
         const res = {
             day: fmt,
             TXK: round(mean(tempValues)),
-            TXK_lo: round(quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5)),
-            TXK_hi: round(quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5)),
+            TXK_10: round(quantileSorted(tempValues, 0.1)),
+            TXK_lo: round(quantileSorted(tempValues, 0.25)),
+            TXK_hi: round(quantileSorted(tempValues, 0.75)),
+            TXK_90: round(quantileSorted(tempValues, 0.9)),
+            TXK_records: {
+                lo: records.slice(0,3),
+                hi: records.slice(-3),
+            },
             rain30days: round(tempRain / dates.length)
         }
         return res;
