@@ -1,6 +1,7 @@
 <script>
     import { line, area, curveBasis } from 'd3-shape';
     import { minDate, maxDate } from '$lib/stores';
+    import dayjs from 'dayjs';
 
     export let xScale;
     export let yScale;
@@ -11,7 +12,7 @@
     $: curRainPath = line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.rain30days))
-        .defined(d => d.rain30days !== null && d.date <= $maxDate);
+        .defined(d => d.rain30days !== null && d.date - $maxDate < 0);
 
     $: contextRainPath = area()
         .x(d => xScale(d.date))
@@ -45,6 +46,7 @@
     let selected;
 
     let lastContext = data[0];
+    let lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate < 0);
 
     function select(d) {
         selected = d;
@@ -57,12 +59,21 @@
 </script>
 
 <style>
-    .rain {
+    path.rain {
         fill: none;
         stroke: var(--blue);
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
+    }
+    circle.rain {
+        fill: var(--blue);
+    }
+    text.rain {
+        fill: var(--blue);
+        font-weight: bold;
+        font-family: sans_bold;
+        text-anchor: start;
     }
     path.context {
         fill: #444;
@@ -117,8 +128,13 @@
     </clipPath>
 </defs>
 
+
 <path class="context" d="{contextRainPath(data)}" />
 <text transform="translate({[xScale(lastContext.date)+5, yScale(lastContext.context.rain30days)+4]})" class="context">1961-1990</text>
+{#if lastRain}
+    <circle transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})" r="4" class="rain" />
+    <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text>
+{/if}
 
 <path class="rain" d="{curRainPath(data)}" />
 
