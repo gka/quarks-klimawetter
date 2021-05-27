@@ -2,6 +2,7 @@
     import { line, area, curveBasis } from 'd3-shape';
     import { minDate, maxDate } from '$lib/stores';
     import dayjs from 'dayjs';
+    import { fmtRain } from '$lib/formats';
 
     export let xScale;
     export let yScale;
@@ -149,13 +150,22 @@
     {/if}
 {/each}
 
+{#each data as d}
+    {#if d.rain30days !== null && d.date <= $maxDate}
+    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.rain30days)]})">
+        <circle r="15" style="opacity: 0" />
+    </g>
+    {/if}
+{/each}
+
 {#if selected}
-<g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-30]})">
+<g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.rain30days)-30]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
-        <tspan x="0">{dayjs(selected.date).format('D.MMM')}</tspan>
-        <tspan x="0" dy="20">{fmtTemp(selected.TXK)}</tspan>
+        <tspan x="0">{dayjs(selected.date).subtract(30, 'day').format('D.M.')}-{dayjs(selected.date).format('D.M.')}</tspan>
+        <tspan x="0" dy="20">{fmtRain(selected.rain30days, true)}</tspan>
     </text>
     {/each}
+    <circle transform="translate(0,30)" r="6" class="rain" />
 </g>
 {/if}
