@@ -44,6 +44,8 @@
 
     let selected;
 
+    let lastContext = data[0];
+
     function select(d) {
         selected = d;
     }
@@ -62,10 +64,16 @@
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-    .context {
+    path.context {
         fill: #444;
         stroke-width: 2;
         stroke: var(--orange);
+    }
+    text.context {
+        font-weight: bold;
+        font-family: sans_bold;
+        text-anchor: start;
+        fill: var(--orange);
     }
     rect {
         fill: var(--blue);
@@ -110,6 +118,8 @@
 </defs>
 
 <path class="context" d="{contextRainPath(data)}" />
+<text transform="translate({[xScale(lastContext.date)+5, yScale(lastContext.context.rain30days)+4]})" class="context">1961-1990</text>
+
 <path class="rain" d="{curRainPath(data)}" />
 
 <path class="more-rain" d="{belowRainPath(data)}" clip-path="url(#clip-context-rain)" />

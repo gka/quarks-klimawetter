@@ -25,7 +25,7 @@
     export let unit = '';
     export let label = '';
 
-    $: padding = { top: 50, right: 25, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 95, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xScale = scaleTime()
         .domain([$minDate, dayjs($maxDate).add(14, 'day').toDate()])
