@@ -147,10 +147,7 @@ function updateData(data) {
             d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
         );
         let tempValues = dates.map(d => d.TXK).sort(ascending);
-        let tempRain = 0;
-        dates.forEach(d => {
-            tempRain += d.rain30days;
-        })
+        let rainValues = dates.map(d => d.rain30days).sort(ascending);
         const records = data.filter(d =>
             d.day === fmt && d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
         ).sort(ascendingKey('TXK')).map(d => ({ year: d.date.getFullYear(), TXK: d.TXK }));
@@ -166,7 +163,9 @@ function updateData(data) {
                 lo: records.slice(0,3),
                 hi: records.slice(-3),
             },
-            rain30days: round(tempRain / dates.length)
+            rain30days: round(mean(rainValues)),
+            rain30days_lo: round(quantileSorted(rainValues, 0.25)),
+            rain30days_hi: round(quantileSorted(rainValues, 0.75)),
         }
         return res;
     }

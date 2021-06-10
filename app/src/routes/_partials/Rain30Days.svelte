@@ -169,3 +169,12 @@
     <circle transform="translate(0,30)" r="6" class="rain" />
 </g>
 {/if}
+
+<!-- <g class="color-key" transform="translate({[xScale(lastContext.date)-40, height-150]})">
+    <rect class="more-rain" width="15" height="15" />
+    <text>Mehr Regen als durchschnittlich</text>
+    <g transform="translate(0, 25)">
+        <rect class="less-rain" width="15" height="15" />
+        <text>Weniger Regen als durchschnittlich</text>
+    </g>
+</g> -->
