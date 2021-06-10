@@ -149,8 +149,8 @@
                 <rect class="precip" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
             {:else if show === 'temp'}
-            <g transform="translate({[xScale(d.year), yScale(d.temp)]})">
-                <circle class="temp" r="5" />
+            <g transform="translate({[xScale(d.year), yScale(0)]})">
+                <rect class="temp" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
             {/if}
             {/each}
@@ -212,8 +212,9 @@
         opacity: 0.06;
     }
 
-    circle.temp {
+    rect.temp {
         fill: var(--red);
+        opacity: 0.5;
     }
     rect.precip {
         fill: var(--blue);

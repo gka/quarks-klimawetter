@@ -92,7 +92,7 @@
 <TopInfo {station} {today} />
 {/if}
 
-<h3>So warm war es die letzten {$showDays} Tage</h3>
+<h3>So warm war es</h3>
 
 <ChartDaily
     unit=" °C"
@@ -105,6 +105,8 @@
 <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
 
 <h3>Niederschlagsmenge über 30 Tage</h3>
+
+
 <ChartDaily
     label="Niederschlagsmenge\nkummuliert über 30 Tage"
     unit="mm/30 Tage"
@@ -113,6 +115,8 @@
     ymax="{80}"
     show="rain30days" />
 
+<p>Tägliche Niederschlagsmengen variieren stark. Um Ausreißer auszugleichen, betrachten wir einen Zeitraum von 30 Tage.</p>
+
 <h3>So warm war der {curMonthName} die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
@@ -120,7 +124,7 @@
     month={curMonth}
     data="{monthlyStats[curMonth].stats}"
     context={monthlyStats[curMonth].base}
-    includeZero={false}
+    includeZero={true}
     {numYears}
     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
     unit=" °C"

@@ -12,7 +12,7 @@
 
     $: precipSentence = today.rain30days > today.context.rain30days_hi ? 'überdurchschnittlich viel' :
         today.rain30days < today.context.rain30days_lo ? 'überdurchschnittlich wenig' :
-        'durchschnittlich viel';
+        'durchschnittlich';
 
     $: tempClass = today.TXK > today.context.TXK_hi ? 'high' :
         today.TXK < today.context.TXK_lo ? 'low' :
@@ -47,6 +47,9 @@
     }
     .temp-low {
         background: #17a2b82b;
+    }
+    .temp-normal, .rain-normal {
+        background: #eee;
     }
     .rain-high {
         background: #007bff30;
