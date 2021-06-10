@@ -106,7 +106,7 @@
 
 <h3>Niederschlagsmenge über 30 Tage</h3>
 <ChartDaily
-    label="Niederschlagsmenge\nüber 30 Tage"
+    label="Niederschlagsmenge\nkummuliert über 30 Tage"
     unit="mm/30 Tage"
     data="{data}"
     includeZero={true}

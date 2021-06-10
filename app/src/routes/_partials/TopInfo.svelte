@@ -24,14 +24,14 @@
 </script>
 
 <style>
-    .flex {
-        display: flex;
+    .topinfo {
+        /*display: flex;*/
         width: 100%;
         font-size: 1.5rem;
     }
-    .flex div {
-        width: 50%;
-        text-align: center;
+    .topinfo div {
+        /*width: 50%;*/
+       /* text-align: center;*/
     }
     b {
         padding: 2px 4px;
@@ -52,13 +52,15 @@
     }
 </style>
 
-<div class="flex">
-    <div>
-        <b>{dayjs($maxDate).format('LL')}</b><br>
-        max. {fmtTemp(today.TXK)}<br>
-        {fmtRain(today.RSK)}<br>
+<div class="topinfo">
+
+    <div style="margin-bottom: 1rem">
+        Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>.<br>Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
     </div>
-    <div>
-        Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>. Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
-    </div>
+
+</div>
+<div>
+    <b>{dayjs($maxDate).format('LL')}</b><br>
+    max. {fmtTemp(today.TXK)}<br>
+    {fmtRain(today.RSK)}<br>
 </div>

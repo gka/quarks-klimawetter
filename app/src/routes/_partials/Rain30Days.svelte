@@ -84,12 +84,11 @@
         text-anchor: start;
     }
     text.context {
-        font-weight: bold;
-        font-family: sans_bold;
+        font-size: 14px;
         text-anchor: start;
-        fill: var(--orange);
+        fill: var(--gray-dark);
     }
-    rect {
+    rect.bar {
         fill: var(--blue);
         opacity: 0.5;
     }
@@ -124,6 +123,11 @@
     .tooltip {
         pointer-events: none;
     }
+    .legend text {
+        text-anchor: start;
+        fill: var(--gray-dark);
+        font-size: 14px;
+    }
 </style>
 
 <defs>
@@ -138,7 +142,12 @@
 
 <path class="context" d="{contextRangePath(data)}" />
 
-<text transform="translate({[xScale(lastContext.date)+5, yScale(lastContext.context.rain30days)+4]})" class="context">1961-1990</text>
+<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.rain30days)+4]})" class="context">
+    <tspan x="0" dy="-17">normaler</tspan>
+    <tspan x="0" dy="17">Niederschlag</tspan>
+    <tspan x="0" dy="17">1961-1990</tspan>
+</text>
+
 {#if lastRain}
     <circle transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})" r="4" class="rain" />
     <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text>
@@ -153,7 +162,7 @@
 {#each data as d}
     {#if d.RSK > 0}
     <g transform="translate({[xScale(d.date), yScale(0)]})">
-        <rect y={yScale(d.RSK)-yScale(0)} width="4" height="{yScale(0)-yScale(d.RSK)}" />
+        <rect class="bar" y={yScale(d.RSK)-yScale(0)} width="4" height="{yScale(0)-yScale(d.RSK)}" />
     </g>
     {/if}
 {/each}
@@ -186,3 +195,16 @@
         <text>Weniger Regen als durchschnittlich</text>
     </g>
 </g> -->
+
+
+<g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
+    <rect x="-10" y="-10" height="55" width="190" fill="white" opacity="0.8" />
+    <g>
+        <rect class="more-rain" width="15" height="15" />
+        <text x="20" y="12">mehr Regen als normal</text>
+    </g>
+    <g transform="translate(0,20)">
+        <rect class="less-rain" width="15" height="15" />
+        <text x="20" y="12">weniger Regen als normal</text>
+    </g>
+</g>

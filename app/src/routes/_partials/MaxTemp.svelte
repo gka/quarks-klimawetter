@@ -83,14 +83,19 @@
 		fill: #eee;
 		opacity: 0.8
 	}
+    text.context {
+        font-size: 14px;
+        text-anchor: start;
+        fill: var(--gray-dark);
+    }
     circle {
         fill: var(--red);
     }
-    path.hotter {
+    path.hotter, rect.hotter {
         fill: var(--red);
         opacity: 0.25;
     }
-    path.colder {
+    path.colder, rect.colder {
         fill: var(--cyan);
         opacity: 0.25;
     }
@@ -113,6 +118,11 @@
     .tooltip {
         pointer-events: none;
     }
+    .legend text {
+        text-anchor: start;
+        fill: var(--gray-dark);
+        font-size: 14px;
+    }
 </style>
 
 <defs>
@@ -132,6 +142,12 @@
     <circle transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4" class="rain" />
     <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text>
 {/if}
+
+<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
+    <tspan x="0" dy="-17">normale</tspan>
+    <tspan x="0" dy="17">Temperatur</tspan>
+    <tspan x="0" dy="17">1961-1990</tspan>
+</text>
 
 <path class="context" d="{contextPath(data)}" />
 <path class="line maxTemp" d="{curMaxTempPath(data)}" />
@@ -155,3 +171,15 @@
     {/each}
 </g>
 {/if}
+
+<g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
+    <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
+    <g>
+        <rect class="hotter" width="15" height="15" />
+        <text x="20" y="12">heißer als normal</text>
+    </g>
+    <g transform="translate(0,20)">
+        <rect class="colder" width="15" height="15" />
+        <text x="20" y="12">kälter als normal</text>
+    </g>
+</g>
