@@ -8,11 +8,19 @@
 
     $: tempSentence = today.TXK > today.context.TXK_hi ? 'überdurchschnittlich warm' :
         today.TXK < today.context.TXK_lo ? 'überdurchschnittlich kalt' :
-        'normal warm';
+        'durchschnittlich warm';
 
-    $: precipSentence = today.rain30days > today.context.rain30days * 1.1 ? 'überdurchschnittlich viel' :
-        today.rain30days < today.context.rain30days * 0.9 ? 'überdurchschnittlich wenig' :
-        'normal viel';
+    $: precipSentence = today.rain30days > today.context.rain30days_hi ? 'überdurchschnittlich viel' :
+        today.rain30days < today.context.rain30days_lo ? 'überdurchschnittlich wenig' :
+        'durchschnittlich viel';
+
+    $: tempClass = today.TXK > today.context.TXK_hi ? 'high' :
+        today.TXK < today.context.TXK_lo ? 'low' :
+        'normal';
+
+    $: precipClass = today.rain30days > today.context.rain30days_hi ? 'high' :
+        today.rain30days < today.context.rain30days_lo ? 'low' :
+        'normal';
 </script>
 
 <style>
@@ -25,6 +33,23 @@
         width: 50%;
         text-align: center;
     }
+    b {
+        padding: 2px 4px;
+        border-radius: 4px;
+        display: inline;
+    }
+    .temp-high {
+        background: #dc35453b;
+    }
+    .temp-low {
+        background: #17a2b82b;
+    }
+    .rain-high {
+        background: #007bff30;
+    }
+    .rain-low {
+        background: #fd7e1442;
+    }
 </style>
 
 <div class="flex">
@@ -34,6 +59,6 @@
         {fmtRain(today.RSK)}<br>
     </div>
     <div>
-        Heute ist es in {station.name} {tempSentence}. Außerdem regnet es gerade {precipSentence}.
+        Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>. Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
     </div>
 </div>

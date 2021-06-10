@@ -34,20 +34,27 @@
 
     $: belowContextPath = area()
         .x(contextRainPath.x())
-        .y0(contextRainPath.y())
+        .y0(contextRangePath.y0())
         .y1(height)
         .curve(curveBasis);
 
     $: aboveContextPath = area()
         .x(contextRainPath.x())
-        .y0(contextRainPath.y())
+        .y0(contextRangePath.y1())
         .y1(0)
+        .curve(curveBasis);
+
+    $: contextRangePath = area()
+        .x(d => xScale(d.date))
+        .y0(d => yScale(d.context.rain30days_lo))
+        .y1(d => yScale(d.context.rain30days_hi))
+        .defined(d => !isNaN(d.context.rain30days_hi))
         .curve(curveBasis);
 
     let selected;
 
-    let lastContext = data[0];
-    let lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate < 0);
+    $: lastContext = data[0];
+    $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate < 0);
 
     function select(d) {
         selected = d;
@@ -76,11 +83,6 @@
         font-family: sans_bold;
         text-anchor: start;
     }
-    path.context {
-        fill: #444;
-        stroke-width: 2;
-        stroke: var(--orange);
-    }
     text.context {
         font-weight: bold;
         font-family: sans_bold;
@@ -107,6 +109,10 @@
         stroke-linejoin: round;
         opacity: 0.8;
     }
+    .context {
+        fill: #eee;
+        opacity: 0.8
+    }
     text {
         font-size: 0.93rem;
         text-anchor: middle;
@@ -130,7 +136,8 @@
 </defs>
 
 
-<path class="context" d="{contextRainPath(data)}" />
+<path class="context" d="{contextRangePath(data)}" />
+
 <text transform="translate({[xScale(lastContext.date)+5, yScale(lastContext.context.rain30days)+4]})" class="context">1961-1990</text>
 {#if lastRain}
     <circle transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})" r="4" class="rain" />
@@ -138,6 +145,7 @@
 {/if}
 
 <path class="rain" d="{curRainPath(data)}" />
+
 
 <path class="more-rain" d="{belowRainPath(data)}" clip-path="url(#clip-context-rain)" />
 <path class="less-rain" d="{belowContextPath(data)}" clip-path="url(#clip-rain)" />

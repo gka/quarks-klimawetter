@@ -53,6 +53,8 @@
         .curve(curveBasis);
 
     let selected;
+    $: lastContext = data[0];
+    $: lastDay = data.find(d => !isNaN(d.TXK) !== null && d.date - $maxDate < 0);
 
     function select(d) {
         selected = d;
@@ -89,7 +91,7 @@
         opacity: 0.25;
     }
     path.colder {
-        fill: var(--blue);
+        fill: var(--cyan);
         opacity: 0.25;
     }
     text.buffer {
@@ -126,6 +128,11 @@
 <path class="hotter" d="{belowMaxTempPath(data)}" clip-path="url(#clip-context)" />
 <path class="colder" d="{belowContextPath(data)}" clip-path="url(#clip-temp)" />
 
+{#if lastDay}
+    <circle transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4" class="rain" />
+    <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text>
+{/if}
+
 <path class="context" d="{contextPath(data)}" />
 <path class="line maxTemp" d="{curMaxTempPath(data)}" />
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
@@ -133,7 +140,7 @@
     {#if !isNaN(d.TXK) && d.date <= $maxDate}
     <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.TXK)]})">
         <circle r="15" style="opacity: 0" />
-        <circle r="{selected === d ? 6 : 4}" />
+        <circle r="{selected === d ? 6 : 0}" />
     </g>
     {/if}
 {/each}

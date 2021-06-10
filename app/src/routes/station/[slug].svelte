@@ -104,9 +104,9 @@
 
 <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
 
-<h3>Niederschlag</h3>
+<h3>Niederschlagsmenge über 30 Tage</h3>
 <ChartDaily
-    label="Niederschlagshöhe\nin den letzten 30 Tagen"
+    label="Niederschlagsmenge\nüber 30 Tage"
     unit="mm/30 Tage"
     data="{data}"
     includeZero={true}
