@@ -25,13 +25,17 @@
 
 <style>
     .topinfo {
-        /*display: flex;*/
-        width: 100%;
-        font-size: 1.5rem;
+
+        font-size: 1.4rem;
     }
-    .topinfo div {
-        /*width: 50%;*/
-       /* text-align: center;*/
+    .flex div {
+        font-size: 1.2rem;
+        width: 50%;
+        text-align: center;
+    }
+    .flex {
+        display: flex;
+        width: 100%;
     }
     b {
         padding: 2px 4px;
@@ -54,13 +58,19 @@
 
 <div class="topinfo">
 
-    <div style="margin-bottom: 1rem">
-        Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>.<br>Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
+    <div class="flex" style="margin-bottom: 2rem">
+        <div >
+            Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>.<br>Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
+         </div>
+         <div>
+             <b>{dayjs($maxDate).format('LL')}</b><br>
+             max. {fmtTemp(today.TXK)}<br>
+             {fmtRain(today.RSK)}<br>
+         </div>
+    </div>
+    <hr />
+    <div style="margin-top: 2rem">
+        Heute ist es in {station.name} mit <strong>max. {fmtTemp(today.TXK)}</strong> <b class="temp-{tempClass}">{tempSentence}</b>. In den letzten 30 Tagen gab es <strong>{fmtRain(today.rain30days, true)} Niederschlag (je qm)</strong>, was gemessen am Vergleichszeitraum <b class="rain-{precipClass}">{precipSentence}</b> ist.
     </div>
 
-</div>
-<div>
-    <b>{dayjs($maxDate).format('LL')}</b><br>
-    max. {fmtTemp(today.TXK)}<br>
-    {fmtRain(today.RSK)}<br>
 </div>
