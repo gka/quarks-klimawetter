@@ -74,6 +74,7 @@
 	.maxTemp {
 		stroke-width: 2;
 		stroke: var(--red);
+        stroke: var(--gray-dark);
 	}
     .contextAvgMax {
         stroke-width: 1;

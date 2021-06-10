@@ -136,7 +136,7 @@
     context={monthlyStats[curMonth].base}
     includeZero={false}
     {numYears}
-    label="Spannbreite der Tages-\nhöchsttemperaturen\nim {curMonthName} (in °C)"
+    label="Spannbreite der Tageshöchst-\ntemperaturen im {curMonthName} (in °C)"
     unit=" °C"
     show="temp"
     range="{true}" />

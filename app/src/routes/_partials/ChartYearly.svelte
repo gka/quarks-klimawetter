@@ -37,7 +37,7 @@
     export let show;
     export let range = false;
 
-    $: padding = { top: 50, right: 35, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 105, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xScale = scaleLinear()
         .domain([minYear, maxYear])
@@ -157,8 +157,9 @@
                 <rect class="temp" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
             {:else if show === 'temp' && range}
-            <g transform="translate({[xScale(d.year), yScale(d.temp_range[1])]})">
-                <rect class="temp" x="-4" width="8" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
+            <g transform="translate({[xScale(d.year), 0]})">
+                <rect class="temp" x="-1" width="2" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
+                <rect class="temp" x="-4" width="8" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" />
             </g>
             {/if}
             {/each}
@@ -222,7 +223,6 @@
 
     rect.temp {
         fill: var(--red);
-        opacity: 0.5;
     }
     rect.precip {
         fill: var(--blue);
