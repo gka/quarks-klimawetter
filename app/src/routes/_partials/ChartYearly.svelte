@@ -53,7 +53,10 @@
     };
 
     $: yValues = [
-        ...dataFiltered.map(d => d[show]),
+        ...(show === 'temp' && range ?
+            dataFiltered.map(d => d.temp_range[0])
+                .concat(dataFiltered.map(d => d.temp_range[1])) :
+            dataFiltered.map(d => d[show])),
         contextShow.lo,
         contextShow.hi,
         ...(includeZero ? [0] : [])
@@ -111,10 +114,10 @@
                 {#each xTicks as tick, i}
                     <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
                         <line y1="-{height-padding.bottom}" y2="0" />
-                        <text y="5">
+          <!--               <text y="5">
                             {monthDisplay}
-                        </text>
-                        <text class="year" y="25">{tick}</text>
+                        </text> -->
+                        <text class="year" y="5">{tick}</text>
                     </g>
                 {/each}
             </g>
@@ -155,13 +158,13 @@
             </g>
             {:else if show === 'temp' && range}
             <g transform="translate({[xScale(d.year), yScale(d.temp_range[1])]})">
-                <rect class="temp" x="-4" width="8" height="{yScale(d.temp_range[1])-yScale(d.temp_range[0])}" />
+                <rect class="temp" x="-4" width="8" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
             </g>
             {/if}
             {/each}
-            {#if show === 'temp'}
+<!--             {#if show === 'temp'}
             <path class="temp" d="{maxTempPath(dataFiltered)}" />
-            {/if}
+            {/if} -->
 
             <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
 

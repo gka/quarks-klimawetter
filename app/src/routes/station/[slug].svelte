@@ -68,7 +68,7 @@
         $maxDate = dayjs(today.date).add(delta, by).toDate()
     }
 
-    $: numYears = $innerWidth < 550 ? 10 : 20;
+    $: numYears = $innerWidth < 550 ? 20 : 40;
 
 
 
@@ -136,7 +136,7 @@
     context={monthlyStats[curMonth].base}
     includeZero={false}
     {numYears}
-    label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
+    label="Spannbreite der Tages-\nhöchsttemperaturen\nim {curMonthName} (in °C)"
     unit=" °C"
     show="temp"
     range="{true}" />
