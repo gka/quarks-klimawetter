@@ -129,6 +129,17 @@
     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
     unit=" °C"
     show="temp" />
+
+<ChartYearly
+    month={curMonth}
+    data="{monthlyStats[curMonth].stats}"
+    context={monthlyStats[curMonth].base}
+    includeZero={false}
+    {numYears}
+    label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
+    unit=" °C"
+    show="temp"
+    range="{true}" />
 {/if}
 
 <h3>So regnerisch war der {curMonthName} die letzten {numYears} Jahre</h3>

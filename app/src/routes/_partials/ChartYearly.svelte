@@ -35,6 +35,7 @@
     $: minYear = maxYear - numYears;
 
     export let show;
+    export let range = false;
 
     $: padding = { top: 50, right: 35, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
@@ -148,9 +149,13 @@
             <g transform="translate({[xScale(d.year), yScale(0)]})">
                 <rect class="precip" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
-            {:else if show === 'temp'}
+            {:else if show === 'temp' && !range}
             <g transform="translate({[xScale(d.year), yScale(0)]})">
                 <rect class="temp" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+            </g>
+            {:else if show === 'temp' && range}
+            <g transform="translate({[xScale(d.year), yScale(d.temp_range[1])]})">
+                <rect class="temp" x="-4" width="8" height="{yScale(d.temp_range[1])-yScale(d.temp_range[0])}" />
             </g>
             {/if}
             {/each}

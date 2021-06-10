@@ -14,8 +14,18 @@ const outDir = argv.out || path.join(__dirname, 'out');
 const baseMinYear = 1961;
 const tempQuartileRange = 50;
 
+const DAYS = [];
+let day = dayjs('2021-01-01');
+while (day.year() === 2021) {
+    DAYS.push(day.format('MM-DD'));
+    day = day.add(1, 'day');
+}
+console.log(DAYS.length);
+
 async function run() {
     // download and parse station index, write json
+    console.time();
+
     const stationsCsv = argv.data ?
         await readFile(path.join(argv.data, 'stations.csv'), 'utf-8') :
         (await got('https://data.vis4.net/dwd/stations.csv')).body;
@@ -29,12 +39,15 @@ async function run() {
         slug: slugify(d.name, { lower: true, locale: 'de', remove: /[()\/]/ })
     })).filter(d => d.forecast && dayjs(d.from).year() <= baseMinYear).sort(ascendingKey('slug'));
 
+
     await writeFile(
         path.join(outDir, 'stations.json'),
         JSON.stringify(stations, null, 3));
 
+
     for (const station of stations) {
         console.log(station.id, station.slug);
+
         const stationCsv = argv.data ?
             await readFile(path.join(argv.data, `stations/${station.id}-fc.csv`), 'utf-8') :
             (await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`)).body;
@@ -48,6 +61,7 @@ async function run() {
         }));
 
         const r = updateData(stationData);
+
         await writeFile(
             path.join(outDir, `stations/${station.id}.json`),
             JSON.stringify({
@@ -81,11 +95,9 @@ function updateData(data) {
 
     // compute weather context for each day
     const context = {};
-    let day = dayjs('2021-01-01');
-    while (day.year() === 2021) {
-        context[day.format('MM-DD')] = getContext(day, data2);
-        day = day.add(1, 'day');
-    }
+    DAYS.forEach(day => {
+        context[day] = getContext(day, data2);
+    });
 
     // add 14 days of future days
     let date = dayjs(data2[0].date);
@@ -107,13 +119,13 @@ function updateData(data) {
         const stats = [];
         group(data2.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
             const avgMaxTemp = round(mean(value, d => d.TXK));
-            const tempRange = range(value, d => d.TXK).map(round);
+            const tempRange = extent(value, d => d.TXK).map(round);
             const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
             stats.push({
                 year: key,
                 temp: avgMaxTemp,
                 temp_range: tempRange,
-                precip: sumPrecip
+                precip: round(sumPrecip,1)
             })
         });
         const base = stats.filter(d => d.year >= baseMinYear && d.year < baseMinYear+30);
@@ -141,21 +153,22 @@ function updateData(data) {
     };
 
     function getContext(day, data) {
-        const fmt = day.format('MM-DD');
         const dates = data.filter(d =>
             d.year >= baseMinYear &&
             d.year < baseMinYear+30 &&
-            d.day === fmt &&
+            d.day === day &&
             d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
         );
+
         let tempValues = dates.map(d => d.TXK).sort(ascending);
         let rainValues = dates.map(d => d.rain30days).sort(ascending);
+
         const records = data.filter(d =>
-            d.day === fmt && d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
+            d.day === day && d.TXK !== null && !isNaN(d.TXK) && d.TXK !== -999
         ).sort(ascendingKey('TXK')).map(d => ({ year: d.date.getFullYear(), TXK: d.TXK }));
 
         const res = {
-            day: fmt,
+            day,
             TXK: round(mean(tempValues)),
             TXK_10: round(quantileSorted(tempValues, 0.1)),
             TXK_lo: round(quantileSorted(tempValues, 0.25)),
