@@ -70,7 +70,11 @@
 
     $: numYears = $innerWidth < 550 ? 20 : 40;
 
-
+    let monthlyData = [];
+    $: {
+        monthlyData = monthlyStats[curMonth].stats.slice(0);
+        console.log(monthlyData[0])
+    }
 
 </script>
 
@@ -122,7 +126,7 @@
 {#if monthlyStats}
 <ChartYearly
     month={curMonth}
-    data="{monthlyStats[curMonth].stats}"
+    data="{monthlyData}"
     context={monthlyStats[curMonth].base}
     includeZero={true}
     {numYears}
@@ -132,7 +136,7 @@
 
 <ChartYearly
     month={curMonth}
-    data="{monthlyStats[curMonth].stats}"
+    data="{monthlyData}"
     context={monthlyStats[curMonth].base}
     includeZero={false}
     {numYears}
@@ -148,7 +152,7 @@
 <ChartYearly
     label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
     month={curMonth}
-    data="{monthlyStats[curMonth].stats}"
+    data="{monthlyData}"
     context={monthlyStats[curMonth].base}
     includeZero={true}
     {numYears}
@@ -168,12 +172,3 @@
 <button on:click={() => moveDate(+1, 'day')}>1 Tag</button>
 <button on:click={() => moveDate(+1, 'month')}>1 Monat</button> &gt;
 
-
-<input type="number" min="50" max="98" step="5" bind:value="{tempQuartileRange}" />
-<select bind:value="{baseMinYear}">
-    <option value="{1991}">1991-2020</option>
-    <option value="{1981}">1981-2010</option>
-    <option value="{1971}">1971-2000</option>
-    <option value="{1961}">1961-1990</option>
-</select>
-<hr />

@@ -120,7 +120,9 @@ function updateData(data) {
         group(data2.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
             const avgMaxTemp = round(mean(value, d => d.TXK));
             const tempRange = extent(value, d => d.TXK).map(round);
-            const tempValues = value.map(d => d.TXK).sort(ascending);
+            const tempValues = value.map(d => d.TXK)
+                .filter(d => d !== null && !isNaN(d))
+                .sort(ascending);
             const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
             stats.push({
                 year: key,
