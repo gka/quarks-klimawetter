@@ -18,7 +18,7 @@
     $: height = Math.max(
         350,
         Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
-    );
+    ) + (range ? 50 : 0);
 
     export let yScaleVar;
     export let month = 0;
@@ -31,7 +31,7 @@
 
     const now = new Date();
 
-    $: maxYear = now.getFullYear() - 1;
+    $: maxYear = now.getFullYear();
     $: minYear = maxYear - numYears;
 
     export let show;
@@ -150,16 +150,17 @@
             {#each dataFiltered as d}
             {#if show === 'precip'}
             <g transform="translate({[xScale(d.year), yScale(0)]})">
-                <rect class="precip" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+                <rect class="precip" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
             {:else if show === 'temp' && !range}
             <g transform="translate({[xScale(d.year), yScale(0)]})">
-                <rect class="temp" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+                <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
             </g>
             {:else if show === 'temp' && range}
-            <g transform="translate({[xScale(d.year), 0]})">
-                <rect class="temp" x="-1" width="2" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
-                <rect class="temp" x="-4" width="8" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" />
+            <g transform="translate({[xScale(d.year), 0]})" class="boxplot">
+                <rect class="temp" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" x="-1" width="2" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
+                <rect class="temp" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" x="-4" width="8" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" />
+                <line x1="-4" x2="4" transform="translate({[0, yScale(d[show])]})" />
             </g>
             {/if}
             {/each}
@@ -222,12 +223,28 @@
     }
 
     rect.temp {
+        fill: var(--gray);
+    }
+    rect.temp.bar {
+        opacity: 0.7;
+    }
+    rect.temp.high {
         fill: var(--red);
     }
-    rect.precip {
-        fill: var(--blue);
-        opacity: 0.5;
+    rect.temp.low {
+        fill: var(--cyan);
     }
+    rect.precip {
+        fill: var(--gray);
+        opacity: 0.7;
+    }
+    rect.precip.high {
+        fill: var(--blue);
+    }
+    rect.precip.low {
+        fill: var(--orange);
+    }
+
 
     path.trend {
         fill: none;
@@ -253,5 +270,14 @@
         .tick text {
             font-size: 13px;
         }
+    }
+
+    .boxplot {
+        shape-rendering: crispEdges;
+
+    }
+    .boxplot line {
+        stroke: white;
+        stroke-width: 2;
     }
 </style>

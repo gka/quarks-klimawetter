@@ -121,7 +121,7 @@
 
 <p>Tägliche Niederschlagsmengen variieren stark. Um Ausreißer auszugleichen, betrachten wir einen Zeitraum von 30 Tage.</p>
 
-<h3>So warm war der {curMonthName} die letzten {numYears} Jahre</h3>
+<h3>So warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
 <ChartYearly
@@ -133,6 +133,11 @@
     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
     unit=" °C"
     show="temp" />
+
+<p>Anmerkung von Gregor: Alternativ zum Temperatur Bar-Chart könnten wir auch einen Box-Plot nehmen der sowohl die Spannbreite (dünne vertikale Linie) als auch die häufigsten Temperaturen (dicke vertikale Balken) und die Durchschnittstemperatur (weiße horizontale Linie) zeigt.</p>
+
+
+<h3>Box-Plot Alternative: sind Quarks-Leser dafür schon bereit?</h3>
 
 <ChartYearly
     month={curMonth}
@@ -146,7 +151,7 @@
     range="{true}" />
 {/if}
 
-<h3>So regnerisch war der {curMonthName} die letzten {numYears} Jahre</h3>
+<h3>So regnerisch war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
 <ChartYearly

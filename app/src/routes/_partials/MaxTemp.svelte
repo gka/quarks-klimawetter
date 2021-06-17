@@ -73,8 +73,7 @@
     }
 	.maxTemp {
 		stroke-width: 2;
-		stroke: var(--red);
-        stroke: var(--gray-dark);
+        stroke: var(--gray);
 	}
     .contextAvgMax {
         stroke-width: 1;
@@ -108,11 +107,17 @@
         stroke-linejoin: round;
         opacity: 0.8;
     }
+    .cur-hotter {
+        stroke: var(--red);
+    }
+    .cur-colder {
+        stroke: var(--cyan);
+    }
     text {
         font-size: 0.93rem;
         text-anchor: middle;
     }
-    .tooltip text tspan:last-child {
+    .tooltip text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
@@ -130,13 +135,19 @@
     <clipPath id="clip-temp">
         <path d="{aboveMaxTempPath(data)}" />
     </clipPath>
-    <clipPath id="clip-context">
+    <clipPath id="clip-in-context">
+        <path d="{contextPath(data)}" />
+    </clipPath>
+    <clipPath id="clip-above-context">
         <path d="{aboveContextPath(data)}" />
+    </clipPath>
+    <clipPath id="clip-below-context">
+        <path d="{belowContextPath(data)}" />
     </clipPath>
 </defs>
 
 
-<path class="hotter" d="{belowMaxTempPath(data)}" clip-path="url(#clip-context)" />
+<path class="hotter" d="{belowMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
 <path class="colder" d="{belowContextPath(data)}" clip-path="url(#clip-temp)" />
 
 {#if lastDay}
@@ -151,7 +162,11 @@
 </text>
 
 <path class="context" d="{contextPath(data)}" />
-<path class="line maxTemp" d="{curMaxTempPath(data)}" />
+<path class="line maxTemp" d="{curMaxTempPath(data)}" clip-path="url(#clip-in-context)"  />
+<!-- <path class="line maxTemp" d="{curMaxTempPath(data)}" /> -->
+<path class="line maxTemp cur-hotter" d="{curMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
+<path class="line maxTemp cur-colder" d="{curMaxTempPath(data)}" clip-path="url(#clip-below-context)" />
+
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
     {#if !isNaN(d.TXK) && d.date <= $maxDate}
@@ -166,8 +181,8 @@
 <g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-33]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
-        <tspan x="0">{dayjs(selected.date).format('D.MMM')}</tspan>
-        <tspan x="0" dy="20">{fmtTemp(selected.TXK)}</tspan>
+        <tspan x="0">{fmtTemp(selected.TXK)}</tspan>
+        <tspan x="0" dy="20">{dayjs(selected.date).format('D.MMM')}</tspan>
     </text>
     {/each}
 </g>
