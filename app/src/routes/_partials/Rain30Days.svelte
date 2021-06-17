@@ -184,14 +184,14 @@
 <path class="less-rain" d="{belowContextPath(data)}" clip-path="url(#clip-rain)" />
 
 
-{#each data as d}
+<!-- {#each data as d}
     {#if d.RSK > 0}
     <g transform="translate({[xScale(d.date), yScale(0)]})">
         <rect class="bar" y={yScale(d.RSK)-yScale(0)} width="4" height="{yScale(0)-yScale(d.RSK)}" />
     </g>
     {/if}
 {/each}
-
+ -->
 {#each data as d}
     {#if d.rain30days !== null && d.date <= $maxDate}
     <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.rain30days)]})">
@@ -213,16 +213,6 @@
         class:below="{selected.rain30days < selected.context.rain30days_lo}" />
 </g>
 {/if}
-
-<!-- <g class="color-key" transform="translate({[xScale(lastContext.date)-40, height-150]})">
-    <rect class="more-rain" width="15" height="15" />
-    <text>Mehr Regen als durchschnittlich</text>
-    <g transform="translate(0, 25)">
-        <rect class="less-rain" width="15" height="15" />
-        <text>Weniger Regen als durchschnittlich</text>
-    </g>
-</g> -->
-
 
 <g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
     <rect x="-10" y="-10" height="55" width="190" fill="white" opacity="0.8" />
