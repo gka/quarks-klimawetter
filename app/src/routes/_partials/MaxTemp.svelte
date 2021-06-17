@@ -89,7 +89,13 @@
         fill: var(--gray-dark);
     }
     circle {
+        fill: var(--gray);
+    }
+    circle.above {
         fill: var(--red);
+    }
+    circle.below {
+        fill: var(--cyan);
     }
     path.hotter, rect.hotter {
         fill: var(--red);
@@ -151,7 +157,10 @@
 <path class="colder" d="{belowContextPath(data)}" clip-path="url(#clip-temp)" />
 
 {#if lastDay}
-    <circle transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4" class="rain" />
+    <circle
+        transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4"
+        class:above="{lastDay.TXK > lastDay.context.TXK_hi}"
+        class:below="{lastDay.TXK < lastDay.context.TXK_lo}" />
     <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text>
 {/if}
 
@@ -172,7 +181,9 @@
     {#if !isNaN(d.TXK) && d.date <= $maxDate}
     <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.TXK)]})">
         <circle r="15" style="opacity: 0" />
-        <circle r="{selected === d ? 6 : 0}" />
+        <circle r="{selected === d ? 5 : 0}"
+            class:above="{d.TXK > d.context.TXK_hi}"
+            class:below="{d.TXK < d.context.TXK_lo}" />
     </g>
     {/if}
 {/each}

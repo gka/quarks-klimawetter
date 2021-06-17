@@ -69,13 +69,25 @@
 <style>
     path.rain {
         fill: none;
-        stroke: var(--blue);
+        stroke: var(--gray);
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
     }
+    path.rain.above {
+        stroke: var(--blue);
+    }
+    path.rain.below {
+        stroke: var(--orange);
+    }
     circle.rain {
+        fill: var(--gray);
+    }
+    circle.rain.above {
         fill: var(--blue);
+    }
+    circle.rain.below {
+        fill: var(--orange);
     }
     text.rain {
         fill: var(--blue);
@@ -134,8 +146,14 @@
     <clipPath id="clip-rain">
         <path d="{aboveRainPath(data)}" />
     </clipPath>
-    <clipPath id="clip-context-rain">
+    <clipPath id="clip-rain-above-context">
         <path d="{aboveContextPath(data)}" />
+    </clipPath>
+    <clipPath id="clip-rain-below-context">
+        <path fill="black" d="{belowContextPath(data)}" />
+    </clipPath>
+    <clipPath id="clip-rain-in-context">
+        <path d="{contextRangePath(data)}" />
     </clipPath>
 </defs>
 
@@ -149,15 +167,22 @@
 </text>
 
 {#if lastRain}
-    <circle transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})" r="4" class="rain" />
+    <circle
+        transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})"
+        r="4" class="rain"
+        class:above="{lastRain.rain30days > lastRain.context.rain30days_hi}"
+        class:below="{lastRain.rain30days < lastRain.context.rain30days_lo}" />
     <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text>
 {/if}
 
-<path class="rain" d="{curRainPath(data)}" />
+<path class="rain above" d="{curRainPath(data)}"  clip-path="url(#clip-rain-above-context)" />
+<path class="rain below" d="{curRainPath(data)}" clip-path="url(#clip-rain-below-context)" />
+<path class="rain" d="{curRainPath(data)}"  clip-path="url(#clip-rain-in-context)" />
 
 
-<path class="more-rain" d="{belowRainPath(data)}" clip-path="url(#clip-context-rain)" />
+<path class="more-rain" d="{belowRainPath(data)}" clip-path="url(#clip-rain-above-context)" />
 <path class="less-rain" d="{belowContextPath(data)}" clip-path="url(#clip-rain)" />
+
 
 {#each data as d}
     {#if d.RSK > 0}
@@ -183,7 +208,9 @@
         <tspan x="0" dy="20">{fmtRain(selected.rain30days, true)}</tspan>
     </text>
     {/each}
-    <circle transform="translate(0,30)" r="6" class="rain" />
+    <circle transform="translate(0,30)" r="5" class="rain"
+        class:above="{selected.rain30days > selected.context.rain30days_hi}"
+        class:below="{selected.rain30days < selected.context.rain30days_lo}" />
 </g>
 {/if}
 
