@@ -124,21 +124,26 @@
 <h3>So warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
-<ChartYearly
-    month={curMonth}
-    data="{monthlyData}"
-    context={monthlyStats[curMonth].base}
-    includeZero={true}
-    {numYears}
-    label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
-    unit=" °C"
-    show="temp" />
 
+
+
+
+
+<div style="position: relative;">
+    <img width="30" src="../../thermometer.svg" style="position: absolute; left: -50px;">
+    <ChartYearly
+        month={curMonth}
+        data="{monthlyData}"
+        context={monthlyStats[curMonth].base}
+        includeZero={true}
+        {numYears}
+        label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
+        unit=" °C"
+        show="temp" />
+</div>
 <p>Anmerkung von Gregor: Alternativ zum Temperatur Bar-Chart könnten wir auch einen Box-Plot nehmen der sowohl die Spannbreite (dünne vertikale Linie) als auch die häufigsten Temperaturen (dicke vertikale Balken) und die Durchschnittstemperatur (weiße horizontale Linie) zeigt.</p>
 
-
-<h3>Box-Plot Alternative: sind Quarks-Leser dafür schon bereit?</h3>
-
+<h3>Box-Plot Alternative</h3>
 <ChartYearly
     month={curMonth}
     data="{monthlyData}"
