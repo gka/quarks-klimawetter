@@ -62,7 +62,12 @@
         ...(includeZero ? [0] : [])
     ].filter(d => d !== undefined);
 
-    $: yExtent = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,2][i] : d);
+    const minTempRange = 33;
+    let yExtent = [];
+    $: {
+        const [min,max] = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,2][i] : d);
+        yExtent = show === 'temp' ? [min, Math.max(max, min+minTempRange)] : [min, max];
+    }
 
     $: xTicks = xScale.ticks(8);
     $: yTicks = yScale.ticks(7);
@@ -158,9 +163,10 @@
             </g>
             {:else if show === 'temp' && range}
             <g transform="translate({[xScale(d.year), 0]})" class="boxplot">
-                <rect class="temp" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" x="-1" width="2" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
-                <rect class="temp" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" x="-4" width="8" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" />
-                <line x1="-4" x2="4" transform="translate({[0, yScale(d[show])]})" />
+                <rect class="temp"  opacity="0.25" x="-3" width="6" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
+                <!-- <rect class="temp"  opacity="0.4" x="-2" width="4" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" /> -->
+                <line  x1="-3" x2="3" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" transform="translate({[0, yScale(d[show])]})" />
+                <!-- <circle class="temp" r="4" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" transform="translate({[0, yScale(d[show])]})" /> -->
             </g>
             {/if}
             {/each}
@@ -234,6 +240,16 @@
     rect.temp.low {
         fill: var(--cyan);
     }
+    circle.temp {
+        fill: var(--gray);
+    }
+    circle.temp.high {
+        fill: var(--red);
+    }
+    circle.temp.low {
+        fill: var(--cyan);
+    }
+
     rect.precip {
         fill: var(--gray);
         opacity: 0.7;
@@ -277,7 +293,16 @@
 
     }
     .boxplot line {
-        stroke: white;
-        stroke-width: 2;
+        stroke-width: 6;
+    }
+    .boxplot line {
+        stroke:  4;
+        stroke: var(--gray);
+    }
+    .boxplot line.high {
+        stroke: var(--red);
+    }
+    .boxplot line.low {
+        stroke: var(--cyan);
     }
 </style>

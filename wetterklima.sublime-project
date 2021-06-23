@@ -2,7 +2,16 @@
 	"folders":
 	[
 		{
-			"path": "."
-		}
-	]
+			"path": ".",
+		},
+		{
+			"path": "/home/gka/projects/datawrapper/utils/unlist-charts",
+		},
+		{
+			"path": "/home/gka/projects/datawrapper/utils/fix-s3-charts",
+		},
+		{
+			"path": "/home/gka/projects/datawrapper/utils/notion-api-tools"
+		},
+	],
 }

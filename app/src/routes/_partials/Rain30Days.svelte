@@ -128,7 +128,7 @@
         font-size: 0.93rem;
         text-anchor: middle;
     }
-    .tooltip text tspan:last-child {
+    .tooltip text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
@@ -204,8 +204,8 @@
 <g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.rain30days)-30]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
-        <tspan x="0">{dayjs(selected.date).subtract(30, 'day').format('D.M.')}-{dayjs(selected.date).format('D.M.')}</tspan>
-        <tspan x="0" dy="20">{fmtRain(selected.rain30days, true)}</tspan>
+        <tspan x="0" >{fmtRain(selected.rain30days, true)}</tspan>
+        <tspan x="0" dy="20">{dayjs(selected.date).subtract(30, 'day').format('D.M.')}-{dayjs(selected.date).format('D.M.')}</tspan>
     </text>
     {/each}
     <circle transform="translate(0,30)" r="5" class="rain"
