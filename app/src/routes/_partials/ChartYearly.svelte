@@ -159,7 +159,11 @@
             </g>
             {:else if show === 'temp' && !range}
             <g transform="translate({[xScale(d.year), yScale(0)]})">
+                {#if d[show] > 0}
                 <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+                {:else}
+                <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+                {/if}
             </g>
             {:else if show === 'temp' && range}
             <g transform="translate({[xScale(d.year), 0]})" class="boxplot">
