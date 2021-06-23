@@ -10,6 +10,9 @@ const { ascendingKey, descendingKey } = require('d3-jetpack');
 
 run();
 
+const analyzeContext = !!argv.context;
+console.log({analyzeContext});
+
 const outDir = argv.out || path.join(__dirname, 'out');
 const baseMinYear = 1961;
 const tempQuartileRange = 50;
@@ -60,7 +63,7 @@ async function run() {
             RSK: +d.RSK
         }));
 
-        const r = updateData(stationData);
+        const r = updateData(stationData, station);
 
         await writeFile(
             path.join(outDir, `stations/${station.id}.json`),
@@ -69,10 +72,12 @@ async function run() {
                 ...r
             }, null, 3));
     }
+
+
     // process each station, write json
 }
 
-function updateData(data) {
+function updateData(data, station) {
     const data2 = data.map(d => ({
         ...d
     }));
@@ -93,12 +98,6 @@ function updateData(data) {
         delete d.prev;
     });
 
-    // compute weather context for each day
-    const context = {};
-    DAYS.forEach(day => {
-        context[day] = getContext(day, data2);
-    });
-
     // add 14 days of future days
     let date = dayjs(data2[0].date);
     let days = 14;
@@ -112,6 +111,16 @@ function updateData(data) {
             date: date.toDate(),
             day: date.format('MM-DD'),
         })
+    }
+
+    if (analyzeContext) {
+        const context = {};
+        DAYS.forEach(day => {
+            context[day] = getContext(day, data2);
+        });
+        writeFile(
+            path.join(outDir, `stations/${station.id}-ctx.json`),
+            JSON.stringify(context, null, 3));
     }
 
     const monthlyStats = {};
@@ -150,8 +159,7 @@ function updateData(data) {
         data: data2.map(d => ({
             ...d,
             date: dayjs(d.date).format('YYYY-MM-DD'),
-            rain30days: Math.round(d.rain30days*10)/10,
-            context: context[d.day]
+            rain30days: Math.round(d.rain30days*10)/10
         })).sort(descendingKey('date')).slice(0, 365+14),
         // context,
         monthlyStats
