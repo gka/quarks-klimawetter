@@ -141,19 +141,7 @@
         unit=" °C"
         show="temp" />
 </div>
-<p>Anmerkung von Gregor: Alternativ zum Temperatur Bar-Chart könnten wir auch einen Box-Plot nehmen der sowohl die Spannbreite (dünne vertikale Linie) als auch die häufigsten Temperaturen (dicke vertikale Balken) und die Durchschnittstemperatur (weiße horizontale Linie) zeigt.</p>
 
-<h3>Box-Plot Alternative</h3>
-<ChartYearly
-    month={curMonth}
-    data="{monthlyData}"
-    context={monthlyStats[curMonth].base}
-    includeZero={false}
-    {numYears}
-    label="Spannbreite der Tageshöchst-\ntemperaturen im {curMonthName} (in °C)"
-    unit=" °C"
-    show="temp"
-    range="{true}" />
 {/if}
 
 <h3>So regnerisch war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>

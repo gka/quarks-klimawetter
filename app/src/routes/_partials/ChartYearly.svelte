@@ -5,6 +5,7 @@
     import dayjs from 'dayjs';
     import { line } from 'd3-shape';
     import { beforeUpdate } from 'svelte';
+    import { fmtTemp, fmtRain } from '$lib/formats';
 
     import MaxTemp from './MaxTemp.svelte';
     import Rain30Days from './Rain30Days.svelte';
@@ -37,7 +38,7 @@
     export let show;
     export let range = false;
 
-    $: padding = { top: 50, right: 105, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 80, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xScale = scaleLinear()
         .domain([minYear, maxYear])
@@ -62,11 +63,12 @@
         ...(includeZero ? [0] : [])
     ].filter(d => d !== undefined);
 
-    const minTempRange = 33;
+    const minTempRange = 28;
+    const minprecipRange = 80;
     let yExtent = [];
     $: {
         const [min,max] = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,2][i] : d);
-        yExtent = show === 'temp' ? [min, Math.max(max, min+minTempRange)] : [min, max];
+        yExtent = [min, Math.max(max, min+(show === 'temp' ? minTempRange : minprecipRange))];
     }
 
     $: xTicks = xScale.ticks(8);
@@ -96,6 +98,12 @@
             chartWidth = clientWidth;
         }
     })
+
+    let selected;
+
+    function select(d) {
+        selected = d;
+    }
 
 </script>
 
@@ -153,32 +161,54 @@
             <rect class="context" y={yScale(contextShow.hi)} width="{chartWidth}" height="{yScale(contextShow.lo)-yScale(contextShow.hi)}" />
 
             {#each dataFiltered as d}
-            {#if show === 'precip'}
-            <g transform="translate({[xScale(d.year), yScale(0)]})">
+            <g transform="translate({[xScale(d.year), yScale(0)]})" style="opacity: {!selected || selected === d ? 1 : 0.4}">
+                {#if show === 'precip'}
                 <rect class="precip" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
-            </g>
-            {:else if show === 'temp' && !range}
-            <g transform="translate({[xScale(d.year), yScale(0)]})">
-                {#if d[show] > 0}
-                <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
-                {:else}
-                <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+
+                {:else if show === 'temp'}
+                    {#if d[show] > 0}
+                    <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+                    {:else}
+                    <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+                    {/if}
                 {/if}
+                <rect opacity="0" y="{-yScale(0)+padding.top}" on:mouseenter="{() => select(d)}" on:mouseleave="{() => select(null)}" class="" x="-8" width="16" height="{height-padding.top-padding.bottom}" />
             </g>
-            {:else if show === 'temp' && range}
-            <g transform="translate({[xScale(d.year), 0]})" class="boxplot">
-                <rect class="temp"  opacity="0.25" x="-3" width="6" y="{yScale(d.temp_range[1])}" height="{yScale(d.temp_range[0])-yScale(d.temp_range[1])}" />
-                <!-- <rect class="temp"  opacity="0.4" x="-2" width="4" y="{yScale(d.temp_hi)}" height="{yScale(d.temp_lo)-yScale(d.temp_hi)}" /> -->
-                <line  x1="-3" x2="3" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" transform="translate({[0, yScale(d[show])]})" />
-                <!-- <circle class="temp" r="4" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" transform="translate({[0, yScale(d[show])]})" /> -->
-            </g>
-            {/if}
             {/each}
+
 <!--             {#if show === 'temp'}
             <path class="temp" d="{maxTempPath(dataFiltered)}" />
             {/if} -->
 
             <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
+
+            <g class="legend" transform="translate({[xScale(2021)-200-padding.right, 0]})">
+                <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
+                <g transform="translate({show === 'temp' ? 0 : 5},0)">
+                    <rect class="{show} high" width="14" height="14" />
+                    <text x="18" y="12">{show === 'temp' ? 'wärmer' : 'nasser'} als normal</text>
+                </g>
+                <g transform="translate(140,0)">
+                    <rect class="{show}" width="14" height="14" />
+                    <text x="18" y="12">normal</text>
+                </g>
+                <g transform="translate(214,0)">
+                    <rect class="{show} low" width="14" height="14" />
+                    <text x="18" y="12">{show === 'temp' ? 'kälter' : 'trockener'} als normal</text>
+                </g>
+            </g>
+
+
+            {#if selected}
+            <g class="tooltip" transform="translate({xScale(selected.year)}, {selected[show] < 0 ? yScale(0)-25 : yScale(selected[show])-25})">
+                {#each [0,1] as i}
+                <text class:buffer="{i===0}">
+                    <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show], true) }</tspan>
+                    <tspan x="0" dy="17">{selected.year}</tspan>
+                </text>
+                {/each}
+            </g>
+            {/if}
 
         </g>
     </svg>
@@ -308,5 +338,33 @@
     }
     .boxplot line.low {
         stroke: var(--cyan);
+    }
+    .legend text {
+        text-anchor: start;
+        fill: var(--gray-dark);
+        font-size: 14px;
+    }
+    .legend g rect {
+        opacity: 0.7;
+    }
+    .tooltip text{
+        text-anchor: middle;
+        font-size: 0.93rem;
+    }
+    text.buffer {
+        fill: white;
+        stroke: white;
+        stroke-width: 5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        opacity: 0.8;
+    }
+
+    .tooltip text tspan:first-child {
+        font-weight: bold;
+        font-family: sans_bold;
+    }
+    .tooltip {
+        pointer-events: none;
     }
 </style>
