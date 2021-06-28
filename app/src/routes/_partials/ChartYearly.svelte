@@ -30,6 +30,8 @@
     export let unit = '';
     export let label = '';
 
+    let showTrend = false;
+
     const now = new Date();
 
     $: maxYear = now.getFullYear();
@@ -38,7 +40,7 @@
     export let show;
     export let range = false;
 
-    $: padding = { top: 50, right: 80, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 80, bottom: 30, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xScale = scaleLinear()
         .domain([minYear, maxYear])
@@ -108,7 +110,9 @@
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
-
+<div style="text-align: right; position: relative; top: -10px">
+<label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
+</div>
 <div
     bind:this={chart}
     class="chart"
@@ -180,7 +184,9 @@
             <path class="temp" d="{maxTempPath(dataFiltered)}" />
             {/if} -->
 
+            {#if showTrend}
             <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
+            {/if}
 
             <g class="legend" transform="translate({[xScale(2021)-200-padding.right, 0]})">
                 <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
