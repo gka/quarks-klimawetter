@@ -6,6 +6,7 @@
     }
     .infobox h3 {
         margin-top: 0;
+        color: white;
     }
     .infobox p:last-child {
         margin-bottom: 0;

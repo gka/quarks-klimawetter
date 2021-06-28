@@ -102,16 +102,9 @@
 
 </style>
 
-&lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
-<button on:click={() => moveDate(-1, 'day')}>1 Tag</button>
--
-<button on:click={() => moveDate(+1, 'day')}>1 Tag</button>
-<button on:click={() => moveDate(+1, 'month')}>1 Monat</button> &gt;
 
 
 <StationSelect {stationen} />
-
-<h2>{station.name}, {station.state}</h2>
 
 {#if data.length}
 <TopInfo {station} {today} bind:copySentence />
@@ -125,13 +118,15 @@
 
 <h3>🌡️ So warm ist es gerade in {station.name} im Vergleich zum Klima-Durchschnitt</h3>
 
-<ChartDaily
-    unit=" °C"
-    label="Tageshöchst-\ntemperatur in °C"
-    data="{data}"
-    yMin={-5}
-    yMax={30}
-    show="TXK" />
+<figure>
+    <ChartDaily
+        unit=" °C"
+        label="Tageshöchst-\ntemperatur in °C"
+        data="{data}"
+        yMin={-5}
+        yMax={30}
+        show="TXK" />
+</figure>
 
 <p>{copySentence}</p>
 
@@ -143,14 +138,15 @@
 
 <h3>🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan</h3>
 
-
-<ChartDaily
-    label="Niederschlagsmenge\nkummuliert über 30 Tage"
-    unit="mm/30 Tage"
-    data="{data}"
-    includeZero={true}
-    ymax="{80}"
-    show="rain30days" />
+<figure>
+    <ChartDaily
+        label="Niederschlagsmenge\nkummuliert über 30 Tage"
+        unit="mm/30 Tage"
+        data="{data}"
+        includeZero={true}
+        ymax="{80}"
+        show="rain30days" />
+</figure>
 
 <p>Über die vergangenen 30 Tage hat es {fmtRain(today.rain30days, true)} je Quadratmeter geregnet. Das ist {today.rain30days > today.context.rain30days_hi ? 'besonders viel' : today.rain30days < today.context.rain30days_lo ? 'besonders wenig' : 'normal'} {#if today.rain30days < today.context.rain30days_lo || today.rain30days > today.context.rain30days_hi} und etwa {fmtRain(Math.round(Math.abs(today.rain30days - (today.rain30days < today.context.rain30days_lo ? today.context.rain30days_lo : today.context.rain30days_hi))), true)}/qm {today.rain30days < today.context.rain30days_lo ? 'weniger' : 'mehr'}  im Vergleich zum 30-jährigen Mittel.{/if}</p>
 
@@ -168,7 +164,7 @@
 
 {#if monthlyStats}
 
-<div style="position: relative;">
+<figure style="position: relative;">
     <img width="30" src="../../thermometer.svg" style="position: absolute; left: -50px;">
     <ChartYearly
         month={curMonth}
@@ -179,9 +175,8 @@
         label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
         unit=" °C"
         show="temp" />
-</div>
-
-<p>Hinweis: Der Balken für den {curMonthName} {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.</p>
+    <figcaption>Hinweis: Der Balken für den {curMonthName} {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.</figcaption>
+</figure>
 
 <p>Je mehr Monate wärmer sind, als das 30-jährige Mittel von 1961-1990, desto steiler ist die Trendlinie, die hier das lokale Ausmaß der Erderwärmung anzeigt. Für den Monat {curMonthName} in {station.name} liegt der Trend gerade bei ____ °C Erwärmung. Damit liegen wir hier [über/unter] den 1,5 °C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.</p>
 
@@ -190,18 +185,19 @@
 <h3>🌧️ So viel hat es im ganzen {curMonthName} in {station.name} die letzten {numYears} Jahre geregnet</h3>
 
 {#if monthlyStats}
-<ChartYearly
-    label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
-    month={curMonth}
-    data="{monthlyData}"
-    context={monthlyStats[curMonth].base}
-    includeZero={true}
-    {numYears}
-    unit="mm/30 Tage"
-    show="precip" />
+<figure>
+    <ChartYearly
+        label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
+        month={curMonth}
+        data="{monthlyData}"
+        context={monthlyStats[curMonth].base}
+        includeZero={true}
+        {numYears}
+        unit="mm/30 Tage"
+        show="precip" />
+    <figcaption>Hinweis: In den Balken für den {curMonthName} {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen.</figcaption>
+</figure>
 {/if}
-
-<p>Hinweis: In den Balken für den {curMonthName} {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen.</p>
 
 <p>Wenn die Niederschlagsmengen außergewöhnlich oft vom Mittel abweichen, ist das auf die Erderwärmung zurückzuführen. Die Erderwärmung geht insgesamt mit einer Verschiebung des Niederschlags einher. Punktuell extrem heftige Niederschläge können zwar häufiger auftreten, doch insgesamt regnet es im Sommer immer weniger. Die Winter werden dafür feuchter, es regnet mehr.</p>
 

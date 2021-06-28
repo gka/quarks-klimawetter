@@ -15,7 +15,7 @@
     $: hl = [
         {id: '02115', lbl: 'Helgoland'},
         {id: '01975', lbl: 'Hamburg'},
-        {id: '00433', lbl: 'Berlin'},
+        {id: '00427', lbl: 'Berlin'},
         {id: '00722', lbl: 'Brocken'},
         {id: '02667', lbl: 'Köln'},
         {id: '01420', lbl: 'Frankfurt'},

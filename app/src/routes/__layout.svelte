@@ -3,7 +3,7 @@
 	import LoadingIndicator from './_partials/LoadingIndicator.svelte';
 </script>
 
-<h1>Ist das noch Wetter oder schon Klimawandel? {#if $navigating}
+<h1>Ist das noch <span>Wetter</span> oder schon <span>Klimawandel</span>? {#if $navigating}
 	<LoadingIndicator />
 {/if}</h1>
 
@@ -28,5 +28,7 @@
 		top: 0;
 		left: 0;
 	}
-
+	span {
+		color: #35bfed;
+	}
 </style>
