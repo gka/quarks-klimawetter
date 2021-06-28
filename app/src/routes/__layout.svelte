@@ -12,12 +12,10 @@
 	<link rel="stylesheet" type="text/css" href="/css/global.css">
 </svelte:head>
 
-
-
 <div class:navigating="{$navigating}">
 	<slot></slot>
 </div>
-<hr />
+
 
 <style>
 	.navigating {
@@ -30,7 +28,5 @@
 		top: 0;
 		left: 0;
 	}
-	:global(strong) {
-		font-family: sans_bold;
-	}
+
 </style>

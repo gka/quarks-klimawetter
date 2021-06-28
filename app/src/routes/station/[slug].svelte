@@ -164,7 +164,7 @@
 
 <hr />
 
-<h3>🌡️ Wie warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre?</h3>
+<h3>🌡️ So warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
 
@@ -182,6 +182,8 @@
 </div>
 
 <p>Hinweis: Der Balken für den {curMonthName} {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.</p>
+
+<p>Je mehr Monate wärmer sind, als das 30-jährige Mittel von 1961-1990, desto steiler ist die Trendlinie, die hier das lokale Ausmaß der Erderwärmung anzeigt. Für den Monat {curMonthName} in {station.name} liegt der Trend gerade bei ____ °C Erwärmung. Damit liegen wir hier [über/unter] den 1,5 °C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.</p>
 
 {/if}
 
@@ -218,6 +220,8 @@ Redaktion: Andrea Wille</p>
 <hr />
 
 <Datengrundlage {stationen} />
+
+<hr />
 
 <Quellen />
 
