@@ -30,4 +30,7 @@
 		top: 0;
 		left: 0;
 	}
+	:global(strong) {
+		font-family: sans_bold;
+	}
 </style>

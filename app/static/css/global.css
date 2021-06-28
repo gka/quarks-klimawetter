@@ -54,11 +54,28 @@ h1+h2 {
 	margin-top: 0.3rem;
 }
 
-h2,h3 {
+h2,h3,h4 {
 	font-family: sans_bold;
 	font-weight: normal;
+}
+
+h4 {
+	margin-bottom: 0;
+	font-size: 1rem;
+}
+h4+p {
+	margin-top: 0.2rem;
 }
 #svelte {
 	max-width: 720px;
 	margin: 0 auto;
+}
+
+strong {
+	font-family: sans_bold;
+}
+
+hr {
+	border: 0;
+	border-top:  1px solid var(--tick-line);
 }

@@ -204,7 +204,8 @@
                 {#each [0,1] as i}
                 <text class:buffer="{i===0}">
                     <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show], true) }</tspan>
-                    <tspan x="0" dy="17">{selected.year}</tspan>
+                    <tspan x="0" dy="17">{monthDisplay}</tspan>
+                    <tspan >{selected.year}</tspan>
                 </text>
                 {/each}
             </g>

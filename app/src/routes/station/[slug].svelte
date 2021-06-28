@@ -50,6 +50,10 @@
     import ChartDaily from '../_partials/ChartDaily.svelte';
     import ChartYearly from '../_partials/ChartYearly.svelte';
     import TopInfo from '../_partials/TopInfo.svelte';
+    import InfoBox from '../_partials/InfoBox.svelte';
+    import Fazit from '../_partials/Fazit.svelte';
+    import Datengrundlage from '../_partials/Datengrundlage.svelte';
+    import Quellen from '../_partials/Quellen.svelte';
     import { beforeUpdate, onMount } from 'svelte';
 
     export let stationen;
@@ -64,6 +68,8 @@
 
     $: curMonth = today.date.getMonth()
     $: curMonthName = dayjs(today.date).format('MMMM');
+
+    $: curYear = today.date.getFullYear()
 
     $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'))
 
@@ -91,6 +97,8 @@
     h2 {
         color: var(--gray);
     }
+
+
 
 </style>
 
@@ -120,9 +128,13 @@
 
 <p>{copySentence}</p>
 
+<InfoBox />
+
+<hr />
+
 <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
 
-<h3>Niederschlagsmenge über 30 Tage</h3>
+<h3>🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan</h3>
 
 
 <ChartDaily
@@ -133,15 +145,21 @@
     ymax="{80}"
     show="rain30days" />
 
-<p>Tägliche Niederschlagsmengen variieren stark. Um Ausreißer auszugleichen, betrachten wir einen Zeitraum von 30 Tage.</p>
+<p>Über die vergangenen 30 Tage hat es {fmtRain(today.rain30days, true)} je Quadratmeter geregnet. Das ist {today.rain30days > today.context.rain30days_hi ? 'besonders viel' : today.rain30days < today.context.rain30days_lo ? 'besonders wenig' : 'normal'} {#if today.rain30days < today.context.rain30days_lo || today.rain30days > today.context.rain30days_hi} und etwa {fmtRain(Math.round(Math.abs(today.rain30days - (today.rain30days < today.context.rain30days_lo ? today.context.rain30days_lo : today.context.rain30days_hi))), true)}/qm {today.rain30days < today.context.rain30days_lo ? 'weniger' : 'mehr'}  im Vergleich zum 30-jährigen Mittel.{/if}</p>
 
-<h3>So warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
+<p>Du fragst dich vielleicht, warum wir den Niederschlag immer über 30 Tage hinweg betrachten. Die Erklärung: Einzelne Regentage unterliegen sehr starken Schwankungen. Das betrifft sowohl die Regenmenge pro Regentag als auch die Häufigkeit der Regentage in einem Monat oder sogar in einem Jahr. Wir stellen deshalb in unserem Diagramm dar, wie viel Niederschlag kummuliert (das heißt: gehäuft) über die vergangenen 30 Tage gefallen ist. Diesen Wert vergleichen wir mit dem 30-jährigen Mittel (das ist die Referenzperiode 1961-1990).</p>
+
+<hr />
+
+<p><strong>Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind beim aktuellen Wetter erstmal nicht ungewöhnlich. Erst wenn ein Monat überdurchschnittlich oft - also mehrere Jahre in Folge - vom langjährigen Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung die Ursache dafür ist.</p>
+
+<p>Genau das zeigen die folgenden Diagramme.</p>
+
+<hr />
+
+<h3>🌡️ Wie warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre?</h3>
 
 {#if monthlyStats}
-
-
-
-
 
 <div style="position: relative;">
     <img width="30" src="../../thermometer.svg" style="position: absolute; left: -50px;">
@@ -156,9 +174,11 @@
         show="temp" />
 </div>
 
+<p>Hinweis: Der Balken für den {curMonthName} {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.</p>
+
 {/if}
 
-<h3>So regnerisch war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
+<h3>🌧️ So viel hat es im ganzen {curMonthName} in {station.name} die letzten {numYears} Jahre geregnet</h3>
 
 {#if monthlyStats}
 <ChartYearly
@@ -172,10 +192,27 @@
     show="precip" />
 {/if}
 
-<h3>Fazit</h3>
+<p>Hinweis: In den Balken für den {curMonthName} {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen.</p>
 
-<h3>Quellen und Datenhinweise</h3>
+<p>Wenn die Niederschlagsmengen außergewöhnlich oft vom Mittel abweichen, ist das auf die Erderwärmung zurückzuführen. Die Erderwärmung geht insgesamt mit einer Verschiebung des Niederschlags einher. Punktuell extrem heftige Niederschläge können zwar häufiger auftreten, doch insgesamt regnet es im Sommer immer weniger. Die Winter werden dafür feuchter, es regnet mehr.</p>
 
+<p>Fällt die Trendlinie ab, heißt das, dass dieser Monat immer trockener wird im Vergleich zum 30-jährigen Mittel. Steigt sie an, heißt das, dass es häufiger regnet als im Vergleich zum 30-jährigen Mittel.</p>
+
+<hr />
+
+<Fazit />
+
+<p>Autorinnen: Lara Schwenner, Saskia Gerhard <br>
+Technische Umsetzung: Gregor Aisch<br>
+Redaktion: Andrea Wille</p>
+
+<p>Wir bedanken uns bei Florian Imbery vom Deutschen Wetterdienst für die freundliche Beratung.</p>
+
+<hr />
+
+<Datengrundlage {stationen} />
+
+<Quellen />
 
 {$innerWidth}
 &lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
