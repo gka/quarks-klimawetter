@@ -125,7 +125,7 @@
     }
     .last-day text {
         font-size: 0.83rem;
-        fill: var(--gray);
+        fill: var(--gray-dark);
         text-anchor: start;
     }
     .last-day.above text {
@@ -173,7 +173,7 @@
 
 <text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
     <tspan x="0" dy="-17">normale</tspan>
-    <tspan x="0" dy="17">Temperatur</tspan>
+    <tspan x="0" dy="17">Temp.</tspan>
     <tspan x="0" dy="17">1961-1990</tspan>
 </text>
 
@@ -188,7 +188,7 @@
         transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4"
         class:above="{lastDay.TXK > lastDay.context.TXK_hi}"
         class:below="{lastDay.TXK < lastDay.context.TXK_lo}" />
-    <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text>
+    <!-- <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text> -->
 {/if}
 
 

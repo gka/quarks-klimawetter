@@ -54,7 +54,7 @@
     let selected;
 
     $: lastContext = data[0];
-    $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate < 0);
+    $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate <= 0);
 
     function select(d) {
         selected = d;
@@ -128,7 +128,8 @@
         font-size: 0.93rem;
         text-anchor: middle;
     }
-    .tooltip text tspan:first-child {
+    .tooltip,
+    .last-day text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
@@ -139,6 +140,17 @@
         text-anchor: start;
         fill: var(--gray-dark);
         font-size: 14px;
+    }
+    .last-day text {
+        font-size: 0.83rem;
+        fill: var(--gray-dark);
+        text-anchor: start;
+    }
+    .last-day.above text {
+        fill: var(--blue);
+    }
+    .last-day.below text {
+        fill: var(--orange);
     }
 </style>
 
@@ -172,7 +184,7 @@
         r="4" class="rain"
         class:above="{lastRain.rain30days > lastRain.context.rain30days_hi}"
         class:below="{lastRain.rain30days < lastRain.context.rain30days_lo}" />
-    <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text>
+    <!-- <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text> -->
 {/if}
 
 <path class="rain above" d="{curRainPath(data)}"  clip-path="url(#clip-rain-above-context)" />
@@ -184,14 +196,14 @@
 <path class="less-rain" d="{belowContextPath(data)}" clip-path="url(#clip-rain)" />
 
 
-<!-- {#each data as d}
-    {#if d.RSK > 0}
+{#each data as d}
+    {#if d.RSK > 0 && selected}
     <g transform="translate({[xScale(d.date), yScale(0)]})">
         <rect class="bar" y={yScale(d.RSK)-yScale(0)} width="4" height="{yScale(0)-yScale(d.RSK)}" />
     </g>
     {/if}
 {/each}
- -->
+
 {#each data as d}
     {#if d.rain30days !== null && d.date <= $maxDate}
     <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.rain30days)]})">
@@ -211,6 +223,16 @@
     <circle transform="translate(0,30)" r="5" class="rain"
         class:above="{selected.rain30days > selected.context.rain30days_hi}"
         class:below="{selected.rain30days < selected.context.rain30days_lo}" />
+</g>
+{:else}
+<g class="last-day" class:above="{lastRain.rain30days > lastRain.context.rain30days_hi}"
+        class:below="{lastRain.rain30days < lastRain.context.rain30days_lo}" transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)-28]})">
+    {#each [0,1] as i}
+    <text class:buffer="{i===0}">
+        <tspan x="0" >{fmtRain(lastRain.rain30days, true)}</tspan>
+        <tspan x="0" dy="17">{dayjs(lastRain.date).subtract(30, 'day').format('D.M.')}-{dayjs(lastRain.date).format('D.M.')}</tspan>
+    </text>
+    {/each}
 </g>
 {/if}
 
