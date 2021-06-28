@@ -102,6 +102,13 @@
 
 </style>
 
+&lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
+<button on:click={() => moveDate(-1, 'day')}>1 Tag</button>
+-
+<button on:click={() => moveDate(+1, 'day')}>1 Tag</button>
+<button on:click={() => moveDate(+1, 'month')}>1 Monat</button> &gt;
+
+
 <StationSelect {stationen} />
 
 <h2>{station.name}, {station.state}</h2>
@@ -213,11 +220,4 @@ Redaktion: Andrea Wille</p>
 <Datengrundlage {stationen} />
 
 <Quellen />
-
-{$innerWidth}
-&lt; <button on:click={() => moveDate(-1, 'month')}>1 Monat</button>
-<button on:click={() => moveDate(-1, 'day')}>1 Tag</button>
--
-<button on:click={() => moveDate(+1, 'day')}>1 Tag</button>
-<button on:click={() => moveDate(+1, 'month')}>1 Monat</button> &gt;
 

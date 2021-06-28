@@ -123,6 +123,18 @@
         font-size: 0.93rem;
         text-anchor: middle;
     }
+    .last-day text {
+        font-size: 0.83rem;
+        fill: var(--gray);
+        text-anchor: start;
+    }
+    .last-day.above text {
+        fill: var(--red);
+    }
+    .last-day.below text {
+        fill: var(--cyan);
+    }
+    .last-day text tspan:first-child,
     .tooltip text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
@@ -201,6 +213,20 @@
     </text>
     {/each}
 </g>
+{:else}
+{#if lastDay}
+<g class="last-day"
+    class:above="{lastDay.TXK > lastDay.context.TXK_hi}"
+    class:below="{lastDay.TXK < lastDay.context.TXK_lo}"
+    transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)-30]})">
+    {#each [0,1] as i}
+    <text class:buffer="{i===0}">
+        <tspan x="0">{fmtTemp(lastDay.TXK)}</tspan>
+        <tspan x="0" dy="17">{dayjs(lastDay.date).format('D.MMM')}</tspan>
+    </text>
+    {/each}
+</g>
+{/if}
 {/if}
 
 <g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
