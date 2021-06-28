@@ -3,7 +3,7 @@
 	import LoadingIndicator from './_partials/LoadingIndicator.svelte';
 </script>
 
-<h1>Ist das noch Wetter oder schon Klima? {#if $navigating}
+<h1>Ist das noch Wetter oder schon Klimawandel? {#if $navigating}
 	<LoadingIndicator />
 {/if}</h1>
 

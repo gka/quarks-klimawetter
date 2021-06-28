@@ -21,6 +21,12 @@
     $: precipClass = today.rain30days > today.context.rain30days_hi ? 'high' :
         today.rain30days < today.context.rain30days_lo ? 'low' :
         'normal';
+
+    export let copySentence;
+
+    $: {
+        copySentence = `Mit ${fmtTemp(today.TXK)} ist es heute in ${station.name} ${tempSentence}. Im Vergleich zur Temperatur, die im langjährigen Klimadurchschnitt normal war, ist es heute also ${tempClass === 'normal' ? 'ähnlich warm' : `etwa ${fmtTemp(Math.round(today.TXK - (tempClass === 'high' ? today.context.TXK_hi : today.context.TXK_lo) ))} ${today.TXK > today.context.TXK ? 'wärmer' : 'kälter'}`}.`
+    }
 </script>
 
 <style>
@@ -63,7 +69,7 @@
 
     <div class="flex" style="margin-bottom: 2rem">
         <div >
-            Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>.<br>Außerdem <b class="rain-{precipClass}">regnet</b> es gerade (die letzten 30 Tage) <b class="rain-{precipClass}">{precipSentence}</b>.
+            🌡️ Heute ist es in {station.name} <b class="temp-{tempClass}">{tempSentence}</b>.<br>🌧️ Gerade* regnet es <b class="rain-{precipClass}">{precipSentence}</b>.
          </div>
          <div>
              <b>{dayjs($maxDate).format('LL')}</b><br>
@@ -72,8 +78,8 @@
          </div>
     </div>
     <hr />
-    <div style="margin-top: 2rem">
+    <!-- <div style="margin-top: 2rem">
         Heute ist es in {station.name} mit <strong>max. {fmtTemp(today.TXK)}</strong> <b class="temp-{tempClass}">{tempSentence}</b>. In den letzten 30 Tagen gab es <strong>{fmtRain(today.rain30days, true)} Niederschlag (je qm)</strong>, was gemessen am Vergleichszeitraum <b class="rain-{precipClass}">{precipSentence}</b> ist.
-    </div>
+    </div> -->
 
 </div>

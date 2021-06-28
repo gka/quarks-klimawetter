@@ -54,7 +54,7 @@
 
     let selected;
     $: lastContext = data[0];
-    $: lastDay = data.find(d => !isNaN(d.TXK) !== null && d.date - $maxDate < 0);
+    $: lastDay = data.find(d => !isNaN(d.TXK) !== null && d.date - $maxDate <= 0);
 
     function select(d) {
         selected = d;
@@ -156,6 +156,21 @@
 <path class="hotter" d="{belowMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
 <path class="colder" d="{belowContextPath(data)}" clip-path="url(#clip-temp)" />
 
+
+<path class="context" d="{contextPath(data)}" />
+
+<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
+    <tspan x="0" dy="-17">normale</tspan>
+    <tspan x="0" dy="17">Temperatur</tspan>
+    <tspan x="0" dy="17">1961-1990</tspan>
+</text>
+
+<path class="line maxTemp" d="{curMaxTempPath(data)}" clip-path="url(#clip-in-context)"  />
+<!-- <path class="line maxTemp" d="{curMaxTempPath(data)}" /> -->
+<path class="line maxTemp cur-hotter" d="{curMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
+<path class="line maxTemp cur-colder" d="{curMaxTempPath(data)}" clip-path="url(#clip-below-context)" />
+
+
 {#if lastDay}
     <circle
         transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4"
@@ -164,17 +179,6 @@
     <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text>
 {/if}
 
-<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
-    <tspan x="0" dy="-17">normale</tspan>
-    <tspan x="0" dy="17">Temperatur</tspan>
-    <tspan x="0" dy="17">1961-1990</tspan>
-</text>
-
-<path class="context" d="{contextPath(data)}" />
-<path class="line maxTemp" d="{curMaxTempPath(data)}" clip-path="url(#clip-in-context)"  />
-<!-- <path class="line maxTemp" d="{curMaxTempPath(data)}" /> -->
-<path class="line maxTemp cur-hotter" d="{curMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
-<path class="line maxTemp cur-colder" d="{curMaxTempPath(data)}" clip-path="url(#clip-below-context)" />
 
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}

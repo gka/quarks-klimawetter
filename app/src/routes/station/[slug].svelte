@@ -15,13 +15,17 @@
             const res2 = await fetch(`/data/stations/${station.id}.json`);
             const {data, monthlyStats} = await res2.json();
 
+            const res3 = await fetch(`/data/stations/${station.id}-ctx.json`);
+            const context = await res3.json();
+
             return {
                 props: {
                     stationen,
                     data: data.map(d => ({
                         ...d,
                         date: new Date(d.date),
-                        TXK: d.TXK === null ? Number.NaN : d.TXK
+                        TXK: d.TXK === null ? Number.NaN : d.TXK,
+                        context: context[d.day]
                     })),
                     station,
                     monthlyStats
@@ -76,6 +80,8 @@
         console.log(monthlyData[0])
     }
 
+    let copySentence;
+
 </script>
 
 <style>
@@ -93,10 +99,16 @@
 <h2>{station.name}, {station.state}</h2>
 
 {#if data.length}
-<TopInfo {station} {today} />
+<TopInfo {station} {today} bind:copySentence />
 {/if}
 
-<h3>So warm war es</h3>
+<p>Zu warm für einen Tag im Februar, zu regnerisch für August? Das täglich wechselnde Wetter erleben wir sehr individuell. So kann es passieren, dass wir Ausreißer überschätzen – und langfristige Veränderungen, die weniger spürbar sind, eher verborgen bleiben.</p>
+
+<p>Das wollen wir ändern. </p>
+
+<p>Auf dieser Seite kannst du nachschauen, ob das aktuelle Wetter in deiner Region im langjährigen Klima-Durchschnitt liegt und normal ist – oder davon abweicht.  </p>
+
+<h3>🌡️ So warm ist es gerade in {station.name} im Vergleich zum Klima-Durchschnitt</h3>
 
 <ChartDaily
     unit=" °C"
@@ -105,6 +117,8 @@
     yMin={-5}
     yMax={30}
     show="TXK" />
+
+<p>{copySentence}</p>
 
 <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p>
 
