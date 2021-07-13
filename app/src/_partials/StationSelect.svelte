@@ -1,16 +1,20 @@
 <script>
     import Typeahead from "svelte-typeahead";
     import fuzzy from "fuzzy";
-    import { goto } from '$app/navigation';
+    import { createEventDispatcher } from 'svelte';
 
-    export let stationen = [];
+    const dispatch = createEventDispatcher();
+    // import { goto } from '$app/navigation';
+
+    export let stations = [];
+    export let selected;
     let result;
 
     const extract = d => d.name;
 
     function handleSelect(item) {
         const station = item.detail.original;
-        goto(`/station/${station.slug}`);
+        dispatch('select', station);
     }
     $: hl = [
         {id: '02115', lbl: 'Helgoland'},
@@ -20,7 +24,7 @@
         {id: '02667', lbl: 'Köln'},
         {id: '01420', lbl: 'Frankfurt'},
         {id: '03379', lbl: 'München'},
-    ].map(d => ({...d, ...stationen.find(e => e.id === d.id)}))
+    ].map(d => ({...d, ...stations.find(e => e.id === d.id)}))
 </script>
 
 <style>
@@ -33,12 +37,12 @@
 <Typeahead
     label=""
     placeholder="Station auswählen"
-    data={stationen}
+    data={stations}
     {extract}
     bind:result
     on:select={handleSelect} />
 
 <div class="small">{#each hl as station}
-    <a href="/station/{station.slug}">{station.lbl}</a> &nbsp;
+    <a on:click|preventDefault="{() => dispatch('select', station)}" href="#/{station.slug}">{station.lbl}</a> &nbsp;
 {/each}
 </div>

@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
     let stationen;
 
     /**
@@ -39,22 +39,21 @@
         };
     }
 
-</script>
+</script> -->
 
 <script>
     import dayjs from 'dayjs';
     import { mean, quantileSorted, quantile, ascending, group, sum } from 'd3-array'
     import { maxDate, showDays, innerWidth } from '$lib/stores';
     import { fmtTemp, fmtRain } from '$lib/formats';
-    import StationSelect from '../_partials/StationSelect.svelte';
-    import ChartDaily from '../_partials/ChartDaily.svelte';
-    import ChartYearly from '../_partials/ChartYearly.svelte';
-    import TopInfo from '../_partials/TopInfo.svelte';
-    import InfoBox from '../_partials/InfoBox.svelte';
-    import Fazit from '../_partials/Fazit.svelte';
-    import Credits from '../_partials/Credits.svelte';
-    import Datengrundlage from '../_partials/Datengrundlage.svelte';
-    import Quellen from '../_partials/Quellen.svelte';
+    import ChartDaily from './_partials/ChartDaily.svelte';
+    import ChartYearly from './_partials/ChartYearly.svelte';
+    import TopInfo from './_partials/TopInfo.svelte';
+    import InfoBox from './_partials/InfoBox.svelte';
+    import Fazit from './_partials/Fazit.svelte';
+    import Credits from './_partials/Credits.svelte';
+    import Datengrundlage from './_partials/Datengrundlage.svelte';
+    import Quellen from './_partials/Quellen.svelte';
     import { beforeUpdate, onMount } from 'svelte';
 
     export let stationen;
@@ -102,11 +101,6 @@
 
 
 </style>
-
-
-<p>Ist es heute nicht viel zu warm? Regnet es wirklich immer so viel? Hier kannst du nachschauen, ob das aktuelle Wetter in deiner Region noch normal ist oder durch den Klimawandel kommt.</p>
-
-<StationSelect {stationen} />
 
 {#if data.length}
 <TopInfo {station} {today} bind:copySentence />
