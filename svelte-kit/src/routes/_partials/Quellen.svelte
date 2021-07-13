@@ -1,5 +1,16 @@
 <h3>Unsere Quellen</h3>
 
+<style type="text/css">
+	h3 {
+		color: var(--gray-dark);
+		font-size: 23px;
+	}
+	p {
+		color: var(--gray-dark);
+		font-size: 17px;
+	}
+</style>
+
 <ul>
 	<li><a href="https://archive.ipcc.ch/pdf/assessment-report/ar5/wg3/drafts/fgd/ipcc_wg3_ar5_summary-for-policymakers_may-version.pdf">Edenhofer, O. (Ed.). (2015). Climate change 2014: mitigation of climate change (Vol. 3). Cambridge University Press.</a></li>
 	<li><a href="">Dr. Florian Imbery, Deutscher Wetterdienst, Klimaüberwachung und Klimaanalyse</a></li>

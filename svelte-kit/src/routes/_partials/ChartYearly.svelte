@@ -111,7 +111,7 @@
 
 <svelte:window bind:innerWidth={$innerWidth} />
 <div style="text-align: right; position: relative; top: -10px">
-<label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
+    <label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
 </div>
 <div
     bind:this={chart}
@@ -236,6 +236,10 @@
     }
     text.label {
         font-size: 0.8rem;
+    }
+    label {
+        color: var(--gray-dark);
+        font-size: 14px;
     }
     .tick {
         font-size: 0.725em;

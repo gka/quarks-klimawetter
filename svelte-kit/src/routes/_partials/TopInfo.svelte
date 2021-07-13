@@ -25,7 +25,7 @@
     export let copySentence;
 
     $: {
-        copySentence = `Mit ${fmtTemp(today.TXK)} ist es heute in ${station.name} ${tempSentence}. Im Vergleich zur Temperatur, die im langjährigen Klimadurchschnitt normal war, ist es heute also ${tempClass === 'normal' ? 'ähnlich warm' : `etwa ${fmtTemp(Math.round(today.TXK - (tempClass === 'high' ? today.context.TXK_hi : today.context.TXK_lo) ))} ${today.TXK > today.context.TXK ? 'wärmer' : 'kälter'}`}.`
+        copySentence = `Mit ${fmtTemp(today.TXK)} ist es heute in ${station.name} ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${tempClass === 'normal' ? 'ähnlich warm' : `etwa ${fmtTemp(Math.round(today.TXK - (tempClass === 'high' ? today.context.TXK_hi : today.context.TXK_lo) ))} ${today.TXK > today.context.TXK ? 'wärmer' : 'kälter'}`}.`
     }
 </script>
 

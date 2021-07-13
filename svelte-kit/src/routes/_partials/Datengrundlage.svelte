@@ -2,7 +2,18 @@
 	export let stationen;
 </script>
 
-<h3>Unsere Datengrundlage</h3>
+<style type="text/css">
+	h3 {
+		color: var(--gray-dark);
+		font-size: 23px;
+	}
+	p {
+		color: var(--gray-dark);
+		font-size: 17px;
+	}
+</style>
+
+<h3 id="datengrundlage">Unsere Datengrundlage</h3>
 
 <p>Alle Wetterdaten stammen aus dem <a href="https://www.dwd.de/DE/klimaumwelt/cdc/cdc_node.html">Climate Data Center</a> vom Deutschen Wetterdienst (DWD). Damit bilden wir die Prognose- und Messdaten von {stationen.length} Wetterstationen ab, die seit mindestens 1961 bis heute aktiv sind. Nicht alle Stationen stehen im Zentrum einer Stadt, manche etwas außerhalb, auf einer Anhöhe oder einem Berg. Es kann also sein, dass die von uns benutzten Messwerte (Temperatur, Niederschlag) von denen direkt vor deiner Haustür abweichen. </p>
 

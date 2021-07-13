@@ -26,6 +26,7 @@
 <style>
     .small {
         font-size: 0.85rem;
+        margin-bottom: 2rem;
     }
 </style>
 
@@ -38,6 +39,6 @@
     on:select={handleSelect} />
 
 <div class="small">{#each hl as station}
-<a href="/station/{station.slug}">{station.lbl}</a> &nbsp;
+    <a href="/station/{station.slug}">{station.lbl}</a> &nbsp;
 {/each}
 </div>

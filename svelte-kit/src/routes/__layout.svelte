@@ -31,4 +31,7 @@
 	span {
 		color: #35bfed;
 	}
+	div {
+		margin-bottom: 3rem;
+	}
 </style>
