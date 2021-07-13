@@ -72,7 +72,11 @@
     {/await}
     {#if station}
     <h2>{station.name}</h2>
-    <!-- <Station {station} data={station.data} monthlyStats={station.monthlyStats} /> -->
+    <Station
+        stationen={stations}
+        {station}
+        data={station.data}
+        monthlyStats={station.monthlyStats} />
     {/if}
 </div>
 

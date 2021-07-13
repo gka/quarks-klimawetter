@@ -1,46 +1,3 @@
-<!-- <script context="module">
-    let stationen;
-
-    /**
-     * @type {import('@sveltejs/kit').Load}
-     */
-    export async function load({ page, fetch, session, context }) {
-        if (!stationen) {
-            const res = await fetch('/data/stations.json');
-            stationen = await res.json()
-        }
-        const station = stationen.find(s => s.slug === page.params.slug);
-
-        if (station) {
-            const res2 = await fetch(`/data/stations/${station.id}.json`);
-            const {data, monthlyStats} = await res2.json();
-
-            const res3 = await fetch(`/data/stations/${station.id}-ctx.json`);
-            const context = await res3.json();
-
-            return {
-                props: {
-                    stationen,
-                    data: data.map(d => ({
-                        ...d,
-                        date: new Date(d.date),
-                        TXK: d.TXK === null ? Number.NaN : d.TXK,
-                        context: context[d.day]
-                    })),
-                    station,
-                    monthlyStats
-                }
-            };
-        }
-
-        return {
-            status: res.status,
-            error: new Error(`Could not load ${page.params.slug}`)
-        };
-    }
-
-</script> -->
-
 <script>
     import dayjs from 'dayjs';
     import { mean, quantileSorted, quantile, ascending, group, sum } from 'd3-array'
@@ -160,7 +117,7 @@
 {#if monthlyStats}
 
 <figure style="position: relative;">
-    <img width="30" src="../../thermometer.svg" style="position: absolute; left: -50px;">
+    <img width="30" src="/static/thermometer.svg" style="position: absolute; left: -50px;">
     <ChartYearly
         month={curMonth}
         data="{monthlyData}"
