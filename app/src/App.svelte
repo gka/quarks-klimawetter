@@ -61,7 +61,7 @@
         s.data = data.map(d => ({
             ...d,
             date: new Date(d.date),
-            TXK: d.TXK === null ? +(fcMap.get(d.date)).TXK : d.TXK,
+            TXK: d.TXK === null && fcMap.has(d.date) ? +(fcMap.get(d.date)).TXK : d.TXK,
             context: context[d.day]
         }))
         s.monthlyStats = monthlyStats;

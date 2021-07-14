@@ -1,32 +1,90 @@
 {
-  "name": "svelte-app",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "rollup -c",
-    "dev": "rollup -c -w",
-    "start": "sirv public --no-clear"
-  },
-  "devDependencies": {
-    "@rollup/plugin-alias": "^3.1.2",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.0.0",
-    "rollup": "^2.3.4",
-    "rollup-plugin-css-only": "^3.1.0",
-    "rollup-plugin-livereload": "^2.0.0",
-    "rollup-plugin-svelte": "^7.0.0",
-    "rollup-plugin-terser": "^7.0.0",
-    "svelte": "^3.0.0"
-  },
-  "dependencies": {
-    "d3-array": "^2.12.1",
-    "d3-dsv": "^2.0.0",
-    "d3-regression": "^1.3.9",
-    "d3-scale": "^3.3.0",
-    "d3-shape": "^2.1.0",
-    "dayjs": "^1.10.4",
-    "sirv-cli": "^1.0.0",
-    "slugify": "^1.5.2",
-    "svelte-typeahead": "^3.0.0"
-  }
+    "name": "quarksklima-app",
+    "version": "1.0.0",
+    "author": "Gregor Aisch",
+    "scripts": {
+        "build": "rollup -c",
+        "dev": "rollup -c -w",
+        "start": "sirv public --no-clear",
+        "lint": "prettier --check --plugin-search-dir=. src && eslint --ignore-path .gitignore src",
+        "format": "prettier --write --plugin-search-dir=. src",
+        "publish": "scp -r public/ vis4.net:projects/quarks-klima/",
+        "sync-data": "aws s3 cp --recursive s3://data.vis4.net/dwd static/data --profile dwd-scraper"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:gka/quarks-klimawetter.git"
+    },
+    "dependencies": {
+        "d3-array": "^2.12.1",
+        "d3-dsv": "^2.0.0",
+        "d3-regression": "^1.3.9",
+        "d3-scale": "^3.3.0",
+        "d3-shape": "^2.1.0",
+        "dayjs": "^1.10.4",
+        "sirv-cli": "^1.0.0",
+        "slugify": "^1.5.2",
+        "svelte-typeahead": "^3.0.0"
+    },
+    "devDependencies": {
+        "@rollup/plugin-alias": "^3.1.2",
+        "@rollup/plugin-commonjs": "^17.0.0",
+        "@rollup/plugin-node-resolve": "^11.0.0",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.30.0",
+        "eslint-plugin-svelte3": "^3.2.0",
+        "healthier": "^4.0.0",
+        "prettier": "^2.3.2",
+        "rollup": "^2.3.4",
+        "rollup-plugin-css-only": "^3.1.0",
+        "rollup-plugin-livereload": "^2.0.0",
+        "rollup-plugin-svelte": "^7.0.0",
+        "rollup-plugin-terser": "^7.0.0",
+        "svelte": "^3.0.0"
+    },
+    "private": true,
+    "prettier": {
+        "arrowParens": "avoid",
+        "printWidth": 100,
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "none"
+    },
+    "eslintConfig": {
+        "parser": "babel-eslint",
+        "plugins": [
+            "svelte3"
+        ],
+        "overrides": [
+            {
+                "files": [
+                    "**/*.svelte"
+                ],
+                "processor": "svelte3/svelte3",
+                "rules": {
+                    "import/first": "off"
+                }
+            }
+        ],
+        "rules": {
+            "no-console": [
+                "error",
+                {
+                    "allow": [
+                        "warn",
+                        "error"
+                    ]
+                }
+            ],
+            "camelcase": [
+                "warn",
+                {
+                    "ignoreDestructuring": true,
+                    "properties": "never"
+                }
+            ],
+            "prefer-const": "off"
+        }
+    }
 }
