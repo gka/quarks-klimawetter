@@ -7,10 +7,6 @@
     import ChartYearly from './_partials/ChartYearly.svelte';
     import TopInfo from './_partials/TopInfo.svelte';
     import InfoBox from './_partials/InfoBox.svelte';
-    import Fazit from './_partials/Fazit.svelte';
-    import Credits from './_partials/Credits.svelte';
-    import Datengrundlage from './_partials/Datengrundlage.svelte';
-    import Quellen from './_partials/Quellen.svelte';
     import { beforeUpdate, onMount } from 'svelte';
 
     export let stationen;
@@ -154,21 +150,4 @@
 <p>Fällt die Trendlinie ab, heißt das, dass dieser Monat immer trockener wird im Vergleich zum Referenzzeitraum von 1961-1990. Steigt sie an, heißt das, dass es häufiger regnet als im Vergleich zum Referenzzeitraum.</p>
 
 <p>Wenn die Niederschlagsmengen außergewöhnlich oft vom Mittel abweichen, ist das auf die Erderwärmung zurückzuführen. Die Erderwärmung geht insgesamt mit einer Verschiebung des Niederschlags einher. Punktuell extrem heftige Niederschläge können zwar häufiger auftreten, doch insgesamt regnet es im Sommer immer weniger. Die Winter werden dafür feuchter, es regnet mehr.</p>
-
-
-<hr />
-
-<Fazit />
-
-<hr />
-
-<Credits />
-
-<hr />
-
-<Datengrundlage {stationen} />
-
-<hr />
-
-<Quellen />
 

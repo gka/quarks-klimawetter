@@ -75,7 +75,6 @@
 </script>
 
 <div>
-    <p>Ist es heute nicht viel zu warm? Regnet es wirklich immer so viel? Hier kannst du nachschauen, ob das aktuelle Wetter in deiner Region noch normal ist oder durch den Klimawandel kommt.</p>
     {#await loadStations()}
     <p>Loading stations</p>
     {:then stations}
