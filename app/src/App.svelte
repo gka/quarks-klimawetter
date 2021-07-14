@@ -2,6 +2,8 @@
     import Station from './Station.svelte';
     import StationSelect from './_partials/StationSelect.svelte';
     import findNearestStation from '$lib/findNearestStation';
+    import { csvParse } from 'd3-dsv';
+    import { index } from 'd3-array';
 
     let stations;
     let station;
@@ -11,6 +13,11 @@
     async function fetchJSON(url) {
         const res = await fetch(url);
         return res.json();
+    }
+
+    async function fetchCSV(url) {
+        const res = await fetch(url);
+        return csvParse(await res.text());
     }
 
     async function loadStations() {
@@ -44,14 +51,17 @@
             console.log(s);
             s = stations.find(d => d.slug === s.slug);
         }
-        const [{data, monthlyStats}, context] = await Promise.all([
+        const [{data, monthlyStats}, context, fc] = await Promise.all([
             fetchJSON(`${dataUrl}/stations/${s.id}.json`),
             fetchJSON(`${dataUrl}/stations/${s.id}-ctx.json`),
+            fetchCSV(`${dataUrl}/stations/${s.id}-fc.csv`),
         ]);
+        const fcMap = index(fc, d => d.date);
+        console.log(fcMap);
         s.data = data.map(d => ({
             ...d,
             date: new Date(d.date),
-            TXK: d.TXK === null ? Number.NaN : d.TXK,
+            TXK: d.TXK === null ? +(fcMap.get(d.date)).TXK : d.TXK,
             context: context[d.day]
         }))
         s.monthlyStats = monthlyStats;

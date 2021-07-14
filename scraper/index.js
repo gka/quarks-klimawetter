@@ -5,13 +5,12 @@ const dayjs = require('dayjs');
 const { readFile, writeFile } = require('fs/promises');
 const slugify = require('slugify');
 const { csvParse } = require('d3-dsv');
-const { mean, sum, quantileSorted, quantile, ascending, group, range, extent} = require('d3-array');
+const { mean, max, sum, quantileSorted, quantile, ascending, group, range, extent} = require('d3-array');
 const { ascendingKey, descendingKey } = require('d3-jetpack');
 
 run();
 
 const analyzeContext = !!argv.context;
-console.log({analyzeContext});
 
 const outDir = argv.out || path.join(__dirname, 'out');
 const baseMinYear = 1961;
@@ -56,12 +55,34 @@ async function run() {
             (await got(`https://data.vis4.net/dwd/stations/${station.id}-fc.csv`)).body;
 
         const stationData = csvParse(stationCsv, d => ({
+            date_s: d.date,
             date: new Date(d.date),
             year: new Date(d.date).getFullYear(),
             day: dayjs(d.date).format('MM-DD'),
             TXK: +d.TXK,
             RSK: +d.RSK
         }));
+
+        const promises = [];
+        // replace current day and NAs with most recent forecast from brightsky
+        const today = dayjs().format('YYYY-MM-DD');
+        stationData
+            .filter(d => d.date_s === today || (d.year > 2010 && isNaN(d.TXK)))
+            .forEach(d => {
+                promises.push(new Promise(async (resolve) => {
+                    const url = `https://api.brightsky.dev/weather?dwd_station_id=${station.id}&date=${d.date_s}`;
+                    const res = JSON.parse((await got(url)).body);
+                    if (res.weather) {
+                        const TXK = max(res.weather, d => d.temperature);
+                        const RSK = sum(res.weather, d => d.precipitation);
+                        if (!isNaN(TXK) && TXK !== null) d.TXK = TXK;
+                        if (!isNaN(RSK) && RSK !== null) d.RSK = RSK;
+                    }
+                    resolve();
+                }));
+            });
+
+        await Promise.all(promises);
 
         const r = updateData(stationData, station);
 
@@ -124,36 +145,36 @@ function updateData(data, station) {
     }
 
     const monthlyStats = {};
-    for (const curMonth of range(0,12)) {
-        const stats = [];
-        group(data2.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
-            const avgMaxTemp = round(mean(value, d => d.TXK));
-            const tempRange = extent(value, d => d.TXK).map(round);
-            const tempValues = value.map(d => d.TXK)
-                .filter(d => d !== null && !isNaN(d))
-                .sort(ascending);
-            const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
-            stats.push({
-                year: key,
-                temp: avgMaxTemp,
-                temp_range: tempRange,
-                temp_lo: round(quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5)),
-                temp_hi: round(quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5)),
-                precip: round(sumPrecip,1)
-            })
-        });
-        const base = stats.filter(d => d.year >= baseMinYear && d.year < baseMinYear+30);
-        const monthlyBase = {
-            temp_lo: round(quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.temp)),
-            temp_hi: round(quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.temp)),
-            precip_lo: round(quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.precip)),
-            precip_hi: round(quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.precip)),
-        }
-        monthlyStats[curMonth] = {
-            stats,
-            base: monthlyBase
-        };
-    }
+    // for (const curMonth of range(0,12)) {
+    //     const stats = [];
+    //     group(data2.filter(d => d.date.getMonth() === curMonth), d => d.year).forEach((value, key) => {
+    //         const avgMaxTemp = round(mean(value, d => d.TXK));
+    //         const tempRange = extent(value, d => d.TXK).map(round);
+    //         const tempValues = value.map(d => d.TXK)
+    //             .filter(d => d !== null && !isNaN(d))
+    //             .sort(ascending);
+    //         const sumPrecip = sum(value, d => d.RSK !== -999 ? d.RSK : 0);
+    //         stats.push({
+    //             year: key,
+    //             temp: avgMaxTemp,
+    //             temp_range: tempRange,
+    //             temp_lo: round(quantileSorted(tempValues, 0.5-(tempQuartileRange/100)*0.5)),
+    //             temp_hi: round(quantileSorted(tempValues, 0.5+(tempQuartileRange/100)*0.5)),
+    //             precip: round(sumPrecip,1)
+    //         })
+    //     });
+    //     const base = stats.filter(d => d.year >= baseMinYear && d.year < baseMinYear+30);
+    //     const monthlyBase = {
+    //         temp_lo: round(quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.temp)),
+    //         temp_hi: round(quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.temp)),
+    //         precip_lo: round(quantile(base, 0.5-(tempQuartileRange/100)*0.5, d => d.precip)),
+    //         precip_hi: round(quantile(base, 0.5+(tempQuartileRange/100)*0.5, d => d.precip)),
+    //     }
+    //     monthlyStats[curMonth] = {
+    //         stats,
+    //         base: monthlyBase
+    //     };
+    // }
 
     return {
         data: data2.map(d => ({
