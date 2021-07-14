@@ -48,12 +48,12 @@
         .x(d => xScale(d.date))
         .y0(d => yScale(d.context.rain30days_lo))
         .y1(d => yScale(d.context.rain30days_hi))
-        .defined(d => !isNaN(d.context.rain30days_hi))
+        .defined(d => !isNaN(d.context.rain30days_hi) && dayjs(d.date).diff($maxDate, 'd') < 11)
         .curve(curveBasis);
 
     let selected;
 
-    $: lastContext = data[0];
+    $: lastContext = data.find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
     $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate <= 0);
 
     function select(d) {

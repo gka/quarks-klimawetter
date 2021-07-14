@@ -22,15 +22,16 @@
 
     async function loadStations() {
         stations = await fetchJSON(`${dataUrl}/stations.json`);
+        let match;
         if (location.hash) {
             const slug = location.hash.substr(2);
-            const match = stations.find(s => s.slug === slug);
+            match = stations.find(s => s.slug === slug);
             if (match) loadStation(match);
-            else {
-                findNearestStation(stations, (x) => {
-                    loadStation(x)
-                });
-            }
+        }
+        if (!location.hash || !match) {
+            findNearestStation(stations, (x) => {
+                loadStation(x)
+            });
         }
         // listen to hash changes from here on
         window.addEventListener('hashchange', function() {

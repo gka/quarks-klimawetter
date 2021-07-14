@@ -25,7 +25,7 @@
     	.x(d => xScale(d.date))
     	.y0(d => yScale(d.context.TXK_lo))
     	.y1(d => yScale(d.context.TXK_hi))
-        .defined(d => !isNaN(d.context.TXK_hi))
+        .defined(d => !isNaN(d.context.TXK_hi) && dayjs(d.date).diff($maxDate, 'd') < 11)
     	.curve(curveBasis);
 
     $: aboveMaxTempPath = area()
@@ -53,7 +53,7 @@
         .curve(curveBasis);
 
     let selected;
-    $: lastContext = data[0];
+    $: lastContext = data.find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
     $: lastDay = data.find(d => !isNaN(d.TXK) !== null && d.date - $maxDate <= 0);
 
     function select(d) {
