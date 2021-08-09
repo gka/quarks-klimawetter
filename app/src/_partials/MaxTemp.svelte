@@ -170,12 +170,12 @@
 
 
 <path class="context" d="{contextPath(data)}" />
-
+<!--
 <text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
     <tspan x="0" dy="-17">normale</tspan>
     <tspan x="0" dy="17">Temp.</tspan>
     <tspan x="0" dy="17">1961-1990</tspan>
-</text>
+</text> -->
 
 <path class="line maxTemp" d="{curMaxTempPath(data)}" clip-path="url(#clip-in-context)"  />
 <!-- <path class="line maxTemp" d="{curMaxTempPath(data)}" /> -->

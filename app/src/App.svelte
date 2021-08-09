@@ -86,7 +86,7 @@
         stationen={stations}
         {station}
         data={station.data}
-        monthlyStats={station.monthlyStats} />
+        monthlyStats={station.monthlyStats station.monthlyStats} />
     {/if}
 </div>
 
