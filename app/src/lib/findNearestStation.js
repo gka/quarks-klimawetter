@@ -1,17 +1,22 @@
-export default function findNearestStation(stations, callback) {
+export function findNearestStation(stations, callback) {
     navigator.geolocation.getCurrentPosition(
         position => {
             const { latitude, longitude } = position.coords;
-            // compute distances
-            stations.forEach(s => {
-                s.dist = latLonDist(latitude, longitude, s.lat, s.lon);
-            });
-            const station = stations.sort((a, b) => a.dist - b.dist)[0];
+            const station = findNearestStationLL(stations, latitude, longitude)
             callback(station);
         },
         () => {}
     );
 }
+
+export function findNearestStationLL(stations, lat, lon) {
+    // compute distances
+    stations.forEach(s => {
+        s.dist = latLonDist(lat, lon, s.lat, s.lon);
+    });
+    return stations.sort((a, b) => a.dist - b.dist)[0];
+}
+
 
 function latLonDist(lat1, lon1, lat2, lon2) {
     const p = 0.017453292519943295; // This is  Math.PI / 180

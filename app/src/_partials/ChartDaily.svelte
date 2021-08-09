@@ -151,7 +151,7 @@
     svg {
         position: relative;
         width: 100%;
-        overflow: hidden;
+        overflow: visible;
     }
 
     .tick {

@@ -1,7 +1,7 @@
 <script>
     import Station from './Station.svelte';
     import StationSelect from './_partials/StationSelect.svelte';
-    import findNearestStation from '$lib/findNearestStation';
+    import { findNearestStation } from '$lib/findNearestStation';
     import { csvParse } from 'd3-dsv';
     import { index } from 'd3-array';
 
@@ -36,7 +36,6 @@
         // listen to hash changes from here on
         window.addEventListener('hashchange', function() {
             if (station && location.hash.substr(2) !== station.hash) {
-                console.log('The hash has changed!', location.hash);
                 loadStation({slug: location.hash.substr(2)});
             }
         }, false);
@@ -49,7 +48,6 @@
 
     async function loadStation(s) {
         if (!s.id) {
-            console.log(s);
             s = stations.find(d => d.slug === s.slug);
         }
         const [{data, monthlyStats}, context, fc] = await Promise.all([
@@ -58,7 +56,6 @@
             fetchCSV(`${dataUrl}/stations/${s.id}-fc.csv`),
         ]);
         const fcMap = index(fc, d => d.date);
-        console.log(fcMap);
         s.data = data.map(d => ({
             ...d,
             date: new Date(d.date),
@@ -67,12 +64,15 @@
         }))
         s.monthlyStats = monthlyStats;
         station = s;
-        console.log('station loaded', station)
         location.hash = `#/${station.slug}`
     }
 
     export let name;
 </script>
+
+<svelte:head>
+    <title>Quarks Wetterklima</title>
+</svelte:head>
 
 <div>
     {#await loadStations()}
@@ -86,7 +86,7 @@
         stationen={stations}
         {station}
         data={station.data}
-        monthlyStats={station.monthlyStats station.monthlyStats} />
+        monthlyStats={station.monthlyStats} />
     {/if}
 </div>
 

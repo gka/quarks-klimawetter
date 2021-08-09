@@ -196,13 +196,13 @@
 <path class="less-rain" d="{belowContextPath(data)}" clip-path="url(#clip-rain)" />
 
 
-{#each data as d}
+<!-- {#each data as d}
     {#if d.RSK > 0 && selected && selected.date >= d.date && dayjs(selected.date).diff(d.date, 'day') < 30}
     <g transform="translate({[xScale(d.date), yScale(0)]})">
         <rect class="bar" y={yScale(d.RSK)-yScale(0)} width="4" height="{yScale(0)-yScale(d.RSK)}" />
     </g>
     {/if}
-{/each}
+{/each} -->
 
 {#each data as d}
     {#if d.rain30days !== null && d.date <= $maxDate}
