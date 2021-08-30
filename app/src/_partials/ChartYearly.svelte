@@ -232,7 +232,7 @@
     svg {
         position: relative;
         width: 100%;
-        overflow: hidden;
+        overflow: visible;
     }
     text.label {
         font-size: 0.8rem;
