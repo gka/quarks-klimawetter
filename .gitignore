@@ -3,5 +3,5 @@
 .RData
 .Ruserdata
 *.kml
-scraper/out/*
+scraper-old/out/*
 data/*
