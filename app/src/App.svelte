@@ -4,11 +4,13 @@
     import { findNearestStation } from '$lib/findNearestStation';
     import { csvParse } from 'd3-dsv';
     import { index } from 'd3-array';
+import dayjs from 'dayjs';
 
     let stations;
     let station;
 
-    const dataUrl = 'https://data.vis4.net/dwd';
+    // const dataUrl = 'https://data.vis4.net/dwd';
+    const dataUrl = '/data';
 
     async function fetchJSON(url) {
         const res = await fetch(url);
@@ -50,20 +52,22 @@
         if (!s.id) {
             s = stations.find(d => d.slug === s.slug);
         }
-        const [{data, monthlyStats}, context, fc] = await Promise.all([
+        const [{data, monthly}, {monthly:monthlyHist, daily}, fc] = await Promise.all([
             fetchJSON(`${dataUrl}/stations/${s.id}.json`),
-            fetchJSON(`${dataUrl}/stations/${s.id}-ctx.json`),
-            fetchCSV(`${dataUrl}/stations/${s.id}-fc.csv`),
+            fetchJSON(`${dataUrl}/stations/${s.id}-ctx.json`)
         ]);
-        const fcMap = index(fc, d => d.date);
-        s.data = data.map(d => ({
-            ...d,
-            date: new Date(d.date),
-            TXK: d.TXK === null && fcMap.has(d.date) ? +(fcMap.get(d.date)).TXK : d.TXK,
-            context: context[d.day]
-        }))
-        s.monthlyStats = monthlyStats;
+        s.data = data.map(d => {
+            const day = dayjs(d.date).format('MM-DD');
+            return {
+                ...d,
+                day,
+                date: new Date(d.date),
+                context: daily[day]
+            }
+        });
+        s.monthlyStats = monthlyHist;
         station = s;
+        console.log(s);;
         location.hash = `#/${station.slug}`
     }
 

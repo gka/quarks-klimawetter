@@ -83,7 +83,7 @@
     $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');;
 
     $: dataFiltered = data.filter((d,i) => {
-        return d.year <= maxYear && d.year >= minYear;
+        return d.year <= maxYear && d.year >= minYear && (show === 'temp' ? d.temp > -900 : d.precip > -900);
     });
 
     $: regLin = regressionLinear()

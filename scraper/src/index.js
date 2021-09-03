@@ -81,7 +81,8 @@ function aggregateMonthly(data) {
             .sort(ascending);
         const sumPrecip = sum(value, d => (d.RSK !== -999 ? d.RSK : 0));
         out.push({
-            year: key,
+            year: +key.split('-')[0],
+            month: +key.split('-')[1],
             temp: avgMaxTemp,
             temp_range: tempRange,
             temp_lo: round(quantileSorted(tempValues, 0.5 - (tempQuartileRange / 100) * 0.5)),

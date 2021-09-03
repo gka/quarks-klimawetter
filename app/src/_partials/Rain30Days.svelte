@@ -7,7 +7,6 @@
     export let xScale;
     export let yScale;
     export let data;
-    export let context;
     export let height;
 
     $: curRainPath = line()
@@ -53,7 +52,7 @@
 
     let selected;
 
-    $: lastContext = data.find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
+    $: lastContext = data[data.length-1]; // .find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
     $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate <= 0);
 
     function select(d) {
