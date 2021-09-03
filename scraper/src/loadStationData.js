@@ -66,11 +66,13 @@ async function downloadDwdData(stationId, historical = false) {
                             TXK: +row[' TXK'],
                             source: 'dwd/recent'
                         }));
-                    // write cache
-                    await writeFile(
-                        path.join(cacheDir, `${stationId}-hist.json`),
-                        JSON.stringify(data)
-                    );
+                    if (historical) {
+                        // write cache
+                        await writeFile(
+                            path.join(cacheDir, `${stationId}-hist.json`),
+                            JSON.stringify(data)
+                        );
+                    }
                     resolve(data);
                 }
             } catch (err) {
