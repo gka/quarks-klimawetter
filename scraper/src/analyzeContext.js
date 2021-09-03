@@ -20,7 +20,6 @@ while (day.year() === 2021) {
     DAYS.push(day.format('MM-DD'));
     day = day.add(1, 'day');
 }
-console.log(DAYS.length, DAYS.slice(0,5));
 
 function analyzeContext(data, baseMinYear) {
     // add some useful date keys

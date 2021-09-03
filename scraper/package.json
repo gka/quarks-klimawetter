@@ -9,7 +9,7 @@
         "format": "prettier 'src/**/*.js' --write",
         "drop-cache": "rm cache/*.json",
         "weather": "node src/index.js",
-        "context": "node src/index.js --context",
+        "context": "node src/index.js --context"
     },
     "keywords": [],
     "author": "",
