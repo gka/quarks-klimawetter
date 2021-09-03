@@ -20,7 +20,7 @@ mkdirp.sync(cacheDir);
 temp.track();
 
 const DAYS_FUTURE = 7;
-module.exports = {loadStationData, loadStationHist};
+module.exports = { loadStationData, loadStationHist };
 
 const today = dayjs().startOf('day');
 

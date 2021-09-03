@@ -1,7 +1,7 @@
 const dayjs = require('dayjs');
+const { round, tempQuartileRange } = require('./shared');
 const {
     mean,
-    max,
     sum,
     quantileSorted,
     quantile,
@@ -12,7 +12,7 @@ const {
 } = require('d3-array');
 const { ascendingKey } = require('d3-jetpack');
 
-const tempQuartileRange = 50;
+
 
 const DAYS = [];
 let day = dayjs('2021-01-01');
@@ -37,7 +37,7 @@ function analyzeContext(data, baseMinYear) {
     const monthly = {};
     range(12).forEach(month => {
         monthly[month] = getMonthlyContext(data, month, baseMinYear);
-    })
+    });
     return { daily, monthly };
 }
 
@@ -126,9 +126,7 @@ function getMonthlyContext(data, month, baseMinYear) {
     };
 }
 
-function round(d) {
-    return Math.round(d * 10) / 10;
-}
+
 
 module.exports = analyzeContext;
 
@@ -137,8 +135,8 @@ if (process.argv[1] === __filename) {
     const { loadStationHist } = require('./loadStationData');
     (async () => {
         const hist = await loadStationHist('00400');
-        console.log('x', hist.slice(0,10));
-        const {daily, monthly} = analyzeContext(hist, 1961);
+        console.log('x', hist.slice(0, 10));
+        const { daily, monthly } = analyzeContext(hist, 1961);
         console.log(daily);
         console.log(monthly, monthly[5].stats.slice(-5));
     })();

@@ -35,5 +35,13 @@
         "eslint": "^7.32.0",
         "healthier": "^4.0.0",
         "prettier": "^2.3.2"
+    },
+    "prettier": {
+        "arrowParens": "avoid",
+        "printWidth": 100,
+        "semi": true,
+        "singleQuote": true,
+        "tabWidth": 4,
+        "trailingComma": "none"
     }
 }

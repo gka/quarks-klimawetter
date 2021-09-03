@@ -1,14 +1,20 @@
 const argv = require('yargs/yargs')(process.argv.slice(2)).argv;
 const path = require('path');
-const got = require('got');
-const slugify = require('slugify');
-const { csvParse } = require('d3-dsv');
-const { readFile, writeFile } = require('fs/promises');
+const { writeFile } = require('fs/promises');
 const mkdirp = require('mkdirp');
-const dayjs = require('dayjs');
 const { loadStationData, loadStationHist } = require('./loadStationData');
 const loadStations = require('./loadStations');
 const analyzeContext = require('./analyzeContext');
+const { round, tempQuartileRange } = require('./shared');
+const {
+    mean,
+    sum,
+    quantileSorted,
+    ascending,
+    group,
+    extent
+} = require('d3-array');
+const dayjs = require('dayjs');
 
 const outDir = argv.out || path.join(__dirname, '..', 'out');
 const baseMinYear = 1961;
@@ -39,6 +45,9 @@ async function loadWeather(stations) {
         };
         if (stationData.data) {
             station.last_date = stationData.data.slice(-1)[0].date;
+            // monthly stats
+            stationData.monthly = aggregateMonthly(stationData.data);
+            // compress sources
             const srcs = {};
             stationData.data.forEach(row => {
                 if (srcs[row.source] === undefined) {
@@ -47,6 +56,7 @@ async function loadWeather(stations) {
                 }
                 row.source = srcs[row.source];
             });
+
             await writeFile(
                 path.join(outDir, 'stations', `${station.id}.json`),
                 JSON.stringify(stationData, null, 3)
@@ -57,6 +67,30 @@ async function loadWeather(stations) {
     }
 }
 
+function aggregateMonthly(data) {
+    const out = [];
+    group(
+        data,
+        d => dayjs(d.date).format('YYYY-MM')
+    ).forEach((value, key) => {
+        const avgMaxTemp = round(mean(value, d => d.TXK));
+        const tempRange = extent(value, d => d.TXK).map(round);
+        const tempValues = value
+            .map(d => d.TXK)
+            .filter(d => d !== null && !isNaN(d))
+            .sort(ascending);
+        const sumPrecip = sum(value, d => (d.RSK !== -999 ? d.RSK : 0));
+        out.push({
+            year: key,
+            temp: avgMaxTemp,
+            temp_range: tempRange,
+            temp_lo: round(quantileSorted(tempValues, 0.5 - (tempQuartileRange / 100) * 0.5)),
+            temp_hi: round(quantileSorted(tempValues, 0.5 + (tempQuartileRange / 100) * 0.5)),
+            precip: round(sumPrecip, 1)
+        });
+    });
+    return out;
+}
 
 (async () => {
     const stations = await loadStations(baseMinYear);
