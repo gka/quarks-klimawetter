@@ -10,13 +10,14 @@
     export let stations = [];
     let cities = [];
     export let selected;
+    export let dataUrl;
     let result;
 
     let lookup = [];
 
     onMount(async () => {
         lookup = stations.slice(0);
-        const res = await fetch('static/cities.json');
+        const res = await fetch(`${dataUrl}/../cities.json`);
         const cities = await res.json();
         console.log(cities.length);
         cities.forEach(city => {

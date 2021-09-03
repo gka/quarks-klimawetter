@@ -78,7 +78,7 @@
     {#await loadStations()}
     <p>Loading stations</p>
     {:then stations}
-    <StationSelect {stations} on:select="{handleStationSelect}" />
+    <StationSelect {stations} {dataUrl} on:select="{handleStationSelect}" />
     {/await}
     {#if station}
     <h2>{station.name}</h2>

@@ -1,0 +1,40 @@
+{
+    "name": "scraper2",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lint": "prettier --check '**/*.js' && healthier '**/*.js'",
+        "format": "prettier '**/*.js' --write"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "adm-zip": "^0.5.5",
+        "async": "^3.2.1",
+        "d3-array": "^2.12.1",
+        "d3-dsv": "^2.0.0",
+        "d3-jetpack": "^2.2.0",
+        "dayjs": "^1.10.6",
+        "got": "^11.8.2",
+        "mkdirp": "^0.5.5",
+        "node-stream-zip": "^1.14.0",
+        "slugify": "^1.6.0",
+        "temp": "^0.9.4",
+        "yargs": "^17.1.1"
+    },
+    "devDependencies": {
+        "@datawrapper/eslint-config": "^0.2.2",
+        "@datawrapper/prettier-config": "^1.0.0",
+        "babel-eslint": "^10.1.0",
+        "eslint": "^7.32.0",
+        "healthier": "^4.0.0",
+        "prettier": "^2.3.2"
+    },
+    "prettier": "@datawrapper/prettier-config",
+    "eslintConfig": {
+        "extends": "@datawrapper/eslint-config"
+    }
+}
