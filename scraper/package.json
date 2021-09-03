@@ -29,15 +29,9 @@
         "yargs": "^17.1.1"
     },
     "devDependencies": {
-        "@datawrapper/eslint-config": "^0.2.2",
-        "@datawrapper/prettier-config": "^1.0.0",
         "babel-eslint": "^10.1.0",
         "eslint": "^7.32.0",
         "healthier": "^4.0.0",
         "prettier": "^2.3.2"
-    },
-    "prettier": "@datawrapper/prettier-config",
-    "eslintConfig": {
-        "extends": "@datawrapper/eslint-config"
     }
 }
