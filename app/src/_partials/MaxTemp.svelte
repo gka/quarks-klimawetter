@@ -135,11 +135,11 @@
         fill: var(--cyan);
     }
     .last-day text tspan:first-child,
-    .tooltip text tspan:first-child {
+    .g-tooltip text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
-    .tooltip {
+    .g-tooltip {
         pointer-events: none;
     }
     .legend text {
@@ -205,7 +205,7 @@
 {/each}
 
 {#if selected}
-<g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-33]})">
+<g class="g-tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-33]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
         <tspan x="0">{fmtTemp(selected.TXK)}</tspan>

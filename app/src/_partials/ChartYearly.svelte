@@ -4,7 +4,7 @@
     import { regressionLinear } from 'd3-regression';
     import dayjs from 'dayjs';
     import { line } from 'd3-shape';
-    import { beforeUpdate } from 'svelte';
+    import { beforeUpdate, onMount, tick } from 'svelte';
     import { fmtTemp, fmtRain } from '$lib/formats';
 
     import MaxTemp from './MaxTemp.svelte';
@@ -42,9 +42,11 @@
 
     $: padding = { top: 50, right: 80, bottom: 30, left: $innerWidth < 400 ? 30 : 40 };
 
+    $: xRange = [padding.left, chartWidth - padding.right];
+
     $: xScale = scaleLinear()
         .domain([minYear, maxYear])
-        .range([padding.left, chartWidth - padding.right]);
+        .range(xRange);
 
     $: yScale = scaleLinear()
         .domain(yExtent)
@@ -100,6 +102,13 @@
             chartWidth = clientWidth;
         }
     })
+
+    onMount(async () => {
+        // force re-rendering on mount
+        padding.left = padding.left+1;
+        await tick();
+        chartWidth = chartWidth-1;
+    });;
 
     let selected;
 
@@ -206,7 +215,7 @@
 
 
             {#if selected}
-            <g class="tooltip" transform="translate({xScale(selected.year)}, {selected[show] < 0 ? yScale(0)-25 : yScale(selected[show])-25})">
+            <g class="g-tooltip" transform="translate({xScale(selected.year)}, {selected[show] < 0 ? yScale(0)-25 : yScale(selected[show])-25})">
                 {#each [0,1] as i}
                 <text class:buffer="{i===0}">
                     <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show], true) }</tspan>
@@ -312,14 +321,7 @@
         stroke:  black;
         stroke-dasharray: 3,3;
     }
-    path.temp {
-        stroke: var(--red);
-        stroke-width:  2;
-        fill: none;
-    }
 
-    rect.white {
-    }
     .stop1 {
         stop-color: rgba(255,255,255,1);
     }
@@ -344,12 +346,7 @@
         stroke:  4;
         stroke: var(--gray);
     }
-    .boxplot line.high {
-        stroke: var(--red);
-    }
-    .boxplot line.low {
-        stroke: var(--cyan);
-    }
+
     .legend text {
         text-anchor: start;
         fill: var(--gray-dark);
@@ -358,7 +355,7 @@
     .legend g rect {
         opacity: 0.7;
     }
-    .tooltip text{
+    .g-tooltip text{
         text-anchor: middle;
         font-size: 0.93rem;
     }
@@ -371,11 +368,11 @@
         opacity: 0.8;
     }
 
-    .tooltip text tspan:first-child {
+    .g-tooltip text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
-    .tooltip {
+    .g-tooltip {
         pointer-events: none;
     }
 </style>

@@ -80,7 +80,7 @@
 
 
 <svelte:window bind:innerWidth={$innerWidth} />
-{chartWidth} / {xRange} / {xScale.range()} / {xScale(new Date())}
+
 <div
     bind:this={chart}
     class="chart"

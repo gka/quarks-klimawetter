@@ -8,7 +8,7 @@
         "start": "sirv public --no-clear",
         "lint": "prettier --check --plugin-search-dir=. src && eslint --ignore-path .gitignore src",
         "format": "prettier --write --plugin-search-dir=. src",
-        "publish": "mv public/data x && scp -r public/ vis4.net:projects/quarks-klima/ && mv x public/data",
+        "publish": "rollup -c && sshpass -p $QUARKS_PWD scp -r public/build/ user_quarks@185.201.147.235:./httpdocs/",
         "sync-data": "aws s3 cp --recursive s3://data.vis4.net/dwd static/data --profile dwd-scraper"
     },
     "repository": {

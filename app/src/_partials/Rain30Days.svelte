@@ -117,12 +117,12 @@
         font-size: 0.93rem;
         text-anchor: middle;
     }
-    .tooltip,
+    .g-tooltip,
     .last-day text tspan:first-child {
         font-weight: bold;
         font-family: sans_bold;
     }
-    .tooltip {
+    .g-tooltip {
         pointer-events: none;
     }
     .legend text {
@@ -202,7 +202,7 @@
 {/each}
 
 {#if selected}
-<g class="tooltip" transform="translate({[xScale(selected.date), yScale(selected.rain30days)-30]})">
+<g class="g-tooltip" transform="translate({[xScale(selected.date), yScale(selected.rain30days)-30]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
         <tspan x="0" >{fmtRain(selected.rain30days, true)}</tspan>
