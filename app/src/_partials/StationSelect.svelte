@@ -17,7 +17,7 @@
 
     onMount(async () => {
         lookup = stations.slice(0);
-        const res = await fetch(`${dataUrl}/cities.json`);
+        const res = await fetch(`${dataUrl}/cities.json`, { mode: 'cors'});
         const cities = await res.json();
         console.log(cities.length);
         cities.forEach(city => {

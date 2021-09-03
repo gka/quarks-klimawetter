@@ -160,7 +160,7 @@
     }
 
     .tick line {
-        stroke: var(--tick-line);
+        stroke: #dedede;
         shape-rendering: crispEdges;
     }
 

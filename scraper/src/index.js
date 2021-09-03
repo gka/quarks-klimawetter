@@ -95,6 +95,7 @@ function aggregateMonthly(data) {
 
 (async () => {
     const stations = await loadStations(baseMinYear);
+    await writeFile(path.join(outDir, 'stations.json'), JSON.stringify(stations, null, 3));
     if (!!argv.context) {
         await loadContext(stations);
     } else {

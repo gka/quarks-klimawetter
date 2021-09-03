@@ -2,24 +2,18 @@
     import Station from './Station.svelte';
     import StationSelect from './_partials/StationSelect.svelte';
     import { findNearestStation } from '$lib/findNearestStation';
-    import { csvParse } from 'd3-dsv';
-    import { index } from 'd3-array';
-import dayjs from 'dayjs';
+    import dayjs from 'dayjs';
 
     let stations;
     let station;
 
-    // const dataUrl = 'https://data.vis4.net/dwd';
-    const dataUrl = '/data';
+    const dataUrl = 'https://data.vis4.net/dwd';
+    // const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/data';
+    // const dataUrl = '/data';
 
     async function fetchJSON(url) {
-        const res = await fetch(url);
+        const res = await fetch(url, { mode: 'cors' });
         return res.json();
-    }
-
-    async function fetchCSV(url) {
-        const res = await fetch(url);
-        return csvParse(await res.text());
     }
 
     async function loadStations() {
@@ -64,14 +58,17 @@ import dayjs from 'dayjs';
                 date: new Date(d.date),
                 context: daily[day]
             }
-        });
-        s.monthlyStats = monthlyHist;
+        }).reverse();
         station = s;
-        console.log(s);;
+        monthly.forEach(m => {
+            // check if that month is already in monthlyStat
+            if (monthlyHist[m.month-1].stats.slice(-1)[0].year < m.year) {
+                monthlyHist[m.month-1].stats.push(m);
+            }
+        })
+        s.monthlyStats = monthlyHist;
         location.hash = `#/${station.slug}`
     }
-
-    export let name;
 </script>
 
 <svelte:head>
@@ -93,26 +90,3 @@ import dayjs from 'dayjs';
         monthlyStats={station.monthlyStats} />
     {/if}
 </div>
-
-
-<style>
-    main {
-        text-align: center;
-        padding: 1em;
-        max-width: 240px;
-        margin: 0 auto;
-    }
-
-    h1 {
-        color: #ff3e00;
-        text-transform: uppercase;
-        font-size: 4em;
-        font-weight: 100;
-    }
-
-    @media (min-width: 640px) {
-        main {
-            max-width: none;
-        }
-    }
-</style>

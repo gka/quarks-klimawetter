@@ -1,6 +1,4 @@
 import { writable, derived } from 'svelte/store';
-import { timeMonth, timeDay } from 'd3-time';
-import { scaleLinear } from 'd3-scale';
 import dayjs from 'dayjs';
 import 'dayjs/locale/de.js';
 import localizedFormat from 'dayjs/plugin/localizedFormat.js';

@@ -1,6 +1,6 @@
 <script>
     import { line, area, curveBasis } from 'd3-shape';
-    import { minDate, maxDate } from '$lib/stores';
+    import { maxDate } from '$lib/stores';
     import dayjs from 'dayjs';
     import { fmtRain } from '$lib/formats';
 
@@ -88,20 +88,10 @@
     circle.rain.below {
         fill: var(--orange);
     }
-    text.rain {
-        fill: var(--blue);
-        font-weight: bold;
-        font-family: sans_bold;
-        text-anchor: start;
-    }
     text.context {
         font-size: 14px;
         text-anchor: start;
         fill: var(--gray-dark);
-    }
-    rect.bar {
-        fill: var(--blue);
-        opacity: 0.5;
     }
     .more-rain {
         fill: var(--blue);
