@@ -37,7 +37,7 @@
     .flex div {
         font-size: 1.2rem;
         width: 50%;
-        text-align: center;
+        text-align: left;
     }
     .flex {
         display: flex;

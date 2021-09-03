@@ -82,7 +82,6 @@
     <StationSelect {stations} {dataUrl} on:select="{handleStationSelect}" />
     {/await}
     {#if station}
-    <h2>{station.name}</h2>
     <Station
         stationen={stations}
         {station}

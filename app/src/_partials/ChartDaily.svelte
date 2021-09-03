@@ -2,7 +2,7 @@
     import { scaleTime, scaleLinear } from 'd3-scale';
     import { extent } from 'd3-array';
     import dayjs from 'dayjs';
-    import { onMount, beforeUpdate } from 'svelte';
+    import { onMount, beforeUpdate, tick } from 'svelte';
     import MaxTemp from './MaxTemp.svelte';
     import Rain30Days from './Rain30Days.svelte';
 
@@ -27,9 +27,11 @@
 
     $: padding = { top: 50, right: 125, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
+    $: xRange = [padding.left, chartWidth - padding.right];
+
     $: xScale = scaleTime()
         .domain([$minDate, dayjs($maxDate).add(14, 'day').toDate()])
-        .range([padding.left, chartWidth - padding.right]);
+        .range(xRange);
 
     $: yScale = scaleLinear()
         .domain(yExtent)
@@ -61,9 +63,11 @@
         return d.date > $minDate
     });
 
-    onMount(() => {
+    onMount(async () => {
         // force re-rendering on mount
         padding.left = padding.left+1;
+        await tick();
+        chartWidth = chartWidth-1;
     });;
 
     beforeUpdate(() => {
@@ -76,7 +80,7 @@
 
 
 <svelte:window bind:innerWidth={$innerWidth} />
-
+{chartWidth} / {xRange} / {xScale.range()} / {xScale(new Date())}
 <div
     bind:this={chart}
     class="chart"
