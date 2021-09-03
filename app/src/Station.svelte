@@ -84,7 +84,7 @@
 
 <!-- <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p> -->
 
-<h3>🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan</h3>
+<h3>🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen war</h3>
 
 <figure>
     <ChartDaily
@@ -96,24 +96,24 @@
         show="rain30days" />
 </figure>
 
-<p>Über die vergangenen 30 Tage hat es {fmtRain(today.rain30days, true)} je Quadratmeter geregnet. Das ist {today.rain30days > today.context.rain30days_hi ? 'besonders viel' : today.rain30days < today.context.rain30days_lo ? 'besonders wenig' : 'normal'} {#if today.rain30days < today.context.rain30days_lo || today.rain30days > today.context.rain30days_hi} und etwa {fmtRain(Math.round(Math.abs(today.rain30days - (today.rain30days < today.context.rain30days_lo ? today.context.rain30days_lo : today.context.rain30days_hi))), true)}/qm {today.rain30days < today.context.rain30days_lo ? 'weniger' : 'mehr'}  im Vergleich zum 30-jährigen Mittel.{/if}</p>
+<p>Über die vergangenen 30 Tage hat es {fmtRain(today.rain30days, true)} je Quadratmeter geregnet. Das ist {today.rain30days > today.context.rain30days_hi ? 'besonders viel' : today.rain30days < today.context.rain30days_lo ? 'besonders wenig' : 'normal'}{#if today.rain30days < today.context.rain30days_lo || today.rain30days > today.context.rain30days_hi} und etwa {fmtRain(Math.round(Math.abs(today.rain30days - (today.rain30days < today.context.rain30days_lo ? today.context.rain30days_lo : today.context.rain30days_hi))), true)}/qm {today.rain30days < today.context.rain30days_lo ? 'weniger' : 'mehr'} als im Vergleich zum Referenzzeitraum.{:else}.{/if}</p>
 
 <p>Ein Punkt auf der Niederschlagslinie steht nicht für die Niederschlagsmenge an diesem Tag, sondern für den gesammelten Niederschlag der letzten 30 Tage. Da hat einen guten Grund: Einzelne Regentage unterliegen sehr starken Schwankungen. Das betrifft sowohl die Regenmenge pro Regentag als auch die Häufigkeit der Regentage in einem Monat oder sogar in einem Jahr. Wir stellen deshalb in unserem Diagramm dar, wie viel Niederschlag kumuliert (das heißt: gehäuft) über die vergangenen 30 Tage gefallen ist. Diesen Wert vergleichen wir mit dem Referenzzeitraum 1961-1990.</p>
 
 <hr />
 
-<p><strong>☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter unterliegt ständigen Schwankungen. Erst wenn ein Monat überdurchschnittlich oft – also mehrere Jahre in Folge – vom langjährigen Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung die Ursache dafür ist. Also erst wenn es im langfristigen Trend immer wärmer, und je nach Jahreszeit nasser oder trockener wird, können wir sagen: Das ist nicht einfach nur Wetter, das ist Klimawandel. </p>
+<p><strong>☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter unterliegt ständigen Schwankungen. Erst wenn ein Monat überdurchschnittlich oft – also mehrere Jahre in Folge – vom langjährigen Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung die Ursache dafür ist. Also erst wenn es im langfristigen Trend immer wärmer, und je nach Jahreszeit nasser oder trockener wird, können wir sagen: Das ist nicht einfach nur Wetter, das ist Klimawandel.</p>
 
 <p>Genau das zeigen die folgenden Diagramme.</p>
 
 <hr />
 
-<h3>🌡️ So warm war der {curMonthName} in {station.name} die letzten {numYears} Jahre</h3>
+<h3>🌡️ So warm war der <u>{curMonthName}</u> in <u>{station.name}</u> die letzten {numYears} Jahre</h3>
 
 {#if monthlyStats}
 
 <figure style="position: relative;">
-    <img width="30" src="/static/thermometer.svg" style="position: absolute; left: -50px;">
+    <img width="30" alt="" src="https://data.wdr.de/quarks-klima-wetter/static/thermometer.svg" style="position: absolute; left: -50px;">
     <ChartYearly
         month={curMonth}
         data="{monthlyData}"
@@ -126,11 +126,11 @@
     <figcaption>Hinweis: Der Balken für den {curMonthName} {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.</figcaption>
 </figure>
 
-<p>Je mehr Monate wärmer sind als der Referenzzeitraum von 1961-1990, desto steiler ist die Trendlinie, die hier das lokale Ausmaß der Erderwärmung anzeigt. Für den Monat {curMonthName} in {station.name} liegt der Trend gerade bei ____ °C Erwärmung. Damit liegen wir hier [über/unter] den 1,5 °C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.</p>
+<p>Je mehr Monate wärmer sind als der Referenzzeitraum von 1961-1990, desto steiler ist die <strong></strong>Trendlinie, die hier das lokale Ausmaß der Erderwärmung anzeigt. Für den Monat {curMonthName} in {station.name} liegt der Trend gerade bei ___ °C Erwärmung. Damit liegen wir hier [über/unter] den 1,5 °C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.</p>
 
 {/if}
 
-<h3>🌧️ So viel hat es im ganzen {curMonthName} in {station.name} die letzten {numYears} Jahre geregnet</h3>
+<h3>🌧️ So viel hat es im <u>{curMonthName}</u> in <u>{station.name}</u> die letzten {numYears} Jahre geregnet</h3>
 
 {#if monthlyStats}
 <figure>
