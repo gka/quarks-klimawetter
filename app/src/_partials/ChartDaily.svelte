@@ -47,7 +47,7 @@
 
     $: yExtent = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,0][i] : d);;
 
-    $: xTicks = xScale.ticks(8);
+    $: xTicks = xScale.ticks(chartWidth / 60);
     $: yTicks = yScale.ticks(8);
 
     const midMonth = d => {

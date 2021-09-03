@@ -75,7 +75,7 @@
         yExtent = [min, Math.max(max, min+(show === 'temp' ? minTempRange : minprecipRange))];
     }
 
-    $: xTicks = xScale.ticks(8);
+    $: xTicks = xScale.ticks(chartWidth / 60);
     $: yTicks = yScale.ticks(7);
 
 
