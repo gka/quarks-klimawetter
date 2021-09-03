@@ -5,3 +5,4 @@
 *.kml
 scraper-old/out/*
 data/*
+app/public/data
