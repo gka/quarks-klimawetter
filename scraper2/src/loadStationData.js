@@ -16,7 +16,9 @@ const path = require('path');
 const cacheDir = path.join(__dirname, '..', 'cache');
 mkdirp.sync(cacheDir);
 
-// temp.track();
+// make sure temporary files get deleted
+temp.track();
+
 const DAYS_FUTURE = 7;
 module.exports = {loadStationData, loadStationHist};
 
