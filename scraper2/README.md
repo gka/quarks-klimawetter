@@ -1,8 +1,19 @@
 # scraper for quarks klimawetter app
 
-Usage:
+Installation
 
 ```sh
 npm install
-node index.js
+```
+
+To download fresh daily weather data:
+
+```sh
+npm run weather
+```
+
+To download historical weather context:
+
+```sh
+npm run context
 ```

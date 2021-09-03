@@ -9,21 +9,43 @@ const { dsvFormat } = require('d3-dsv');
 const { max, sum } = require('d3-array');
 const pipeline = promisify(stream.pipeline);
 const { parallelLimit } = require('async');
+const { readFile, writeFile } = require('fs/promises');
+const mkdirp = require('mkdirp');
+const path = require('path');
+
+const cacheDir = path.join(__dirname, '..', 'cache');
+mkdirp.sync(cacheDir);
 
 // temp.track();
 const DAYS_FUTURE = 7;
-module.exports = loadStation;
+module.exports = {loadStationData, loadStationHist};
 
 const today = dayjs().startOf('day');
 
-async function loadStation(stationId) {
-    const dwdData = await downloadDwdData(stationId);
+let histStationIndex;
+
+async function loadStationData(stationId) {
+    const dwdData = await downloadDwdData(stationId, false);
     const brightskyData = await downloadBrightskyData(stationId, dwdData.slice(-1)[0].date);
     return sumRain([...dwdData, ...brightskyData]).filter(d => d.TXK !== undefined);
 }
 
-function downloadDwdData(stationId) {
-    const url = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/recent/tageswerte_KL_${stationId}_akt.zip`;
+async function loadStationHist(stationId) {
+    const dwdData = await downloadDwdData(stationId, true);
+    return sumRain(dwdData);
+}
+
+async function downloadDwdData(stationId, historical = false) {
+    if (historical) {
+        // try loading data from cache
+        try {
+            const raw = await readFile(path.join(cacheDir, `${stationId}-hist.json`), 'utf-8');
+            if (raw) return JSON.parse(raw);
+        } catch (err) {
+            // no cache
+        }
+    }
+    const url = await getDwdDataUrl(stationId, historical);
     return new Promise((resolve, reject) => {
         temp.open('dwd', async (err, info) => {
             try {
@@ -42,6 +64,11 @@ function downloadDwdData(stationId) {
                             TXK: +row[' TXK'],
                             source: 'dwd/recent'
                         }));
+                    // write cache
+                    await writeFile(
+                        path.join(cacheDir, `${stationId}-hist.json`),
+                        JSON.stringify(data)
+                    );
                     resolve(data);
                 }
             } catch (err) {
@@ -49,6 +76,28 @@ function downloadDwdData(stationId) {
             }
         });
     });
+}
+
+async function getDwdDataUrl(stationId, historical = false) {
+    const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${
+        historical ? 'historical' : 'recent'
+    }/`;
+    if (historical && !histStationIndex) {
+        // we need to load html index to figure out ZIP filename
+        const { body } = await got(baseUrl);
+        const regex = /href="tageswerte_KL_(\d+)_(\d+)_(\d+)_hist\.zip"/g;
+        const regex2 = /href="tageswerte_KL_(\d+)_(\d+)_(\d+)_hist\.zip"/;
+        histStationIndex = new Map();
+        const matches = body
+            .match(regex)
+            .map(m => m.match(regex2))
+            .forEach(([x, id, from, to]) => {
+                histStationIndex.set(id, `${from}_${to}`);
+            });
+    }
+    return `${baseUrl}tageswerte_KL_${stationId}_${
+        historical ? `${histStationIndex.get(stationId)}_hist` : 'akt'
+    }.zip`;
 }
 
 function downloadBrightskyData(stationId, minDate) {
@@ -94,7 +143,8 @@ function sumRain(data) {
             if (
                 // row.RSK < 0 ||
                 // row.RSK === undefined ||
-                (i > 0 && row.diff - data[i - 1].diff !== -1)
+                i > 0 &&
+                row.diff - data[i - 1].diff !== -1
             ) {
                 cleanDataSince = i + 1;
                 sumRain = 0;
@@ -121,7 +171,8 @@ function parse(val) {
 if (process.argv[1] === __filename) {
     // test script
     (async () => {
-        const data = await loadStation('01964');
-        // console.log(data.slice(0, 10), data.slice(-14));
+        // const data = await loadStationData('01964');
+        const data = await loadStationHist('01964');
+        console.log(data.slice(0, 7), data.slice(-7));
     })();
 }

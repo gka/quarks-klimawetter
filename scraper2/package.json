@@ -2,11 +2,14 @@
     "name": "scraper2",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
+    "main": "src/index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "lint": "prettier --check '**/*.js' && healthier '**/*.js'",
-        "format": "prettier '**/*.js' --write"
+        "lint": "prettier --check 'src/**/*.js' && healthier 'src/**/*.js'",
+        "format": "prettier 'src/**/*.js' --write",
+        "drop-cache": "rm cache/*.json",
+        "weather": "node src/index.js",
+        "context": "node src/index.js --context",
     },
     "keywords": [],
     "author": "",
