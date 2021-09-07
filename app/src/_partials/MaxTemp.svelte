@@ -73,7 +73,7 @@
     }
 	.maxTemp {
 		stroke-width: 2;
-        stroke: var(--gray);
+        stroke: var(--gray-dark);
 	}
     .contextAvgMax {
         stroke-width: 1;
@@ -89,7 +89,7 @@
         fill: var(--gray-dark);
     }
     circle {
-        fill: var(--gray);
+        fill: var(--gray-dark);
     }
     circle.above {
         fill: var(--red);
@@ -179,15 +179,15 @@
 
 <path class="line maxTemp" d="{curMaxTempPath(data)}" clip-path="url(#clip-in-context)"  />
 <!-- <path class="line maxTemp" d="{curMaxTempPath(data)}" /> -->
-<path class="line maxTemp cur-hotter" d="{curMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
-<path class="line maxTemp cur-colder" d="{curMaxTempPath(data)}" clip-path="url(#clip-below-context)" />
+<path class="line maxTemp cur-hotter-" d="{curMaxTempPath(data)}" clip-path="url(#clip-above-context)" />
+<path class="line maxTemp cur-colder-" d="{curMaxTempPath(data)}" clip-path="url(#clip-below-context)" />
 
 
 {#if lastDay}
     <circle
         transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK)]})" r="4"
-        class:above="{lastDay.TXK > lastDay.context.TXK_hi}"
-        class:below="{lastDay.TXK < lastDay.context.TXK_lo}" />
+        class:above-="{lastDay.TXK > lastDay.context.TXK_hi}"
+        class:below-="{lastDay.TXK < lastDay.context.TXK_lo}" />
     <!-- <text transform="translate({[xScale(lastContext.date)+5, yScale(lastDay.TXK)+4]})" class="rain">{lastDay.year}</text> -->
 {/if}
 
@@ -198,8 +198,8 @@
     <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.TXK)]})">
         <circle r="15" style="opacity: 0" />
         <circle r="{selected === d ? 5 : 0}"
-            class:above="{d.TXK > d.context.TXK_hi}"
-            class:below="{d.TXK < d.context.TXK_lo}" />
+            class:above-="{d.TXK > d.context.TXK_hi}"
+            class:below-="{d.TXK < d.context.TXK_lo}" />
     </g>
     {/if}
 {/each}

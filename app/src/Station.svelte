@@ -39,6 +39,9 @@
     }
 
     let copySentence;
+
+    let trendTemp=0;
+    let trendPrecip=0;
 </script>
 
 {#if data.length}
@@ -60,13 +63,13 @@
 </div>
 
 <h3>
-    🌡️ So {today.TXK < today.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade in {station.name} im Vergleich
+    🌡️ So {today.TXK < today.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade in <u>{station.name}</u> im Vergleich
     zu einer Zeit, die noch wenig vom Klimawandel betroffen war
 </h3>
 
 <figure>
     <ChartDaily
-        unit=" °C"
+        unit="°C"
         label="Tageshöchst-\ntemperatur in °C"
         {data}
         yMin={-5}
@@ -86,7 +89,7 @@
 <!-- <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p> -->
 
 <h3>
-    🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan im Vergleich
+    🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan in <u>{station.name}</u> im Vergleich
     zu einer Zeit, die noch wenig vom Klimawandel betroffen war
 </h3>
 
@@ -166,9 +169,10 @@
             data={monthlyData}
             context={monthlyStats[curMonth].base}
             includeZero={true}
+            bind:trend={trendTemp}
             {numYears}
             label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
-            unit=" °C"
+            unit="°C"
             show="temp"
         />
         <figcaption>
@@ -180,8 +184,8 @@
         <p>
             Je mehr Monate wärmer sind als der Referenzzeitraum von 1961-1990, desto steiler ist die <strong
             />Trendlinie, die hier das lokale Ausmaß der Erderwärmung anzeigt. Für den Monat {curMonthName}
-            in {station.name} liegt der Trend gerade bei ___ °C Erwärmung. Damit liegen wir hier [über/unter]
-            den 1,5 °C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.
+            in {station.name} liegt der Trend gerade bei {fmtTemp(+(trendTemp.toFixed(1)))} Erwärmung (seit 1961). Damit liegen wir hier {trendTemp > 1.5 ? 'über' : trendTemp < 1.5 ? 'unter' : 'genau bei'}
+            den 1,5°C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden soll.
         </p>
     </div>
 {/if}
@@ -200,6 +204,7 @@
             context={monthlyStats[curMonth].base}
             includeZero={true}
             {numYears}
+            bind:trend={trendPrecip}
             unit="mm/30 Tage"
             show="precip"
         />
@@ -209,7 +214,7 @@
         </figcaption>
     </figure>
 {/if}
-
+{trendPrecip}
 <div class="paragraph_content">
     <p>
         Fällt die Trendlinie ab, heißt das, dass dieser Monat immer trockener wird im Vergleich zum

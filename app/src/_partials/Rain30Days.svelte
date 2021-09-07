@@ -68,7 +68,7 @@
 <style>
     path.rain {
         fill: none;
-        stroke: var(--gray);
+        stroke: var(--gray-dark);
         stroke-width: 2;
         stroke-linecap: round;
         stroke-linejoin: round;
@@ -80,7 +80,7 @@
         stroke: var(--orange);
     }
     circle.rain {
-        fill: var(--gray);
+        fill: var(--gray-dark);
     }
     circle.rain.above {
         fill: var(--blue);
@@ -176,8 +176,8 @@
     <!-- <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text> -->
 {/if}
 
-<path class="rain above" d="{curRainPath(data)}"  clip-path="url(#clip-rain-above-context)" />
-<path class="rain below" d="{curRainPath(data)}" clip-path="url(#clip-rain-below-context)" />
+<path class="rain above-" d="{curRainPath(data)}"  clip-path="url(#clip-rain-above-context)" />
+<path class="rain below-" d="{curRainPath(data)}" clip-path="url(#clip-rain-below-context)" />
 <path class="rain" d="{curRainPath(data)}"  clip-path="url(#clip-rain-in-context)" />
 
 
@@ -210,8 +210,8 @@
     </text>
     {/each}
     <circle transform="translate(0,30)" r="5" class="rain"
-        class:above="{selected.rain30days > selected.context.rain30days_hi}"
-        class:below="{selected.rain30days < selected.context.rain30days_lo}" />
+        class:above-="{selected.rain30days > selected.context.rain30days_hi}"
+        class:below-="{selected.rain30days < selected.context.rain30days_lo}" />
 </g>
 {:else}
 <g class="last-day" class:above="{lastRain.rain30days > lastRain.context.rain30days_hi}"

@@ -7,6 +7,8 @@
     let stations;
     let station;
 
+    let selected;
+
     const dataUrl = 'https://data.vis4.net/dwd';
     // const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/data';
     // const dataUrl = '/data';
@@ -67,6 +69,7 @@
             }
         })
         s.monthlyStats = monthlyHist;
+        selected = station.name;
         location.hash = `#/${station.slug}`
     }
 </script>
@@ -79,7 +82,7 @@
     {#await loadStations()}
     <p>Loading stations</p>
     {:then stations}
-    <StationSelect {stations} {dataUrl} on:select="{handleStationSelect}" />
+    <StationSelect bind:active={selected} {stations} {dataUrl} on:select="{handleStationSelect}" />
     {/await}
     {#if station}
     <Station

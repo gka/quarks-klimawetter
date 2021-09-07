@@ -93,6 +93,11 @@
         .y(d => d[show])
         .domain([minYear-1, maxYear+1])(data);
 
+    export let trend;
+    $: {
+        trend = regLin.predict(2021) - regLin.predict(1961);
+    }
+
     $: maxTempPath = line()
         .x(d => xScale(d.year))
         .y(d => yScale(d[show]));
