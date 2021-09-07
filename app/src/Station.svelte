@@ -1,29 +1,22 @@
 <script>
     import dayjs from 'dayjs';
-    import { mean, quantileSorted, quantile, ascending, group, sum } from 'd3-array';
-    import { maxDate, showDays, innerWidth } from '$lib/stores';
+    import { maxDate, innerWidth } from '$lib/stores';
     import { fmtTemp, fmtRain } from '$lib/formats';
     import ChartDaily from './_partials/ChartDaily.svelte';
     import ChartYearly from './_partials/ChartYearly.svelte';
     import TopInfo from './_partials/TopInfo.svelte';
     import InfoBox from './_partials/InfoBox.svelte';
-    import { beforeUpdate, onMount } from 'svelte';
 
-    export let stationen;
     export let station;
     export let data;
     export let monthlyStats;
 
-    let baseMinYear = 1961;
     $: today = data.find(d => d.date - $maxDate < 1000);
-    let tempQuartileRange = 50;
 
     $: curMonth = today.date.getMonth();
     $: curMonthName = dayjs(today.date).format('MMMM');
 
     $: curYear = today.date.getFullYear();
-
-    $: isForecast = !dayjs().isBefore(today, dayjs().startOf('day'));
 
     function moveDate(delta, by) {
         // console.log('move', delta, dayjs(today.date).add(delta, 'day').toDate())
@@ -231,11 +224,4 @@
     </p>
 </div>
 
-<style>
-    h1 {
-        margin-bottom: 0;
-    }
-    h2 {
-        color: var(--gray);
-    }
-</style>
+

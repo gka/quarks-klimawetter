@@ -17,7 +17,6 @@
         Math.min(400, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
     );
 
-    export let yScaleVar;
     export let data = [];
     export let includeZero = true;
 

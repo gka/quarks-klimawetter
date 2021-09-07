@@ -1,5 +1,5 @@
 <script>
-	import { line, area, curveBasis } from 'd3-shape';
+	import { line as d3line, area, curveBasis } from 'd3-shape';
 	import { minDate, maxDate } from '$lib/stores';
     import { fmtTemp } from '$lib/formats';
     import dayjs from 'dayjs';
@@ -7,15 +7,14 @@
 	export let xScale;
     export let yScale;
     export let data;
-    export let context;
     export let height;
 
-    $: curMaxTempPath = line()
+    $: curMaxTempPath = d3line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.TXK))
         .defined(d => !isNaN(d.TXK) && d.date <= $maxDate);
 
-    $: contextMaxTempPath = line()
+    $: contextMaxTempPath = d3line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.context.TXK))
         .defined(d => !isNaN(d.context.TXK))
@@ -75,28 +74,24 @@
 		stroke-width: 2;
         stroke: var(--gray-dark);
 	}
-    .contextAvgMax {
-        stroke-width: 1;
-        stroke: #d00;
-    }
 	.context {
 		fill: #eee;
 		opacity: 0.8
 	}
-    text.context {
+    /* text.context {
         font-size: 14px;
         text-anchor: start;
         fill: var(--gray-dark);
-    }
+    } */
     circle {
         fill: var(--gray-dark);
     }
-    circle.above {
+    /* circle.above {
         fill: var(--red);
     }
     circle.below {
         fill: var(--cyan);
-    }
+    } */
     path.hotter, rect.hotter {
         fill: var(--red);
         opacity: 0.25;
@@ -113,12 +108,12 @@
         stroke-linejoin: round;
         opacity: 0.8;
     }
-    .cur-hotter {
+    /* .cur-hotter {
         stroke: var(--red);
     }
     .cur-colder {
         stroke: var(--cyan);
-    }
+    }*/
     text {
         font-size: 0.93rem;
         text-anchor: middle;

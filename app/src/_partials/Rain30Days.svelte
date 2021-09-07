@@ -1,5 +1,5 @@
 <script>
-    import { line, area, curveBasis } from 'd3-shape';
+    import { line as d3line, area, curveBasis } from 'd3-shape';
     import { maxDate } from '$lib/stores';
     import dayjs from 'dayjs';
     import { fmtRain } from '$lib/formats';
@@ -9,7 +9,7 @@
     export let data;
     export let height;
 
-    $: curRainPath = line()
+    $: curRainPath = d3line()
         .x(d => xScale(d.date))
         .y(d => yScale(d.rain30days))
         .defined(d => d.rain30days !== null && d.date - $maxDate < 0);
@@ -73,12 +73,12 @@
         stroke-linecap: round;
         stroke-linejoin: round;
     }
-    path.rain.above {
+    /* path.rain.above {
         stroke: var(--blue);
     }
     path.rain.below {
         stroke: var(--orange);
-    }
+    } */
     circle.rain {
         fill: var(--gray-dark);
     }

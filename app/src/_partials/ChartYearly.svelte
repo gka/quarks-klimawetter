@@ -1,9 +1,9 @@
 <script>
-    import { scaleTime, scaleLinear } from 'd3-scale';
-    import { extent } from 'd3-array';
+    import { scaleLinear } from 'd3-scale';
+    import { extent, range as d3range } from 'd3-array';
     import { regressionLinear } from 'd3-regression';
     import dayjs from 'dayjs';
-    import { line } from 'd3-shape';
+    import { line as d3line } from 'd3-shape';
     import { beforeUpdate, onMount, tick } from 'svelte';
     import { fmtTemp, fmtRain } from '$lib/formats';
 
@@ -21,13 +21,11 @@
         Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
     ) + (range ? 50 : 0);
 
-    export let yScaleVar;
     export let month = 0;
     export let data = [];
     export let context = {};
     export let numYears = 10;
     export let includeZero = false;
-    export let unit = '';
     export let label = '';
 
     let showTrend = false;
@@ -71,7 +69,7 @@
     const minprecipRange = 80;
     let yExtent = [];
     $: {
-        const [min,max] = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,2][i] : d);
+        const [min,max] = extent(yValues).map((d,i) => show === 'temp' ? d + [0,2][i] : d);
         yExtent = [min, Math.max(max, min+(show === 'temp' ? minTempRange : minprecipRange))];
     }
 
@@ -98,7 +96,7 @@
         trend = regLin.predict(2021) - regLin.predict(1961);
     }
 
-    $: maxTempPath = line()
+    $: maxTempPath = d3line()
         .x(d => xScale(d.year))
         .y(d => yScale(d[show]));
 
@@ -142,13 +140,15 @@
 
             <!-- x axis -->
             <g class="axis x-axis">
+                {#each d3range.apply(null, xScale.domain()) as tick, i}
+                    <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
+                        <line y1="0" y2="4" />
+                    </g>
+                {/each}
                 {#each xTicks as tick, i}
                     <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
                         <line y1="-{height-padding.bottom}" y2="0" />
-          <!--               <text y="5">
-                            {monthDisplay}
-                        </text> -->
-                        <text class="year" y="5">{tick}</text>
+                        <text class="year" y="8">{tick}</text>
                     </g>
                 {/each}
             </g>
@@ -274,6 +274,7 @@
 
     .x-axis .tick text {
         text-anchor: middle;
+
         dominant-baseline: hanging;
     }
 
@@ -299,7 +300,7 @@
     rect.temp.low {
         fill: var(--cyan);
     }
-    circle.temp {
+    /* circle.temp {
         fill: var(--gray);
     }
     circle.temp.high {
@@ -307,7 +308,7 @@
     }
     circle.temp.low {
         fill: var(--cyan);
-    }
+    } */
 
     rect.precip {
         fill: var(--gray);
