@@ -57,8 +57,12 @@
         );
     };
 
-    $: format = (d, i) => dayjs(d).format('D. MMM');
-    $: formatMobile = (d, i) => d;
+    $: formatDay = (d, i) => dayjs(d).format('D');
+    $: format1 = (d, i) => dayjs(d).format('D.M.');
+    $: format2 = (d, i) => {
+        const fmt = [i > 0 && d.getFullYear() != xTicks[i-1].getFullYear() ? 'YYYY' : ''].join('');
+        return fmt ? dayjs(d).format(fmt) : '';
+    };
 
     $: dataFiltered = data.filter((d,i) => {
         return d.date > $minDate
@@ -100,11 +104,11 @@
                     <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
                         <line y1="-{height-padding.bottom}" y2="0" />
                         <text y="5">
-                            {$innerWidth > 400 ? format(tick, i) : formatMobile(tick, i)}
+                            {format1(tick, i)}
                         </text>
-                        {#if !i || tick.getFullYear() !== xTicks[i-1].getFullYear()}
-                            <text class="year" y="25">{tick.getFullYear()}</text>
-                        {/if}>
+
+                        <text class="year" y="25">{format2(tick, i)}</text>
+
                     </g>
                 {/each}
             </g>

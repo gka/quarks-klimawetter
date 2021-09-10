@@ -21,6 +21,7 @@
 
 <style>
     div {
+        z-index: 20;
         text-align: center;
         position: sticky;
         top: 0px;
