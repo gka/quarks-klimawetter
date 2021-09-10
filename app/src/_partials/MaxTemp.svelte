@@ -4,6 +4,7 @@
     import { fmtTemp } from '$lib/formats';
     import dayjs from 'dayjs';
 
+
 	export let xScale;
     export let yScale;
     export let data;
@@ -51,9 +52,12 @@
         .y1(0)
         .curve(curveBasis);
 
+    $: inRange = data.filter(d => !isNaN(d.TXK) !== null && d.date >= $minDate && d.date <= $maxDate);
+
     let selected;
     $: lastContext = data.find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
-    $: lastDay = data.find(d => !isNaN(d.TXK) !== null && d.date - $maxDate <= 0);
+    $: firstDay = inRange[0];
+    $: lastDay = inRange.slice(-1)[0];
 
     function select(d) {
         selected = d;
@@ -62,6 +66,9 @@
     function unselect() {
         selected = undefined;
     }
+
+    $: startIsWinter = [9,10,11,12,0,1,2].includes(firstDay.date.getMonth());
+    $: endIsWinter = yScale(lastDay.TXK) > height*0.5;
 </script>
 
 <style>
@@ -103,10 +110,10 @@
     text.buffer {
         fill: white;
         stroke: white;
-        stroke-width: 5;
+        stroke-width: 14;
         stroke-linecap: round;
         stroke-linejoin: round;
-        opacity: 0.8;
+        opacity: 0.9;
     }
     /* .cur-hotter {
         stroke: var(--red);
@@ -117,6 +124,11 @@
     text {
         font-size: 0.93rem;
         text-anchor: middle;
+    }
+    .g-normal text {
+        text-anchor: start;
+        font-size: 14px;
+        fill: var(--gray);
     }
     .last-day text {
         font-size: 0.83rem;
@@ -141,6 +153,10 @@
         text-anchor: start;
         fill: var(--gray-dark);
         font-size: 14px;
+    }
+    .is-bold {
+        font-weight: bold;
+        font-family: sans_bold;
     }
 </style>
 
@@ -190,9 +206,9 @@
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
     {#if !isNaN(d.TXK) && d.date <= $maxDate}
-    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.TXK)]})">
-        <circle r="15" style="opacity: 0" />
-        <circle r="{selected === d ? 5 : 0}"
+    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), 0]})">
+        <rect x="-5" width="10" height={height} opacity="0" />
+        <circle cy={yScale(d.TXK)} r="{selected === d ? 5 : 0}"
             class:above-="{d.TXK > d.context.TXK_hi}"
             class:below-="{d.TXK < d.context.TXK_lo}" />
     </g>
@@ -200,11 +216,19 @@
 {/each}
 
 {#if selected}
-<g class="g-tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-33]})">
+<g class="g-tooltip" transform="translate({[xScale(selected.date), yScale(selected.TXK)-43]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
         <tspan x="0">{fmtTemp(selected.TXK)}</tspan>
         <tspan x="0" dy="20">{dayjs(selected.date).format('D.MMM')}</tspan>
+    </text>
+    {/each}
+</g>
+<g class="g-normal" transform="translate({[xScale.range()[0]+20, startIsWinter ? 70 : height-80]})">
+    {#each [0,1] as i}
+    <text class:buffer="{i===0}">
+        <tspan x="0">Normal am {dayjs(selected.date).format('D.MMM')}:</tspan>
+        <tspan class="is-bold">{fmtTemp(selected.context.TXK_lo,true)}-{fmtTemp(selected.context.TXK_hi)}</tspan>
     </text>
     {/each}
 </g>
@@ -224,7 +248,7 @@
 {/if}
 {/if}
 
-<g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
+<g class="legend" transform="translate({[xScale($maxDate)+20, endIsWinter ? 70 : height-110]})">
     <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
     <g>
         <rect class="hotter" width="15" height="15" />

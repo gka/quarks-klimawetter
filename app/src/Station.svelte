@@ -89,7 +89,7 @@
 <figure>
     <ChartDaily
         label="Niederschlagsmenge\nkummuliert über 30 Tage"
-        unit="mm/30 Tage"
+        unit="mm"
         {data}
         includeZero={true}
         ymax={80}
@@ -198,7 +198,7 @@
             includeZero={true}
             {numYears}
             bind:trend={trendPrecip}
-            unit="mm/30 Tage"
+            unit="mm"
             show="precip"
         />
         <figcaption>

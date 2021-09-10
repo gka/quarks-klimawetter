@@ -67,7 +67,7 @@
                     context: daily[day]
                 };
             })
-            .reverse();
+            .sort((a,b) => a.date - b.date);
         station = s;
         monthly.forEach(m => {
             // check if that month is already in monthlyStat

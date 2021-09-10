@@ -1,6 +1,6 @@
 <script>
     import { line as d3line, area, curveBasis } from 'd3-shape';
-    import { maxDate } from '$lib/stores';
+    import { minDate, maxDate } from '$lib/stores';
     import dayjs from 'dayjs';
     import { fmtRain } from '$lib/formats';
 
@@ -54,6 +54,10 @@
 
     $: lastContext = data[data.length-1]; // .find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
     $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate <= 0);
+    $: firstRain = data.filter(d => d.rain30days !== null)[0];
+
+    $: startIsLow = yScale(firstRain.rain30days) > height*0.5;
+    $: endIsLow = yScale(lastRain.rain30days) > height*0.5;
 
     function select(d) {
         selected = d;
@@ -104,11 +108,12 @@
     text.buffer {
         fill: white;
         stroke: white;
-        stroke-width: 5;
+        stroke-width: 14;
         stroke-linecap: round;
         stroke-linejoin: round;
-        opacity: 0.8;
+        opacity: 0.9;
     }
+
     .context {
         fill: #eee;
         opacity: 0.8
@@ -116,6 +121,11 @@
     text {
         font-size: 0.93rem;
         text-anchor: middle;
+    }
+    .g-normal text {
+        text-anchor: start;
+        fill: var(--gray);
+        font-size: 14px;
     }
     .g-tooltip,
     .last-day text tspan:first-child {
@@ -140,6 +150,10 @@
     }
     .last-day.below text {
         fill: var(--orange);
+    }
+    .is-bold {
+        font-weight: bold;
+        font-family: sans_bold;
     }
 </style>
 
@@ -195,8 +209,8 @@
 
 {#each data as d}
     {#if d.rain30days !== null && d.date <= $maxDate}
-    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), yScale(d.rain30days)]})">
-        <circle r="15" style="opacity: 0" />
+    <g on:mouseover="{() => select(d)}" on:mouseout="{unselect}" transform="translate({[xScale(d.date), 0]})">
+        <rect x="-5" width="10" height={height} opacity="0" />
     </g>
     {/if}
 {/each}
@@ -213,6 +227,14 @@
         class:above-="{selected.rain30days > selected.context.rain30days_hi}"
         class:below-="{selected.rain30days < selected.context.rain30days_lo}" />
 </g>
+<g class="g-normal" transform="translate({[xScale.range()[0]+20, startIsLow ? 70 : height-90]})">
+    {#each [0,1] as i}
+    <text class:buffer="{i===0}">
+        <tspan x="0">Normal zwischen {dayjs(selected.date).subtract(30, 'day').format('D.M.')} und {dayjs(selected.date).format('D.M.')}:<tspan>
+        <tspan x="0" y="15" class="is-bold">{fmtRain(selected.context.rain30days_lo, true)}-{fmtRain(selected.context.rain30days_hi, true)}</tspan>
+    </text>
+    {/each}
+</g>
 {:else}
 <g class="last-day" class:above="{lastRain.rain30days > lastRain.context.rain30days_hi}"
         class:below="{lastRain.rain30days < lastRain.context.rain30days_lo}" transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)-28]})">
@@ -225,7 +247,7 @@
 </g>
 {/if}
 
-<g class="legend" transform="translate({[xScale($maxDate)+20, height-110]})">
+<g class="legend" transform="translate({[xScale($maxDate)+20, endIsLow ? 70 : height-110]})">
     <rect x="-10" y="-10" height="55" width="190" fill="white" opacity="0.8" />
     <g>
         <rect class="more-rain" width="15" height="15" />
