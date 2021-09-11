@@ -11,16 +11,16 @@
     export let data;
     export let monthlyStats;
 
-    $: today = data.find(d => d.date - $maxDate < 1000);
+    $: curDay = data.find(d => dayjs($maxDate).format('YYYY-MM-DD') === dayjs(d.date).format('YYYY-MM-DD'));
 
-    $: curMonth = today.date.getMonth();
-    $: curMonthName = dayjs(today.date).format('MMMM');
+    $: curMonth = curDay.date.getMonth();
+    $: curMonthName = dayjs(curDay.date).format('MMMM');
 
-    $: curYear = today.date.getFullYear();
+    $: curYear = curDay.date.getFullYear();
 
     function moveDate(delta, by) {
-        // console.log('move', delta, dayjs(today.date).add(delta, 'day').toDate())
-        $maxDate = dayjs(today.date).add(delta, by).toDate();
+        // console.log('move', delta, dayjs(curDay.date).add(delta, 'day').toDate())
+        $maxDate = dayjs(curDay.date).add(delta, by).toDate();
     }
 
     $: numYears = $innerWidth < 550 ? 20 : 40;
@@ -37,8 +37,10 @@
     let trendPrecip=0;
 </script>
 
+
+
 {#if data.length}
-    <TopInfo {station} {today} bind:copySentence />
+    <TopInfo {station} {curDay} bind:copySentence />
 {/if}
 
 <div class="paragraph_content">
@@ -56,7 +58,7 @@
 </div>
 
 <h3>
-    🌡️ So {today.TXK < today.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade in <u>{station.name}</u> im Vergleich
+    🌡️ So {curDay.TXK < curDay.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade in <u>{station.name}</u> im Vergleich
     zu einer Zeit, die noch wenig vom Klimawandel betroffen war
 </h3>
 
@@ -82,7 +84,7 @@
 <!-- <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p> -->
 
 <h3>
-    🌧️ So {today.rain30days < today.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan in <u>{station.name}</u> im Vergleich
+    🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan in <u>{station.name}</u> im Vergleich
     zu einer Zeit, die noch wenig vom Klimawandel betroffen war
 </h3>
 
@@ -99,23 +101,23 @@
 
 <div class="paragraph_content">
     <p>
-        Über die vergangenen 30 Tage hat es {fmtRain(today.rain30days, true)} je Quadratmeter geregnet.
-        Das ist {today.rain30days > today.context.rain30days_hi
+        Über die vergangenen 30 Tage hat es {fmtRain(curDay.rain30days, true)} je Quadratmeter geregnet.
+        Das ist {curDay.rain30days > curDay.context.rain30days_hi
             ? 'besonders viel'
-            : today.rain30days < today.context.rain30days_lo
+            : curDay.rain30days < curDay.context.rain30days_lo
             ? 'besonders wenig'
-            : 'normal'}{#if today.rain30days < today.context.rain30days_lo || today.rain30days > today.context.rain30days_hi}
+            : 'normal'}{#if curDay.rain30days < curDay.context.rain30days_lo || curDay.rain30days > curDay.context.rain30days_hi}
             und etwa {fmtRain(
                 Math.round(
                     Math.abs(
-                        today.rain30days -
-                            (today.rain30days < today.context.rain30days_lo
-                                ? today.context.rain30days_lo
-                                : today.context.rain30days_hi)
+                        curDay.rain30days -
+                            (curDay.rain30days < curDay.context.rain30days_lo
+                                ? curDay.context.rain30days_lo
+                                : curDay.context.rain30days_hi)
                     )
                 ),
                 true
-            )}/qm {today.rain30days < today.context.rain30days_lo ? 'weniger' : 'mehr'} als im Vergleich
+            )}/qm {curDay.rain30days < curDay.context.rain30days_lo ? 'weniger' : 'mehr'} als im Vergleich
             zum Referenzzeitraum.{:else}.{/if}
     </p>
 

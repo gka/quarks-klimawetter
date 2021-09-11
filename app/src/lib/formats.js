@@ -1,5 +1,5 @@
 export function fmtTemp(temp) {
-    return String(temp).replace('.', ',') + '°C';
+    return temp.toFixed(1).replace('.', ',') + '°C';
 }
 
 export function fmtRain(rain, noDay) {

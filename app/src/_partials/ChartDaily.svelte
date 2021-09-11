@@ -26,7 +26,7 @@
 
     $: isMobile = chartWidth < 500;
 
-    $: padding = { top: 50, right: isMobile ? 40 : 125, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: isMobile ? 40 : 80, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xRange = [padding.left, chartWidth - padding.right];
 

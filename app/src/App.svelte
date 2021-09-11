@@ -68,7 +68,8 @@
                 };
             })
             .sort((a,b) => a.date - b.date);
-        station = s;
+        console.log(s.data);
+            station = s;
         monthly.forEach(m => {
             // check if that month is already in monthlyStat
             if (monthlyHist[m.month - 1].stats.slice(-1)[0].year < m.year) {

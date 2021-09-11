@@ -53,8 +53,11 @@
     let selected;
 
     $: lastContext = data[data.length-1]; // .find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
-    $: lastRain = data.find(d => d.rain30days !== null && d.date - $maxDate <= 0);
-    $: firstRain = data.filter(d => d.rain30days !== null)[0];
+
+    $: inRange = data.filter(d => !isNaN(d.rain30days) !== null && d.date >= $minDate && d.date <= $maxDate);
+
+    $: firstRain = inRange[0];
+    $: lastRain = inRange.slice(-1)[0];
 
     $: startIsLow = yScale(firstRain.rain30days) > height*0.5;
     $: endIsLow = yScale(lastRain.rain30days) > height*0.5;

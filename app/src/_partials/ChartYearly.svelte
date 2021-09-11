@@ -77,8 +77,8 @@
     $: yTicks = yScale.ticks(7);
 
 
-    $: format = (d, i) => dayjs(d).format('MMM');
-    $: formatMobile = (d, i) => d;
+    $: format = (d, i) => dayjs(d).format('YYYY');
+    $: formatMobile = (d, i) => dayjs(d).format('\'YY');
 
     $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');;
 
