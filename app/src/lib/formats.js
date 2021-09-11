@@ -3,5 +3,5 @@ export function fmtTemp(temp) {
 }
 
 export function fmtRain(rain, noDay) {
-    return String(rain).replace('.', ',') + ` mm${noDay ? '' : '/Tag'}`;
+    return rain.toFixed(rain > 20 ? 0 : 1).replace('.', ',') + ` mm${noDay ? '' : '/Tag'}`;
 }

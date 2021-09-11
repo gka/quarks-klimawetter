@@ -6,7 +6,7 @@ import localizedFormat from 'dayjs/plugin/localizedFormat.js';
 dayjs.extend(localizedFormat);
 dayjs.locale('de');
 
-export const maxDate = writable(new Date(2021,5,19));
+export const maxDate = writable(new Date());
 
 export const innerWidth = writable(1000);
 export const chartWidth = writable(720);

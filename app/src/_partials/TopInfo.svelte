@@ -65,7 +65,7 @@
 </script>
 
 <div class="topinfo">
-    <div class="" style="margin-bottom: 2rem">
+    <div>
 
         <div class="flx">
             <div class="flex" style="margin-bottom:10px">
@@ -86,9 +86,6 @@
         </div>
     </div>
 
-    <!-- <div style="margin-top: 2rem">
-        Heute ist es in {station.name} mit <strong>max. {fmtTemp(curDay.TXK)}</strong> <b class="temp-{tempClass}">{tempSentence}</b>. In den letzten 30 Tagen gab es <strong>{fmtRain(curDay.rain30days, true)} Niederschlag (je qm)</strong>, was gemessen am Vergleichszeitraum <b class="rain-{precipClass}">{precipSentence}</b> ist.
-    </div> -->
 </div>
 
 <style>
