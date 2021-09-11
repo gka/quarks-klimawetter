@@ -52,7 +52,7 @@
     );
 
     let selected;
-    $: lastContext = data.find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
+    $: lastContext = data.slice(-1)[0];
     $: firstDay = inRange[0];
     $: lastDay = inRange.slice(-1)[0];
 
@@ -100,6 +100,12 @@
     d={curMaxTempPath(data)}
     clip-path="url(#clip-below-context)"
 />
+
+<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
+    <tspan x="0" dy="-17">normale</tspan>
+    <tspan x="0" dy="17">Temperaturen</tspan>
+    <tspan x="0" dy="17">1961-1990</tspan>
+</text>
 
 {#if lastDay}
     <circle
@@ -167,7 +173,7 @@
         class="last-day"
         class:above={lastDay.TXK > lastDay.context.TXK_hi}
         class:below={lastDay.TXK < lastDay.context.TXK_lo}
-        transform="translate({[xScale(lastDay.date), yScale(lastDay.TXK) - 30]})"
+        transform="translate({[xScale(lastDay.date)+4, yScale(lastDay.TXK) - 30]})"
     >
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
@@ -204,11 +210,11 @@
         fill: #eee;
         opacity: 0.8;
     }
-    /* text.context {
+    text.context {
         font-size: 14px;
         text-anchor: start;
         fill: var(--gray-dark);
-    } */
+    }
     circle {
         fill: var(--gray-dark);
     }

@@ -138,6 +138,12 @@
         </defs>
         <g>
 
+            <text transform="translate({[chartWidth-100, yScale(contextShow.hi)]})" class="context">
+                <tspan x="0" dy="-17">normale</tspan>
+                <tspan x="0" dy="17">Temperaturen</tspan>
+                <tspan x="0" dy="17">für {monthDisplay}</tspan>
+            </text>
+
             <!-- x axis -->
             <g class="axis x-axis">
                 {#each d3range.apply(null, xScale.domain()) as tick, i}
