@@ -97,7 +97,7 @@ function getMonthlyContext(data, month, baseMinYear) {
         data.filter(d => d.month === month),
         d => d.year
     ).forEach((value, key) => {
-        const tempNoNA = value.filter(d => d => d.TXK !== null && !isNaN(d.TXK) && d.TXK > -999);
+        const tempNoNA = value.filter(d => d.TXK !== null && !isNaN(d.TXK) && d.TXK > -999);
         const avgMaxTemp = round(mean(tempNoNA, d => d.TXK));
         const tempRange = extent(tempNoNA, d => d.TXK).map(round);
         const tempValues = tempNoNA
@@ -135,9 +135,9 @@ if (process.argv[1] === __filename) {
     const { loadStationHist } = require('./loadStationData');
     (async () => {
         const hist = await loadStationHist('00400');
-        console.log('x', hist.slice(0, 10));
+
         const { daily, monthly } = analyzeContext(hist, 1961);
-        console.log(daily);
-        console.log(monthly, monthly[5].stats.slice(-5));
+        // console.log(daily);
+        console.log(monthly[5].stats.slice(34,36));
     })();
 }
