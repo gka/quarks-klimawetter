@@ -286,8 +286,4 @@
         fill: var(--gray-dark);
         font-size: 14px;
     }
-    .is-bold {
-        font-weight: bold;
-        font-family: sans_bold;
-    }
 </style>

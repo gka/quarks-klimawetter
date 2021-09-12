@@ -79,7 +79,7 @@
                 <div><i class="g-icon">🌧️</i></div>
                 <div>
                     In den letzten 30 Tagen hat es <b class="rain-{precipClass}">{precipSentence}</b> geregnet (<span
-                        >{fmtRain(curDay.rain30days, true)}</span
+                        >{fmtRain(curDay.rain30days)}</span
                     >).
                 </div>
             </div>

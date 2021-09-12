@@ -154,10 +154,6 @@
     .last-day.below text {
         fill: var(--orange);
     }
-    .is-bold {
-        font-weight: bold;
-        font-family: sans_bold;
-    }
 </style>
 
 <defs>
@@ -222,7 +218,7 @@
 <g class="g-tooltip" transform="translate({[xScale(selected.date), yScale(selected.rain30days)-30]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
-        <tspan x="0" >{fmtRain(selected.rain30days, true)}</tspan>
+        <tspan x="0" >{fmtRain(selected.rain30days)}</tspan>
         <tspan x="0" dy="20">{dayjs(selected.date).subtract(30, 'day').format('D.M.')}-{dayjs(selected.date).format('D.M.')}</tspan>
     </text>
     {/each}
@@ -234,7 +230,7 @@
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
         <tspan x="0">Normal zwischen {dayjs(selected.date).subtract(30, 'day').format('D.M.')} und {dayjs(selected.date).format('D.M.')}:<tspan>
-        <tspan x="0" y="15" class="is-bold">{fmtRain(selected.context.rain30days_lo, true)}-{fmtRain(selected.context.rain30days_hi, true)}</tspan>
+        <tspan x="0" y="15" class="is-bold">{fmtRain(selected.context.rain30days_lo)}-{fmtRain(selected.context.rain30days_hi)}</tspan>
     </text>
     {/each}
 </g>
@@ -243,7 +239,7 @@
         class:below="{lastRain.rain30days < lastRain.context.rain30days_lo}" transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)-28]})">
     {#each [0,1] as i}
     <text class:buffer="{i===0}">
-        <tspan x="0" >{fmtRain(lastRain.rain30days, true)}</tspan>
+        <tspan x="0" >{fmtRain(lastRain.rain30days)}</tspan>
         <tspan x="0" dy="17">{dayjs(lastRain.date).subtract(30, 'day').format('D.M.')}-{dayjs(lastRain.date).format('D.M.')}</tspan>
     </text>
     {/each}

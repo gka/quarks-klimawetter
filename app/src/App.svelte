@@ -4,11 +4,14 @@
     import TimeControls from './_partials/TimeControls.svelte';
     import { findNearestStation } from '$lib/findNearestStation';
     import dayjs from 'dayjs';
+import { onMount } from 'svelte';
 
     let stations;
     let station;
 
     let selected;
+
+    let isLocalHost = false;
 
     const dataUrl = 'https://data.vis4.net/dwd';
     // const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/data';
@@ -44,6 +47,10 @@
         );
         return stations;
     }
+
+    onMount(() => {
+        isLocalHost = location.hostname === 'localhost';
+    })
 
     function handleStationSelect(event) {
         loadStation(event.detail);
@@ -85,7 +92,10 @@
     <title>Quarks Wetterklima</title>
 </svelte:head>
 
+{#if isLocalHost}
 <TimeControls />
+{/if}
+
 <div>
     {#await loadStations()}
         <p>Loading stations</p>

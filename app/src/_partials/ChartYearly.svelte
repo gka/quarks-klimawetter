@@ -178,28 +178,33 @@
 
             <rect class="context" y={yScale(contextShow.hi)} width="{chartWidth}" height="{yScale(contextShow.lo)-yScale(contextShow.hi)}" />
 
-            {#each dataFiltered as d}
-            <g transform="translate({[xScale(d.year), yScale(0)]})" style="opacity: {!selected || selected === d ? 1 : 0.4}">
-                {#if show === 'precip'}
-                <rect class="precip" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+            <g>
+                {#each dataFiltered as d}
+                <g transform="translate({[xScale(d.year), yScale(0)]})" style="opacity: {!selected || selected === d ? 1 : 0.4}">
+                    {#if show === 'precip'}
+                    <rect class="precip" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
 
-                {:else if show === 'temp'}
-                    {#if d[show] > 0}
-                    <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
-                    {:else}
-                    <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+                    {:else if show === 'temp'}
+                        {#if d[show] > 0}
+                        <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
+                        {:else}
+                        <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+                        {/if}
                     {/if}
-                {/if}
-                <rect opacity="0" y="{-yScale(0)+padding.top}" on:mouseenter="{() => select(d)}" on:mouseleave="{() => select(null)}" class="" x="-8" width="16" height="{height-padding.top-padding.bottom}" />
+                    <rect opacity="0" y="{-yScale(0)+padding.top}" on:mouseenter="{() => select(d)}" on:mouseleave="{() => select(null)}" class="" x="-8" width="16" height="{height-padding.top-padding.bottom}" />
+                </g>
+                {/each}
             </g>
-            {/each}
-
 <!--             {#if show === 'temp'}
             <path class="temp" d="{maxTempPath(dataFiltered)}" />
             {/if} -->
 
             {#if showTrend}
             <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
+            <text class="trend" transform="translate({[xScale(regLin[1][0]), yScale(regLin[1][1])]})">
+                <tspan class="is-bold" x="5">{show === 'temp' ? fmtTemp(trend,{forcePlus:true}) : fmtRain(trend,{forcePlus:true})}</tspan>
+                <tspan x="5" dy="15">(seit 1961)</tspan>
+            </text>
             {/if}
 
             <g class="legend" transform="translate({[xScale(2021)-200-padding.right, 0]})">
@@ -223,7 +228,7 @@
             <g class="g-tooltip" transform="translate({xScale(selected.year)}, {selected[show] < 0 ? yScale(0)-25 : yScale(selected[show])-25})">
                 {#each [0,1] as i}
                 <text class:buffer="{i===0}">
-                    <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show], true) }</tspan>
+                    <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show]) }</tspan>
                     <tspan x="0" dy="17">{monthDisplay}</tspan>
                     <tspan >{selected.year}</tspan>
                 </text>
@@ -274,7 +279,7 @@
 
     .x-axis .tick text {
         text-anchor: middle;
-
+        /* eslint-disable-next-line */
         dominant-baseline: hanging;
     }
 
@@ -325,7 +330,12 @@
     path.trend {
         fill: none;
         stroke:  black;
-        stroke-dasharray: 3,3;
+        stroke-width: 2;
+    }
+
+    text.trend {
+        text-anchor: start;
+        font-size: 0.85rem;
     }
 
     .stop1 {
