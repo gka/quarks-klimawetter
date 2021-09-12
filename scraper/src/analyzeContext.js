@@ -97,11 +97,11 @@ function getMonthlyContext(data, month, baseMinYear) {
         data.filter(d => d.month === month),
         d => d.year
     ).forEach((value, key) => {
-        const avgMaxTemp = round(mean(value, d => d.TXK));
-        const tempRange = extent(value, d => d.TXK).map(round);
-        const tempValues = value
+        const tempNoNA = value.filter(d => d => d.TXK !== null && !isNaN(d.TXK) && d.TXK > -999);
+        const avgMaxTemp = round(mean(tempNoNA, d => d.TXK));
+        const tempRange = extent(tempNoNA, d => d.TXK).map(round);
+        const tempValues = tempNoNA
             .map(d => d.TXK)
-            .filter(d => d !== null && !isNaN(d) && d > -999)
             .sort(ascending);
         const sumPrecip = sum(value, d => (d.RSK !== -999 ? d.RSK : 0));
         stats.push({

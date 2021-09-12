@@ -68,7 +68,6 @@
                 };
             })
             .sort((a,b) => a.date - b.date);
-        console.log(s.data);
             station = s;
         monthly.forEach(m => {
             // check if that month is already in monthlyStat

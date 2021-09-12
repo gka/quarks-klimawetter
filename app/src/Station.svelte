@@ -19,7 +19,6 @@
     $: curYear = curDay.date.getFullYear();
 
     function moveDate(delta, by) {
-        // console.log('move', delta, dayjs(curDay.date).add(delta, 'day').toDate())
         $maxDate = dayjs(curDay.date).add(delta, by).toDate();
     }
 
@@ -28,7 +27,6 @@
     let monthlyData = [];
     $: {
         monthlyData = monthlyStats[curMonth].stats.slice(0);
-        console.log(monthlyData[0]);
     }
 
     let copySentence;
@@ -171,8 +169,9 @@
             show="temp"
         />
         <figcaption>
-            Hinweis: Der Balken für den {curMonthName}
+            Der hellgraue Bereich zeigt die normalen Tageshöchsttemperaturen im {curMonthName} ({fmtTemp(monthlyStats[curMonth].base.temp_lo, true)}-{fmtTemp(monthlyStats[curMonth].base.temp_hi, true)}). Hinweis: Im letzten Balken für den {curMonthName}
             {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.
+
         </figcaption>
     </figure>
     <div class="paragraph_content">
@@ -204,12 +203,12 @@
             show="precip"
         />
         <figcaption>
-            Hinweis: In den Balken für den {curMonthName}
+            Der hellgraue Bereich zeigt die normalen Monatsniederschläge im {curMonthName} ({fmtRain(monthlyStats[curMonth].base.precip_lo, true)}-{fmtRain(monthlyStats[curMonth].base.precip_hi, true)}). Hinweis: Im letzten Balken für den {curMonthName}
             {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen.
         </figcaption>
     </figure>
 {/if}
-{trendPrecip}
+
 <div class="paragraph_content">
     <p>
         Fällt die Trendlinie ab, heißt das, dass dieser Monat immer trockener wird im Vergleich zum
@@ -227,3 +226,10 @@
 </div>
 
 
+<style>
+    figcaption {
+        font-size: 14px;
+        color: var(--gray-dark);
+    }
+
+</style>
