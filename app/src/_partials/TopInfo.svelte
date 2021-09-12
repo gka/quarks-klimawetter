@@ -1,6 +1,5 @@
 <script>
     import { fmtTemp, fmtRain } from '$lib/formats';
-    import { minDate, maxDate } from '$lib/stores';
     import dayjs from 'dayjs';
 
     export let station;
@@ -16,14 +15,16 @@
             : 'durchschnittlich warm';
 
     $: tempRecord = curDay.TXK > curDay.context.TXK_records.hi[2].TXK ?
-        `Das ist ${fmtTemp(curDay.TXK-curDay.context.TXK_records.hi[2].TXK)} <b>heißer als der bisherige Hitzerekord</b> von ${curDay.context.TXK_records.hi[2].year}.` :
+        `Das ist ${fmtTemp(curDay.TXK-curDay.context.TXK_records.hi[2].TXK)} <b>heißer als der bisherige Hitzerekord</b> von ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)} im Jahr ${curDay.context.TXK_records.hi[2].year}.` :
         curDay.TXK === curDay.context.TXK_records.hi[2].TXK ?
         `Das ist <b>genauso heiß wie der bisherige Hitzerekord</b> von ${curDay.context.TXK_records.hi[2].year}.` :
         curDay.TXK > curDay.context.TXK_records.hi[1].TXK ?
         `Das ist <b>die zweithöchste Temperatur</b>, die hier je gemessen wurde (der Rekord von ${curDay.context.TXK_records.hi[2].year} liegt bei ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)}).` :
         curDay.TXK > curDay.context.TXK_records.hi[0].TXK ?
         `Das ist <b>die dritthöchste Temperatur</b>, die hier je gemessen wurde (nach ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)} im Jahr ${curDay.context.TXK_records.hi[2].year} und ${fmtTemp(curDay.context.TXK_records.hi[1].TXK)} im Jahr ${curDay.context.TXK_records.hi[1].year}).` :
-        false;
+        curDay.TXK < curDay.context.TXK_records.lo[0].TXK ?
+        `Das ist ${fmtTemp(curDay.context.TXK_records.lo[0].TXK-curDay.TXK)} <b>kälter als der bisherige Kälterekord</b> von ${fmtTemp(curDay.context.TXK_records.lo[0].TXK)} im Jahr ${curDay.context.TXK_records.lo[0].year}.`
+        : false;
 
     $: precipSentence =
         curDay.rain30days > curDay.context.rain30days_hi
@@ -71,7 +72,7 @@
             <div class="flex" style="margin-bottom:10px">
                 <div><i class="g-icon">🌡️</i></div>
                 <div>
-                    Heute, am <strong>{dayjs(curDay.date).format('LL')}</strong>, ist es in <strong>{station.name}</strong> mit max. <span>{fmtTemp(curDay.TXK)}</span>
+                    {isToday ? 'Heute, am' : 'Am'} <strong>{dayjs(curDay.date).format('LL')}</strong>, ist es in <strong>{station.name}</strong> mit max. <span>{fmtTemp(curDay.TXK)}</span>
                     <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span class="temp-record">{@html tempRecord}</span>{/if}
                 </div>
             </div>
