@@ -57,7 +57,7 @@
     </div>
 
     <h3>
-        🌡️ So {curDay.TXK < curDay.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade in
+        🌡️ So {curDay.TXK < curDay.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade {station.prep}
         <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen war
     </h3>
 
@@ -84,7 +84,7 @@
 
     <h3>
         🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan
-        in <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen
+        {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen
         war
     </h3>
 
@@ -148,7 +148,7 @@
     <hr />
 
     <h3>
-        🌡️ So warm war der <u>{curMonthName}</u> in <u>{station.name}</u> die letzten {numYears} Jahre
+        🌡️ So warm war der <u>{curMonthName}</u> {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
     </h3>
 
     {#if monthlyStats}
@@ -197,7 +197,7 @@
     {/if}
 
     <h3>
-        🌧️ So viel hat es im <u>{curMonthName}</u> in <u>{station.name}</u> die letzten {numYears} Jahre
+        🌧️ So viel hat es im <u>{curMonthName}</u> {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
         geregnet
     </h3>
 

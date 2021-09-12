@@ -4,7 +4,7 @@
     import TimeControls from './_partials/TimeControls.svelte';
     import { findNearestStation } from '$lib/findNearestStation';
     import dayjs from 'dayjs';
-import { onMount } from 'svelte';
+    import { onMount } from 'svelte';
 
     let stations;
     let station;
@@ -50,7 +50,7 @@ import { onMount } from 'svelte';
 
     onMount(() => {
         isLocalHost = location.hostname === 'localhost';
-    })
+    });
 
     function handleStationSelect(event) {
         loadStation(event.detail);
@@ -74,8 +74,7 @@ import { onMount } from 'svelte';
                     context: daily[day]
                 };
             })
-            .sort((a,b) => a.date - b.date);
-            station = s;
+            .sort((a, b) => a.date - b.date);
         monthly.forEach(m => {
             // check if that month is already in monthlyStat
             if (monthlyHist[m.month - 1].stats.slice(-1)[0].year < m.year) {
@@ -83,6 +82,8 @@ import { onMount } from 'svelte';
             }
         });
         s.monthlyStats = monthlyHist;
+        s.prep = s.id === '05792' ? 'an der' : s.id === '00722' ? 'am' : 'in';
+        station = s;
         selected = station.name;
         location.hash = `#/${station.slug}`;
     }
@@ -93,7 +94,7 @@ import { onMount } from 'svelte';
 </svelte:head>
 
 {#if isLocalHost}
-<TimeControls />
+    <TimeControls />
 {/if}
 
 <div>

@@ -50,7 +50,7 @@
     export let copySentence;
 
     $: {
-        copySentence = `Mit ${fmtTemp(curDay.TXK)} ist es heute in ${
+        copySentence = `Mit ${fmtTemp(curDay.TXK)} ist es heute ${station.prep} ${
             station.name
         } ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${
             tempClass === 'normal'
@@ -72,7 +72,7 @@
             <div class="flex" style="margin-bottom:10px">
                 <div><i class="g-icon">🌡️</i></div>
                 <div>
-                    {isToday ? 'Heute, am' : 'Am'} <strong>{dayjs(curDay.date).format('LL')}</strong>, ist es in <strong>{station.name}</strong> mit max. <span>{fmtTemp(curDay.TXK)}</span>
+                    {isToday ? 'Heute, am' : 'Am'} <strong>{dayjs(curDay.date).format('LL')}</strong>, ist es {station.prep} <strong>{station.name}</strong> mit max. <span>{fmtTemp(curDay.TXK)}</span>
                     <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span class="temp-record">{@html tempRecord}</span>{/if}
                 </div>
             </div>
