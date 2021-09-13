@@ -49,7 +49,7 @@
     }
 
     onMount(() => {
-        isLocalHost = location.hostname === 'localhost';
+        isLocalHost = location.hostname === 'localhost' || location.hostname === 'quarksklima.vis4.net';
     });
 
     function handleStationSelect(event) {
