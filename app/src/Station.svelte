@@ -78,8 +78,6 @@
 
     <InfoBox />
 
-    <hr />
-
     <!-- <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p> -->
 
     <h3>
@@ -131,10 +129,12 @@
             vergleichen wir mit dem Referenzzeitraum 1961-1990.
         </p>
     </div>
+
     <hr />
+
     <div class="paragraph_content">
         <p>
-            <strong>☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind
+            <strong class="is-bold">☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind
             beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter unterliegt ständigen Schwankungen.
             Erst wenn ein Monat überdurchschnittlich oft – also mehrere Jahre in Folge – vom langjährigen
             Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung die Ursache dafür
@@ -145,7 +145,7 @@
         <p>Genau das zeigen die folgenden Diagramme.</p>
     </div>
 
-    <hr />
+
 
     <h3>
         🌡️ So warm war der <u>{curMonthName}</u> {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
@@ -246,10 +246,17 @@
     figcaption {
         font-size: 14px;
         color: var(--gray-dark);
+        margin-bottom: 40px;
     }
 
     .quarks-wetterklima :global(.is-bold){
         font-weight: bold;
         font-family: sans_bold;
     }
+
+    h3 {
+        margin-top: 3rem;
+    }
+
+
 </style>

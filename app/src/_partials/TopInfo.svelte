@@ -101,12 +101,14 @@
         margin-bottom: 0.5rem;
     }
     .topinfo {
-        padding: 10px;
+        padding: 20px;
         border-radius: 5px;
         border-bottom:1px solid #eeee;
         margin-bottom: 2rem;
-        padding-bottom: 2rem;
+        margin-right: 5px;
         font-size: 1.2rem;
+        border: 2px solid;
+        box-shadow: 5px 5px rgba(0,0,0,.07);
     }
     .flex {
         display: flex;
