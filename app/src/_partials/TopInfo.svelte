@@ -69,10 +69,11 @@
     <div>
 
         <div class="flx">
+            <div style="margin-bottom:10px"><strong>{station.name}, {dayjs(curDay.date).format('LL')}</strong></div>
             <div class="flex" style="margin-bottom:10px">
                 <div><i class="g-icon">🌡️</i></div>
                 <div>
-                    {isToday ? 'Heute, am' : 'Am'} <strong>{dayjs(curDay.date).format('LL')}</strong>, ist es {station.prep} <strong>{station.name}</strong> mit max. <span>{fmtTemp(curDay.TXK)}</span>
+                    {isToday ? 'Heute ist': 'Es war'} mit max. <span>{fmtTemp(curDay.TXK)}</span>
                     <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span class="temp-record">{@html tempRecord}</span>{/if}
                 </div>
             </div>
@@ -106,7 +107,7 @@
         border-bottom:1px solid #eeee;
         margin-bottom: 2rem;
         margin-right: 5px;
-        font-size: 1.2rem;
+        font-size: 1.35rem;
         border: 2px solid;
         box-shadow: 5px 5px rgba(0,0,0,.07);
     }

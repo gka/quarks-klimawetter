@@ -47,7 +47,7 @@
         { id: '00427', lbl: 'Berlin' },
         { id: '01975', lbl: 'Hamburg' },
         // { id: '00722', lbl: 'Brocken' },
-        { id: '02667', lbl: 'Köln' },
+        { id: '02968', lbl: 'Köln-Stammheim' },
         { id: '01420', lbl: 'Frankfurt' },
         { id: '03379', lbl: 'München' },
         { id: '05792', lbl: 'Zugspitze' },
@@ -57,7 +57,7 @@
 
 <div class="station-select">
         <Typeahead
-            label="Station auswählen:"
+            label="Wetterstation in deiner Region auswählen:"
             placeholder={active || ''}
             inputAfterSelect="keep"
             data={lookup}
