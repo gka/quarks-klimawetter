@@ -76,7 +76,10 @@
 </div>
 
 <style>
-
+    .station-select :global(label) {
+        font-size: 1.15rem;
+        font-family: sans_bold;
+    }
     .small {
         font-size: 0.85rem;
         margin-bottom: 2rem;
