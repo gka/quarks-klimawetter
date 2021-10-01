@@ -26,7 +26,12 @@
 
     $: isMobile = chartWidth < 500;
 
-    $: padding = { top: 50, right: isMobile ? 40 : 80, bottom: 60, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = {
+        top: 50,
+        right: isMobile ? 40 : 80,
+        bottom: 60,
+        left: $innerWidth < 400 ? 30 : 40
+    };
 
     $: xRange = [padding.left, chartWidth - padding.right];
 
@@ -41,14 +46,14 @@
     $: yValues = [
         ...dataFiltered.map(d => d[show]),
         ...dataFiltered.map(d => d.context[show]),
-        ...dataFiltered.map(d => d.context[show+'_lo']),
-        ...dataFiltered.map(d => d.context[show+'_hi']),
+        ...dataFiltered.map(d => d.context[show + '_lo']),
+        ...dataFiltered.map(d => d.context[show + '_hi']),
         ...(includeZero ? [0] : [])
     ].filter(d => d !== undefined);
 
-    $: yExtent = extent(yValues).map((d,i) => show === 'temp' ? d + [-2,0][i] : d);;
+    $: yExtent = extent(yValues).map((d, i) => (show === 'temp' ? d + [-2, 0][i] : d));
 
-    $: xTicks = xScale.ticks(Math.round((chartWidth-padding.right-padding.left) / 40));
+    $: xTicks = xScale.ticks(Math.round((chartWidth - padding.right - padding.left) / 40));
     $: yTicks = yScale.ticks(8);
 
     const midMonth = d => {
@@ -60,60 +65,59 @@
     $: formatDay = (d, i) => dayjs(d).format('D');
     $: format1 = (d, i) => dayjs(d).format('D.M.');
     $: format2 = (d, i) => {
-        const fmt = [i > 0 && d.getFullYear() != xTicks[i-1].getFullYear() ? 'YYYY' : ''].join('');
+        const fmt = [i > 0 && d.getFullYear() != xTicks[i - 1].getFullYear() ? 'YYYY' : ''].join(
+            ''
+        );
         return fmt ? dayjs(d).format(fmt) : '';
     };
 
-    $: dataFiltered = data.filter((d,i) => {
-        return d.date > $minDate
+    $: dataFiltered = data.filter((d, i) => {
+        return d.date > $minDate;
     });
 
     onMount(async () => {
         // force re-rendering on mount
-        padding.left = padding.left+1;
+        padding.left = padding.left + 1;
         await tick();
-        chartWidth = chartWidth-1;
-    });;
+        chartWidth = chartWidth - 1;
+    });
 
     beforeUpdate(() => {
         if (clientWidth && clientWidth !== chartWidth) {
             chartWidth = clientWidth;
         }
-    })
-
+    });
 </script>
-
 
 <svelte:window bind:innerWidth={$innerWidth} />
 
-<div
-    bind:this={chart}
-    class="chart"
-    bind:clientWidth >
+<div bind:this={chart} class="chart" bind:clientWidth>
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
-                <stop class="stop1" offset="0%"/>
-                <stop class="stop2" offset="100%"/>
+                <stop class="stop1" offset="0%" />
+                <stop class="stop2" offset="100%" />
             </linearGradient>
         </defs>
         <g>
             <!-- x axis -->
             <g class="axis x-axis">
                 {#each xTicks as tick, i}
-                    <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
-                        <line y1="-{height-padding.bottom}" y2="0" />
+                    <g
+                        class="tick tick-{tick}"
+                        transform="translate({xScale(tick)},{height - padding.bottom})"
+                    >
+                        <line y1="-{height - padding.bottom}" y2="0" />
                         <text y="5">
                             {format1(tick, i)}
                         </text>
 
                         <text class="year" y="25">{format2(tick, i)}</text>
-
                     </g>
                 {/each}
             </g>
 
-            <rect fill="url(#white)" width="100%" height="{padding.top+10}"></rect>
+            <rect fill="url(#white)" width="100%" height={padding.top + 10} />
 
             <!-- y axis -->
             <g class="axis y-axis">
@@ -121,30 +125,29 @@
                     <g class="tick tick-{tick}" transform="translate(0, {yScale(tick)})">
                         <line x2="100%" />
                         <text y="-4">
-                            {@html tick} {#if i === yTicks.length-1}{unit}{/if}
+                            {@html tick}
                         </text>
                     </g>
                 {/each}
             </g>
             {#if label}
-            <text class="label" y="10">
-                {#each label.split('\\n') as line,i}
-                <tspan x="0" dy="{i?14:0}">{line}</tspan>
-                {/each}
-            </text>
+                <text class="label" y="5">
+                    {#each label.split('\\n') as line, i}
+                        <tspan x="0" dy={i ? 18 : 0}>{line}</tspan>
+                    {/each}
+                </text>
             {/if}
 
             <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
             {#if show === 'TXK'}
-            <MaxTemp {height} {xScale} {yScale} data={dataFiltered} />
+                <MaxTemp {height} {xScale} {yScale} data={dataFiltered} />
             {:else if show === 'rain30days'}
-            <Rain30Days {height} {xScale} {yScale} data={dataFiltered} />
+                <Rain30Days {height} {xScale} {yScale} data={dataFiltered} />
             {/if}
         </g>
     </svg>
 </div>
-
 
 <style>
     .chart {
@@ -154,7 +157,7 @@
     }
 
     text.label {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
 
     svg {
@@ -191,10 +194,10 @@
         opacity: 0.25;
     }
     .stop1 {
-        stop-color: rgba(255,255,255,1);
+        stop-color: rgba(255, 255, 255, 1);
     }
     .stop2 {
-        stop-color: rgba(255,255,255,0);
+        stop-color: rgba(255, 255, 255, 0);
     }
     @media (max-width: 400px) {
         .tick text {

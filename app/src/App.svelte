@@ -32,7 +32,7 @@
             console.log(match);
         }
         if (!location.hash || !match) {
-            loadStation({ slug: 'berlin-brandenburg' });
+            loadStation({ slug: 'berlin-tempelhof' });
             findNearestStation(stations, x => {
                 loadStation(x);
             });

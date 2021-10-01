@@ -16,10 +16,11 @@
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
-    $: height = Math.max(
-        350,
-        Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
-    ) + (range ? 50 : 0);
+    $: height =
+        Math.max(
+            350,
+            Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
+        ) + (range ? 50 : 0);
 
     export let month = 0;
     export let data = [];
@@ -42,24 +43,21 @@
 
     $: xRange = [padding.left, chartWidth - padding.right];
 
-    $: xScale = scaleLinear()
-        .domain([minYear, maxYear])
-        .range(xRange);
+    $: xScale = scaleLinear().domain([minYear, maxYear]).range(xRange);
 
     $: yScale = scaleLinear()
         .domain(yExtent)
         .range([height - padding.bottom, padding.top]);
 
     $: contextShow = {
-        lo: context[show+'_lo'],
-        hi: context[show+'_hi'],
+        lo: context[show + '_lo'],
+        hi: context[show + '_hi']
     };
 
     $: yValues = [
-        ...(show === 'temp' && range ?
-            dataFiltered.map(d => d.temp_range[0])
-                .concat(dataFiltered.map(d => d.temp_range[1])) :
-            dataFiltered.map(d => d[show])),
+        ...(show === 'temp' && range
+            ? dataFiltered.map(d => d.temp_range[0]).concat(dataFiltered.map(d => d.temp_range[1]))
+            : dataFiltered.map(d => d[show])),
         contextShow.lo,
         contextShow.hi,
         ...(includeZero ? [0] : [])
@@ -69,27 +67,30 @@
     const minprecipRange = 80;
     let yExtent = [];
     $: {
-        const [min,max] = extent(yValues).map((d,i) => show === 'temp' ? d + [0,2][i] : d);
-        yExtent = [min, Math.max(max, min+(show === 'temp' ? minTempRange : minprecipRange))];
+        const [min, max] = extent(yValues).map((d, i) => (show === 'temp' ? d + [0, 2][i] : d));
+        yExtent = [min, Math.max(max, min + (show === 'temp' ? minTempRange : minprecipRange))];
     }
 
     $: xTicks = xScale.ticks(Math.round(chartWidth / 60));
     $: yTicks = yScale.ticks(7);
 
-
     $: format = (d, i) => dayjs(d).format('YYYY');
-    $: formatMobile = (d, i) => dayjs(d).format('\'YY');
+    $: formatMobile = (d, i) => dayjs(d).format("'YY");
 
-    $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');;
+    $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');
 
-    $: dataFiltered = data.filter((d,i) => {
-        return d.year <= maxYear && d.year >= minYear && (show === 'temp' ? d.temp > -900 : d.precip > -900);
+    $: dataFiltered = data.filter((d, i) => {
+        return (
+            d.year <= maxYear &&
+            d.year >= minYear &&
+            (show === 'temp' ? d.temp > -900 : d.precip > -900)
+        );
     });
 
     $: regLin = regressionLinear()
         .x(d => d.year)
         .y(d => d[show])
-        .domain([minYear-1, maxYear+1])(data);
+        .domain([minYear - 1, maxYear + 1])(data);
 
     export let trend;
     $: {
@@ -104,55 +105,56 @@
         if (clientWidth && clientWidth !== chartWidth) {
             chartWidth = clientWidth;
         }
-    })
+    });
 
     onMount(async () => {
         // force re-rendering on mount
-        padding.left = padding.left+1;
+        padding.left = padding.left + 1;
         await tick();
-        chartWidth = chartWidth-1;
-    });;
+        chartWidth = chartWidth - 1;
+    });
 
     let selected;
 
     function select(d) {
         selected = d;
     }
-
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
 <!-- <div style="text-align: right; position: relative; top: -10px">
     <label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
 </div> -->
-<div
-    bind:this={chart}
-    class="chart"
-    bind:clientWidth={clientWidth}>
+<div bind:this={chart} class="chart" bind:clientWidth>
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
-                <stop class="stop1" offset="0%"/>
-                <stop class="stop2" offset="100%"/>
+                <stop class="stop1" offset="0%" />
+                <stop class="stop2" offset="100%" />
             </linearGradient>
         </defs>
         <g>
-
             <!-- x axis -->
             <g class="axis x-axis">
                 {#each d3range.apply(null, xScale.domain()) as tick, i}
-                    <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
+                    <g
+                        class="tick tick-{tick}"
+                        transform="translate({xScale(tick)},{height - padding.bottom})"
+                    >
                         <line y1="0" y2="4" />
                     </g>
                 {/each}
                 {#each xTicks as tick, i}
-                    <g class="tick tick-{tick}" transform="translate({xScale(tick)},{height-padding.bottom})">
-                        <line y1="-{height-padding.bottom}" y2="0" />
+                    <g
+                        class="tick tick-{tick}"
+                        transform="translate({xScale(tick)},{height - padding.bottom})"
+                    >
+                        <line y1="-{height - padding.bottom}" y2="0" />
                         <text class="year" y="8">{tick}</text>
                     </g>
                 {/each}
             </g>
-            <rect fill="url(#white)" width="100%" height="{padding.top+10}"></rect>
+            <rect fill="url(#white)" width="100%" height={padding.top + 10} />
 
             <!-- y axis -->
             <g class="axis y-axis">
@@ -169,52 +171,105 @@
             <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
             {#if label}
-            <text class="label" y="10">
-                {#each label.split('\\n') as line,i}
-                <tspan x="0" dy="{i?14:0}">{line}</tspan>
-                {/each}
-            </text>
+                <text class="label" y="5">
+                    {#each label.split('\\n') as line, i}
+                        <tspan x="0" dy={i ? 18 : 0}>{line}</tspan>
+                    {/each}
+                </text>
             {/if}
 
-            <rect class="context" y={yScale(contextShow.hi)} width="{chartWidth}" height="{yScale(contextShow.lo)-yScale(contextShow.hi)}" />
+            <rect
+                class="context"
+                y={yScale(contextShow.hi)}
+                width={chartWidth}
+                height={yScale(contextShow.lo) - yScale(contextShow.hi)}
+            />
 
             <g>
                 {#each dataFiltered as d}
-                <g transform="translate({[xScale(d.year), yScale(0)]})" style="opacity: {!selected || selected === d ? 1 : 0.4}">
-                    {#if show === 'precip'}
-                    <rect class="precip" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
-
-                    {:else if show === 'temp'}
-                        {#if d[show] > 0}
-                        <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={yScale(d[show])-yScale(0)} x="-4" width="8" height="{yScale(0)-yScale(d[show])}" />
-                        {:else}
-                        <rect class="temp bar" class:low="{d[show] < contextShow.lo}" class:high="{d[show] > contextShow.hi}" y={0} x="-4" width="8" height="{yScale(d[show])-yScale(0)}" />
+                    <g
+                        transform="translate({[xScale(d.year), yScale(0)]})"
+                        style="opacity: {!selected || selected === d ? 1 : 0.4}"
+                    >
+                        {#if show === 'precip'}
+                            <rect
+                                class="precip"
+                                class:low={d[show] < contextShow.lo}
+                                class:high={d[show] > contextShow.hi}
+                                y={yScale(d[show]) - yScale(0)}
+                                x="-4"
+                                width="8"
+                                height={yScale(0) - yScale(d[show])}
+                            />
+                        {:else if show === 'temp'}
+                            {#if d[show] > 0}
+                                <rect
+                                    class="temp bar"
+                                    class:low={d[show] < contextShow.lo}
+                                    class:high={d[show] > contextShow.hi}
+                                    y={yScale(d[show]) - yScale(0)}
+                                    x="-4"
+                                    width="8"
+                                    height={yScale(0) - yScale(d[show])}
+                                />
+                            {:else}
+                                <rect
+                                    class="temp bar"
+                                    class:low={d[show] < contextShow.lo}
+                                    class:high={d[show] > contextShow.hi}
+                                    y={0}
+                                    x="-4"
+                                    width="8"
+                                    height={yScale(d[show]) - yScale(0)}
+                                />
+                            {/if}
                         {/if}
-                    {/if}
-                    <rect opacity="0" y="{-yScale(0)+padding.top}" on:mouseenter="{() => select(d)}" on:mouseleave="{() => select(null)}" class="" x="-8" width="16" height="{height-padding.top-padding.bottom}" />
-                </g>
+                        <rect
+                            opacity="0"
+                            y={-yScale(0) + padding.top}
+                            on:mouseenter={() => select(d)}
+                            on:mouseleave={() => select(null)}
+                            class=""
+                            x="-8"
+                            width="16"
+                            height={height - padding.top - padding.bottom}
+                        />
+                    </g>
                 {/each}
             </g>
-<!--             {#if show === 'temp'}
+            <!--             {#if show === 'temp'}
             <path class="temp" d="{maxTempPath(dataFiltered)}" />
             {/if} -->
 
             {#if showTrend}
-            <path class="trend" d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[xScale(regLin[1][0]), yScale(regLin[1][1])]}" />
-            <text class="trend" transform="translate({[xScale(regLin[1][0]), yScale(regLin[1][1])]})">
-                <tspan class="is-bold" x="5">{show === 'temp' ? fmtTemp(trend,{forcePlus:true}) : fmtRain(trend,{forcePlus:true})}</tspan>
-                <tspan x="5" dy="15">(seit 1961)</tspan>
-            </text>
+                <path
+                    class="trend"
+                    d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[
+                        xScale(regLin[1][0]),
+                        yScale(regLin[1][1])
+                    ]}"
+                />
+                <text
+                    class="trend"
+                    transform="translate({[xScale(regLin[1][0]), yScale(regLin[1][1])]})"
+                >
+                    <tspan class="is-bold" x="5"
+                        >{show === 'temp'
+                            ? fmtTemp(trend, { forcePlus: true })
+                            : fmtRain(trend, { forcePlus: true })}</tspan
+                    >
+                    <tspan x="5" dy="15">(seit 1961)</tspan>
+                </text>
             {/if}
 
-            <g class="legend" transform="translate({[xScale(2021)-200-padding.right, 0]})">
+            <g class="legend" transform="translate({[xScale(2021) - 200 - padding.right, 0]})">
                 <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
                 <g transform="translate({show === 'temp' ? 0 : 5},0)">
                     <rect class="{show} high" width="14" height="14" />
                     <text x="18" y="12">{show === 'temp' ? 'wärmer' : 'nasser'} als normal</text>
                 </g>
                 <g transform="translate(140,0)">
-                    <rect class="{show}" width="14" height="14" />
+                    <rect class={show} width="14" height="14" />
                     <text x="18" y="12">normal</text>
                 </g>
                 <g transform="translate(214,0)">
@@ -223,23 +278,29 @@
                 </g>
             </g>
 
-
             {#if selected}
-            <g class="g-tooltip" transform="translate({xScale(selected.year)}, {selected[show] < 0 ? yScale(0)-25 : yScale(selected[show])-25})">
-                {#each [0,1] as i}
-                <text class:buffer="{i===0}">
-                    <tspan x="0">{show === 'temp' ? fmtTemp(selected[show]) : fmtRain(selected[show]) }</tspan>
-                    <tspan x="0" dy="17">{monthDisplay}</tspan>
-                    <tspan >{selected.year}</tspan>
-                </text>
-                {/each}
-            </g>
+                <g
+                    class="g-tooltip"
+                    transform="translate({xScale(selected.year)}, {selected[show] < 0
+                        ? yScale(0) - 25
+                        : yScale(selected[show]) - 25})"
+                >
+                    {#each [0, 1] as i}
+                        <text class:buffer={i === 0}>
+                            <tspan x="0"
+                                >{show === 'temp'
+                                    ? fmtTemp(selected[show])
+                                    : fmtRain(selected[show])}</tspan
+                            >
+                            <tspan x="0" dy="17">{monthDisplay}</tspan>
+                            <tspan>{selected.year}</tspan>
+                        </text>
+                    {/each}
+                </g>
             {/if}
-
         </g>
     </svg>
 </div>
-
 
 <style>
     .chart {
@@ -254,7 +315,7 @@
         overflow: visible;
     }
     text.label {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
     label {
         color: var(--gray-dark);
@@ -326,10 +387,9 @@
         fill: var(--orange);
     }
 
-
     path.trend {
         fill: none;
-        stroke:  black;
+        stroke: black;
         stroke-width: 2;
     }
 
@@ -339,10 +399,10 @@
     }
 
     .stop1 {
-        stop-color: rgba(255,255,255,1);
+        stop-color: rgba(255, 255, 255, 1);
     }
     .stop2 {
-        stop-color: rgba(255,255,255,0);
+        stop-color: rgba(255, 255, 255, 0);
     }
 
     @media (max-width: 400px) {
@@ -353,13 +413,12 @@
 
     .boxplot {
         shape-rendering: crispEdges;
-
     }
     .boxplot line {
         stroke-width: 6;
     }
     .boxplot line {
-        stroke:  4;
+        stroke: 4;
         stroke: var(--gray);
     }
 
@@ -371,7 +430,7 @@
     .legend g rect {
         opacity: 0.7;
     }
-    .g-tooltip text{
+    .g-tooltip text {
         text-anchor: middle;
         font-size: 0.93rem;
     }

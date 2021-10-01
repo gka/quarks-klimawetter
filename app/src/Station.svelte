@@ -44,9 +44,9 @@
 
     <div class="paragraph_content">
         <p>
-            Auf dieser Seite erfährst du, ob das aktuelle Wetter in deiner Region mit dem der letzten
-            Jahrzehnte vergleichbar ist – oder davon abweicht. Genauer genommen vergleichen wir das
-            aktuelle Wetter mit dem Zeitraum 1961-1990, weil dieser Zeitraum noch wenig vom
+            Auf dieser Seite erfährst du, ob das aktuelle Wetter in deiner Region mit dem der
+            letzten Jahrzehnte vergleichbar ist – oder davon abweicht. Genauer genommen vergleichen
+            wir das aktuelle Wetter mit dem Zeitraum 1961-1990, weil dieser Zeitraum noch wenig vom
             Klimawandel betroffen war und als internationaler Referenzzeitraum gilt.
         </p>
 
@@ -82,13 +82,13 @@
 
     <h3>
         🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan
-        {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen
-        war
+        {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel
+        betroffen war
     </h3>
 
     <figure>
         <ChartDaily
-            label="Niederschlagsmenge\nkummuliert über 30 Tage"
+            label="Niederschlagsmenge\nkummuliert über 30 Tage in mm"
             unit="mm"
             {data}
             includeZero={true}
@@ -134,21 +134,21 @@
 
     <div class="paragraph_content">
         <p>
-            <strong class="is-bold">☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind
-            beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter unterliegt ständigen Schwankungen.
-            Erst wenn ein Monat überdurchschnittlich oft – also mehrere Jahre in Folge – vom langjährigen
-            Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung die Ursache dafür
-            ist. Also erst wenn es im langfristigen Trend immer wärmer, und je nach Jahreszeit nasser
-            oder trockener wird, können wir sagen: Das ist nicht einfach nur Wetter, das ist Klimawandel.
+            <strong class="is-bold">☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder hohe
+            Temperaturen sind beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter unterliegt
+            ständigen Schwankungen. Erst wenn ein Monat überdurchschnittlich oft – also mehrere Jahre
+            in Folge – vom langjährigen Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung
+            die Ursache dafür ist. Also erst wenn es im langfristigen Trend immer wärmer, und je nach
+            Jahreszeit nasser oder trockener wird, können wir sagen: Das ist nicht einfach nur Wetter,
+            das ist Klimawandel.
         </p>
 
         <p>Genau das zeigen die folgenden Diagramme.</p>
     </div>
 
-
-
     <h3>
-        🌡️ So warm war der <u>{curMonthName}</u> {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
+        🌡️ So warm war der <u>{curMonthName}</u>
+        {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
     </h3>
 
     {#if monthlyStats}
@@ -197,14 +197,14 @@
     {/if}
 
     <h3>
-        🌧️ So viel hat es im <u>{curMonthName}</u> {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre
-        geregnet
+        🌧️ So viel hat es im <u>{curMonthName}</u>
+        {station.prep} <u>{station.name}</u> die letzten {numYears} Jahre geregnet
     </h3>
 
     {#if monthlyStats}
         <figure>
             <ChartYearly
-                label="Monatssumme der\nNiederschlagshöhe im {curMonthName} (mm)"
+                label="Monatssumme der\nNiederschlagshöhe\nim {curMonthName} in mm"
                 month={curMonth}
                 data={monthlyData}
                 context={monthlyStats[curMonth].base}
@@ -249,7 +249,7 @@
         margin-bottom: 40px;
     }
 
-    .quarks-wetterklima :global(.is-bold){
+    .quarks-wetterklima :global(.is-bold) {
         font-weight: bold;
         font-family: sans_bold;
     }
@@ -257,6 +257,4 @@
     h3 {
         margin-top: 3rem;
     }
-
-
 </style>
