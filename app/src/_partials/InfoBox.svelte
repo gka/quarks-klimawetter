@@ -15,10 +15,9 @@
             </p>
 
             <p>
-                Das Wetter schwankt ständig. Das Klima dagegen verändert sich sehr langsam und ist –
+                Das Wetter schwankt ständig und ist zeitlich begrenzt. Das Klima dagegen verändert sich sehr langsam und ist –
                 wenn man so will – nichts anderes als das Wetter betrachtet über einen langen
-                Zeitraum. Angaben über das Wetter sind örtlich und zeitlich begrenzt. Das Klima ist
-                also ein Mittelwert des Wetters, den Meteorologen über einen Zeitraum von mindestens
+                Zeitraum. Das Klima ist also ein Mittelwert des Wetters, den Meteorologen über einen Zeitraum von mindestens
                 30 Jahren bilden. Auch Extremwerte aus dieser Periode fließen in die Statistik mit
                 ein. Um Wetter und Klima zu vergleichen, nutzt man Referenzperioden, die das Wetter
                 (Temperatur, Niederschlag usw.) über <strong>mindestens 30 Jahre</strong> in Durchschnittswerten

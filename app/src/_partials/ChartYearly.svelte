@@ -28,7 +28,7 @@
     export let includeZero = false;
     export let label = '';
 
-    let showTrend = false;
+    let showTrend = true;
 
     const now = new Date();
 
@@ -122,9 +122,9 @@
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
-<div style="text-align: right; position: relative; top: -10px">
+<!-- <div style="text-align: right; position: relative; top: -10px">
     <label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
-</div>
+</div> -->
 <div
     bind:this={chart}
     class="chart"

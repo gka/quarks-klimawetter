@@ -159,7 +159,7 @@
     >
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
-                <tspan x="0">Normal am {dayjs(selected.date).format('D.MMM')}:</tspan>
+                <tspan x="0">Normal am {dayjs(selected.date).format('D. MMM')}:</tspan>
                 <tspan class="is-bold"
                     >{fmtTemp(selected.context.TXK_lo, true)}-{fmtTemp(
                         selected.context.TXK_hi

@@ -29,8 +29,10 @@
             const slug = location.hash.substr(2);
             match = stations.find(s => s.slug === slug);
             if (match) loadStation(match);
+            console.log(match);
         }
         if (!location.hash || !match) {
+            loadStation({ slug: 'berlin-brandenburg' });
             findNearestStation(stations, x => {
                 loadStation(x);
             });
@@ -49,7 +51,8 @@
     }
 
     onMount(() => {
-        isLocalHost = location.hostname === 'localhost' || location.hostname === 'quarksklima.vis4.net';
+        isLocalHost =
+            location.hostname === 'localhost' || location.hostname === 'quarksklima.vis4.net';
     });
 
     function handleStationSelect(event) {

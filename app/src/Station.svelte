@@ -44,7 +44,7 @@
 
     <div class="paragraph_content">
         <p>
-            Auf dieser Seite erfährst du, ob das Wetter in deiner Region mit dem der letzten
+            Auf dieser Seite erfährst du, ob das aktuelle Wetter in deiner Region mit dem der letzten
             Jahrzehnte vergleichbar ist – oder davon abweicht. Genauer genommen vergleichen wir das
             aktuelle Wetter mit dem Zeitraum 1961-1990, weil dieser Zeitraum noch wenig vom
             Klimawandel betroffen war und als internationaler Referenzzeitraum gilt.
@@ -57,7 +57,7 @@
     </div>
 
     <h3>
-        🌡️ So {curDay.TXK < curDay.context.TXK_lo ? 'kalt' : 'warm'} ist es gerade {station.prep}
+        🌡️ So {curDay.TXK < curDay.context.TXK_lo ? 'kalt' : 'warm'} ist es momentan {station.prep}
         <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel betroffen war
     </h3>
 

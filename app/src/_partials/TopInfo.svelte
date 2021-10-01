@@ -14,24 +14,39 @@
             ? 'überdurchschnittlich kalt'
             : 'durchschnittlich warm';
 
-    $: tempRecord = curDay.TXK > curDay.context.TXK_records.hi[2].TXK ?
-        `Das ist ${fmtTemp(curDay.TXK-curDay.context.TXK_records.hi[2].TXK)} <b>heißer als der bisherige Hitzerekord</b> von ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)} im Jahr ${curDay.context.TXK_records.hi[2].year}.` :
-        curDay.TXK === curDay.context.TXK_records.hi[2].TXK ?
-        `Das ist <b>genauso heiß wie der bisherige Hitzerekord</b> von ${curDay.context.TXK_records.hi[2].year}.` :
-        curDay.TXK > curDay.context.TXK_records.hi[1].TXK ?
-        `Das ist <b>die zweithöchste Temperatur</b>, die hier je gemessen wurde (der Rekord von ${curDay.context.TXK_records.hi[2].year} liegt bei ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)}).` :
-        curDay.TXK > curDay.context.TXK_records.hi[0].TXK ?
-        `Das ist <b>die dritthöchste Temperatur</b>, die hier je gemessen wurde (nach ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)} im Jahr ${curDay.context.TXK_records.hi[2].year} und ${fmtTemp(curDay.context.TXK_records.hi[1].TXK)} im Jahr ${curDay.context.TXK_records.hi[1].year}).` :
-        curDay.TXK < curDay.context.TXK_records.lo[0].TXK ?
-        `Das ist ${fmtTemp(curDay.context.TXK_records.lo[0].TXK-curDay.TXK)} <b>kälter als der bisherige Kälterekord</b> von ${fmtTemp(curDay.context.TXK_records.lo[0].TXK)} im Jahr ${curDay.context.TXK_records.lo[0].year}.`
-        : false;
+    $: tempRecord =
+        curDay.TXK > curDay.context.TXK_records.hi[2].TXK
+            ? `Das ist ${fmtTemp(
+                  curDay.TXK - curDay.context.TXK_records.hi[2].TXK
+              )} <b>heißer als der bisherige Hitzerekord</b> von ${fmtTemp(
+                  curDay.context.TXK_records.hi[2].TXK
+              )} im Jahr ${curDay.context.TXK_records.hi[2].year}.`
+            : curDay.TXK === curDay.context.TXK_records.hi[2].TXK
+            ? `Das ist <b>genauso heiß wie der bisherige Hitzerekord</b> von ${curDay.context.TXK_records.hi[2].year}.`
+            : curDay.TXK > curDay.context.TXK_records.hi[1].TXK
+            ? `Das ist <b>die zweithöchste Temperatur</b>, die hier je gemessen wurde (der Rekord von ${
+                  curDay.context.TXK_records.hi[2].year
+              } liegt bei ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)}).`
+            : curDay.TXK > curDay.context.TXK_records.hi[0].TXK
+            ? `Das ist <b>die dritthöchste Temperatur</b>, die hier je gemessen wurde (nach ${fmtTemp(
+                  curDay.context.TXK_records.hi[2].TXK
+              )} im Jahr ${curDay.context.TXK_records.hi[2].year} und ${fmtTemp(
+                  curDay.context.TXK_records.hi[1].TXK
+              )} im Jahr ${curDay.context.TXK_records.hi[1].year}).`
+            : curDay.TXK < curDay.context.TXK_records.lo[0].TXK
+            ? `Das ist ${fmtTemp(
+                  curDay.context.TXK_records.lo[0].TXK - curDay.TXK
+              )} <b>kälter als der bisherige Kälterekord</b> von ${fmtTemp(
+                  curDay.context.TXK_records.lo[0].TXK
+              )} im Jahr ${curDay.context.TXK_records.lo[0].year}.`
+            : false;
 
     $: precipSentence =
         curDay.rain30days > curDay.context.rain30days_hi
-            ? 'überdurchschnittlich viel'
+            ? 'überdurchschnittlich viel geregnet'
             : curDay.rain30days < curDay.context.rain30days_lo
-            ? 'überdurchschnittlich wenig'
-            : 'durchschnittlich';
+            ? 'überdurchschnittlich wenig geregnet'
+            : 'durchschnittlich viel geregnet';
 
     $: tempClass =
         curDay.TXK > curDay.context.TXK_hi
@@ -50,44 +65,45 @@
     export let copySentence;
 
     $: {
-        copySentence = `Mit ${fmtTemp(curDay.TXK)} ist es heute ${station.prep} ${
-            station.name
-        } ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${
+        copySentence =
             tempClass === 'normal'
-                ? 'ähnlich warm'
-                : `etwa ${fmtTemp(
+                ? ''
+                : `Mit ${fmtTemp(curDay.TXK)} ist es heute ${station.prep} ${
+                      station.name
+                  } ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${`etwa ${fmtTemp(
                       Math.round(
                           curDay.TXK -
                               (tempClass === 'high' ? curDay.context.TXK_hi : curDay.context.TXK_lo)
                       )
-                  )} ${curDay.TXK > curDay.context.TXK ? 'wärmer' : 'kälter'}`
-        }.`;
+                  )} ${curDay.TXK > curDay.context.TXK ? 'wärmer' : 'kälter'}`}.`;
     }
 </script>
 
 <div class="topinfo">
     <div>
-
         <div class="flx">
-            <div style="margin-bottom:10px"><strong>{station.name}, {dayjs(curDay.date).format('LL')}</strong></div>
+            <div style="margin-bottom:10px">
+                <strong>{station.name}, {dayjs(curDay.date).format('LL')}</strong>
+            </div>
             <div class="flex" style="margin-bottom:10px">
                 <div><i class="g-icon">🌡️</i></div>
                 <div>
-                    {isToday ? 'Heute ist': 'Es war'} mit max. <span>{fmtTemp(curDay.TXK)}</span>
-                    <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span class="temp-record">{@html tempRecord}</span>{/if}
+                    {isToday ? 'Heute ist' : 'Es war'} mit max. <span>{fmtTemp(curDay.TXK)}</span>
+                    <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span
+                            class="temp-record">{@html tempRecord}</span
+                        >{/if}
                 </div>
             </div>
             <div class="flex">
                 <div><i class="g-icon">🌧️</i></div>
                 <div>
-                    In den letzten 30 Tagen hat es <b class="rain-{precipClass}">{precipSentence}</b> geregnet (<span
-                        >{fmtRain(curDay.rain30days)}</span
-                    >).
+                    In den letzten 30 Tagen hat es <b class="rain-{precipClass}">{precipSentence}</b
+                    >
+                    (<span>{fmtRain(curDay.rain30days)}</span>).
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 
 <style>
@@ -104,12 +120,12 @@
     .topinfo {
         padding: 20px;
         border-radius: 5px;
-        border-bottom:1px solid #eeee;
+        border-bottom: 1px solid #eeee;
         margin-bottom: 2rem;
         margin-right: 5px;
         font-size: 1.35rem;
         border: 2px solid;
-        box-shadow: 5px 5px rgba(0,0,0,.07);
+        box-shadow: 5px 5px rgba(0, 0, 0, 0.07);
     }
     .flex {
         display: flex;
