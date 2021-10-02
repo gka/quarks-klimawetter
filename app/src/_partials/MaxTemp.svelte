@@ -101,7 +101,10 @@
     clip-path="url(#clip-below-context)"
 />
 
-<text transform="translate({[xScale(lastContext.date)+10, yScale(lastContext.context.TXK)+4]})" class="context">
+<text
+    transform="translate({[xScale(lastContext.date) + 10, yScale(lastContext.context.TXK) + 4]})"
+    class="context"
+>
     <tspan x="0" dy="-17">normale</tspan>
     <tspan x="0" dy="17">Temperaturen</tspan>
     <tspan x="0" dy="17">1961-1990</tspan>
@@ -149,7 +152,7 @@
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
                 <tspan x="0">{fmtTemp(selected.TXK)}</tspan>
-                <tspan x="0" dy="20">{dayjs(selected.date).format('D.MMM')}</tspan>
+                <tspan x="0" dy="20">{dayjs(selected.date).format('D. MMM')}</tspan>
             </text>
         {/each}
     </g>
@@ -173,7 +176,7 @@
         class="last-day"
         class:above={lastDay.TXK > lastDay.context.TXK_hi}
         class:below={lastDay.TXK < lastDay.context.TXK_lo}
-        transform="translate({[xScale(lastDay.date)+4, yScale(lastDay.TXK) - 30]})"
+        transform="translate({[xScale(lastDay.date) + 4, yScale(lastDay.TXK) - 30]})"
     >
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
