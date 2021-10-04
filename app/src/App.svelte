@@ -5,6 +5,7 @@
     import { findNearestStation } from '$lib/findNearestStation';
     import dayjs from 'dayjs';
     import { onMount } from 'svelte';
+    import Section from './_partials/Section.svelte';
 
     let stations;
     let station;
@@ -101,16 +102,18 @@
 {/if}
 
 <div>
-    {#await loadStations()}
-        <p>Loading stations</p>
-    {:then stations}
-        <StationSelect
-            bind:active={selected}
-            {stations}
-            {dataUrl}
-            on:select={handleStationSelect}
-        />
-    {/await}
+    <Section>
+        {#await loadStations()}
+            <p>Loading stations</p>
+        {:then stations}
+            <StationSelect
+                bind:active={selected}
+                {stations}
+                {dataUrl}
+                on:select={handleStationSelect}
+            />
+        {/await}
+    </Section>
     {#if station}
         <Station
             stationen={stations}

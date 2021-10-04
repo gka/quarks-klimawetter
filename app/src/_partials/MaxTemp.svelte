@@ -181,7 +181,7 @@
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
                 <tspan x="0">{fmtTemp(lastDay.TXK)}</tspan>
-                <tspan x="0" dy="17">{dayjs(lastDay.date).format('D.MMM')}</tspan>
+                <tspan x="0" dy="17">{dayjs(lastDay.date).format('D. MMM')}</tspan>
             </text>
         {/each}
     </g>
@@ -191,7 +191,7 @@
     <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
     <g>
         <rect class="hotter" width="15" height="15" />
-        <text x="20" y="12">heißer als normal</text>
+        <text x="20" y="12">wärmer als normal</text>
     </g>
     <g transform="translate(0,20)">
         <rect class="colder" width="15" height="15" />
