@@ -14,9 +14,10 @@
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
-    $: height =
-        Math.max(350, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1)) +
-        (range ? 50 : 0);
+    $: height = isMobile
+        ? 420
+        : Math.max(350, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1)) +
+          (range ? 50 : 0);
 
     export let month = 0;
     export let data = [];
@@ -70,8 +71,10 @@
     $: xTicks = xScale.ticks(Math.round(chartWidth / 60));
     $: yTicks = yScale.ticks(7);
 
-    $: format = (d, i) => dayjs(d).format('YYYY');
-    $: formatMobile = (d, i) => dayjs(d).format("'YY");
+    let format = d => d;
+    let formatMobile = d => `'${String(d).substr(2)}`;
+
+    $: timeFormat = isMobile ? formatMobile : format;
 
     $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');
 
@@ -164,7 +167,7 @@
                         transform="translate({xScale(tick)},{height - padding.bottom})"
                     >
                         <line y1="-{height - padding.bottom}" y2="0" />
-                        <text class="year" y="8">{tick}</text>
+                        <text class="year" y="8">{timeFormat(tick)}</text>
                     </g>
                 {/each}
             </g>

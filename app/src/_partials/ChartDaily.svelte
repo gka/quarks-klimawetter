@@ -12,10 +12,12 @@
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
-    $: height = Math.max(
-        350,
-        Math.min(450, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
-    );
+    $: height = isMobile
+        ? 420
+        : Math.max(
+              350,
+              Math.min(450, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
+          );
 
     export let data = [];
     export let includeZero = true;
@@ -91,9 +93,7 @@
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
-{clientWidth}
-{chartWidth}
-{isMobile ? 'M' : 'D'}
+
 <div bind:this={chart} class="chart" bind:clientWidth>
     <svg {height}>
         <defs>
