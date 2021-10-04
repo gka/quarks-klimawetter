@@ -4,23 +4,19 @@
     import { regressionLinear } from 'd3-regression';
     import dayjs from 'dayjs';
     import { line as d3line } from 'd3-shape';
-    import { beforeUpdate, onMount, tick } from 'svelte';
+    import { afterUpdate, onMount, tick } from 'svelte';
     import { fmtTemp, fmtRain } from '$lib/formats';
-
-    import MaxTemp from './MaxTemp.svelte';
-    import Rain30Days from './Rain30Days.svelte';
 
     let chart;
     let chartWidth = 720;
     let clientWidth = 720;
+    $: isMobile = chartWidth < 500;
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
     $: height =
-        Math.max(
-            350,
-            Math.min(200, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
-        ) + (range ? 50 : 0);
+        Math.max(350, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1)) +
+        (range ? 50 : 0);
 
     export let month = 0;
     export let data = [];
@@ -39,7 +35,7 @@
     export let show;
     export let range = false;
 
-    $: padding = { top: 50, right: 80, bottom: 30, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 120, bottom: 30, left: $innerWidth < 400 ? 30 : 40 };
 
     $: xRange = [padding.left, chartWidth - padding.right];
 
@@ -101,9 +97,12 @@
         .x(d => xScale(d.year))
         .y(d => yScale(d[show]));
 
-    beforeUpdate(() => {
+    afterUpdate(async () => {
         if (clientWidth && clientWidth !== chartWidth) {
             chartWidth = clientWidth;
+            isMobile = chartWidth < 500;
+            await tick();
+            chartWidth = chartWidth;
         }
     });
 
@@ -115,6 +114,21 @@
     });
 
     let selected;
+    $: legendPos = isMobile
+        ? [
+              [0, 0],
+              [0, 20],
+              [0, 40]
+          ]
+        : [
+              [show === 'temp' ? 0 : 5, 0],
+              [140, 0],
+              [214, 0]
+          ];
+
+    $: legendBg = isMobile
+        ? [chartWidth - 140 - (show === 'temp' ? 0 : 5), 0, 140, 60]
+        : [chartWidth - padding.right - 200, 0, 140, 55];
 
     function select(d) {
         selected = d;
@@ -263,17 +277,24 @@
                 </text>
             {/if}
 
-            <g class="legend" transform="translate({[xScale(2021) - 200 - padding.right, 0]})">
-                <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
-                <g transform="translate({show === 'temp' ? 0 : 5},0)">
+            <g class="legend" transform="translate({[legendBg[0], legendBg[1]]})">
+                <rect
+                    x="-10"
+                    y="-10"
+                    height={legendBg[3]}
+                    width={legendBg[2]}
+                    fill="white"
+                    opacity="0.8"
+                />
+                <g transform="translate({legendPos[0]})">
                     <rect class="{show} high" width="14" height="14" />
                     <text x="18" y="12">{show === 'temp' ? 'wärmer' : 'nasser'} als normal</text>
                 </g>
-                <g transform="translate(140,0)">
+                <g transform="translate({legendPos[1]})">
                     <rect class={show} width="14" height="14" />
                     <text x="18" y="12">normal</text>
                 </g>
-                <g transform="translate(214,0)">
+                <g transform="translate({legendPos[2]})">
                     <rect class="{show} low" width="14" height="14" />
                     <text x="18" y="12">{show === 'temp' ? 'kälter' : 'trockener'} als normal</text>
                 </g>

@@ -7,6 +7,7 @@
     export let xScale;
     export let yScale;
     export let data;
+    export let width;
     export let height;
 
     $: curMaxTempPath = d3line()
@@ -187,7 +188,7 @@
     </g>
 {/if}
 
-<g class="legend" transform="translate({[xScale($maxDate) + 20, endIsWinter ? 70 : height - 110]})">
+<g class="legend" transform="translate({[width - 140, endIsWinter ? 70 : height - 110]})">
     <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
     <g>
         <rect class="hotter" width="15" height="15" />

@@ -2,7 +2,7 @@
     import { scaleTime, scaleLinear } from 'd3-scale';
     import { extent } from 'd3-array';
     import dayjs from 'dayjs';
-    import { onMount, beforeUpdate, tick } from 'svelte';
+    import { onMount, afterUpdate, tick } from 'svelte';
     import MaxTemp from './MaxTemp.svelte';
     import Rain30Days from './Rain30Days.svelte';
 
@@ -14,17 +14,14 @@
 
     $: height = Math.max(
         350,
-        Math.min(400, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
+        Math.min(450, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
     );
 
     export let data = [];
     export let includeZero = true;
 
     export let show;
-    export let unit = '';
     export let label = '';
-
-    $: isMobile = chartWidth < 500;
 
     $: padding = {
         top: 50,
@@ -82,15 +79,21 @@
         chartWidth = chartWidth - 1;
     });
 
-    beforeUpdate(() => {
+    $: isMobile = chartWidth < 500;
+
+    afterUpdate(async () => {
         if (clientWidth && clientWidth !== chartWidth) {
             chartWidth = clientWidth;
+            await tick();
+            chartWidth = chartWidth;
         }
     });
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
-
+{clientWidth}
+{chartWidth}
+{isMobile ? 'M' : 'D'}
 <div bind:this={chart} class="chart" bind:clientWidth>
     <svg {height}>
         <defs>
@@ -141,9 +144,9 @@
             <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
             {#if show === 'TXK'}
-                <MaxTemp {height} {xScale} {yScale} data={dataFiltered} />
+                <MaxTemp width={chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
             {:else if show === 'rain30days'}
-                <Rain30Days {height} {xScale} {yScale} data={dataFiltered} />
+                <Rain30Days width={chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
             {/if}
         </g>
     </svg>
