@@ -80,23 +80,23 @@
                 show="TXK"
             />
         </figure>
-    </Section>
 
-    <Section gray>
-        <div class="paragraph_content">
-            <p>{copySentence}</p>
-        </div>
+        {#if copySentence}
+            <div class="paragraph_content">
+                <p>{copySentence}</p>
+            </div>
+        {/if}
 
         <InfoBox />
-    </Section>
 
-    <!-- <p>Wir vergleichen die aktuellen Werte mit den Jahren {baseMinYear}-{baseMinYear+29}. Sie waren noch kaum von der Erdwärmung betroffen. Daher gilt dieser Zeitraum als offizieller Vergleichspunkt für Veränderungen durch den Klimawandel.</p> -->
-    <Section>
-        <h3>
-            🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} regnet es momentan
-            {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel
-            betroffen war
-        </h3>
+        <div class="paragraph_headline" style="margin-top: 70px;">
+            <h3>
+                🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} regnet es
+                momentan
+                {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel
+                betroffen war
+            </h3>
+        </div>
 
         <figure>
             <ChartDaily
@@ -108,9 +108,7 @@
                 show="rain30days"
             />
         </figure>
-    </Section>
 
-    <Section gray>
         <div class="paragraph_content">
             <p>
                 Über die vergangenen 30 Tage hat es {fmtRain(curDay.rain30days, true)} je Quadratmeter
@@ -118,7 +116,7 @@
                     ? 'besonders viel '
                     : curDay.rain30days < curDay.context.rain30days_lo
                     ? 'besonders wenig '
-                    : 'normal '}{#if curDay.rain30days < curDay.context.rain30days_lo || curDay.rain30days > curDay.context.rain30days_hi}
+                    : 'normal'}{#if curDay.rain30days < curDay.context.rain30days_lo || curDay.rain30days > curDay.context.rain30days_hi}
                     und etwa {fmtRain(
                         Math.round(
                             Math.abs(
@@ -129,10 +127,14 @@
                             )
                         ),
                         true
-                    )}/qm {curDay.rain30days < curDay.context.rain30days_lo ? 'weniger' : 'mehr'} im
-                    Vergleich zum Referenzzeitraum.{:else}.{/if}
+                    )}/qm {curDay.rain30days < curDay.context.rain30days_lo ? 'weniger' : 'mehr'} als
+                    im Referenzzeitraum.{:else}.{/if}
             </p>
+        </div>
+    </Section>
 
+    <Section gray>
+        <div class="paragraph_content">
             <p>
                 Ein Punkt auf der Niederschlagslinie steht nicht für die Niederschlagsmenge an
                 diesem Tag, sondern für den gesammelten Niederschlag der letzten 30 Tage. Das hat
@@ -144,17 +146,21 @@
             </p>
         </div>
 
-        <hr />
+        <div class="paragraph_headline" style="margin-bottom: 30px;">
+            <h2>
+                <font color="35beed">Aber: Erst langfristige Trends zeigen den Klimawandel</font>
+            </h2>
+        </div>
 
         <div class="paragraph_content">
             <p>
-                <strong class="is-bold">☝️ Wichtig:</strong> Ausreißer wie punktuell viel Regen oder
-                hohe Temperaturen sind beim aktuellen Wetter erstmal nicht ungewöhnlich. Denn das Wetter
-                unterliegt ständigen Schwankungen. Erst wenn ein Monat überdurchschnittlich oft – also
-                mehrere Jahre in Folge – vom langjährigen Klimadurchschnitt abweicht, kann man sicher
-                sein, dass die Erderwärmung die Ursache dafür ist. Also erst wenn es im langfristigen
-                Trend immer wärmer, und je nach Jahreszeit nasser oder trockener wird, können wir sagen:
-                Das ist nicht einfach nur Wetter, das ist Klimawandel.
+                Ausreißer wie punktuell viel Regen oder hohe Temperaturen sind beim aktuellen Wetter
+                erstmal nicht ungewöhnlich. Denn das Wetter unterliegt ständigen Schwankungen. Erst
+                wenn ein Monat überdurchschnittlich oft – also mehrere Jahre in Folge – vom
+                langjährigen Klimadurchschnitt abweicht, kann man sicher sein, dass die Erderwärmung
+                die Ursache dafür ist. Also erst wenn es im langfristigen Trend immer wärmer, und je
+                nach Jahreszeit nasser oder trockener wird, können wir sagen: Das ist nicht einfach
+                nur Wetter, das ist Klimawandel.
             </p>
 
             <p>Genau das zeigen die folgenden Diagramme.</p>
@@ -169,6 +175,7 @@
             </h3>
 
             <figure style="position: relative;">
+                <!-- @todo: responsive thermometer -->
                 <img
                     width="30"
                     alt=""
@@ -187,12 +194,13 @@
                     show="temp"
                 />
                 <figcaption>
-                    Der hellgraue Bereich zeigt die normalen Tageshöchsttemperaturen im {curMonthName}
+                    Der hellgraue Bereich zeigt die normalen Tageshöchsttemperaturen (1961-1991) im {curMonthName}
                     ({fmtTemp(monthlyStats[curMonth].base.temp_lo, true)}-{fmtTemp(
                         monthlyStats[curMonth].base.temp_hi,
                         true
                     )}). Hinweis: Der letzte Balken für den {curMonthName}
-                    {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden.
+                    {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden. Deshalb fließt
+                    dieser Monat noch nicht in den linearen Trend mit ein.
                 </figcaption>
             </figure>
         </Section>
@@ -201,16 +209,17 @@
             <div class="paragraph_content">
                 <p>
                     Je mehr Monate wärmer sind als der Referenzzeitraum von 1961-1990, desto steiler
-                    ist die <strong />Trendlinie, die hier das lokale Ausmaß der Erwärmung anzeigt.
-                    Für den Monat {curMonthName}
-                    in {station.name} liegt der Trend gerade bei {fmtTemp(+trendTemp.toFixed(1))} Erwärmung
-                    (seit 1961). <!--Damit liegen wir hier {trendTemp > 1.5
-                        ? 'über'
-                        : trendTemp < 1.5
-                        ? 'unter'
-                        : 'genau bei'}
-                    den 1,5°C, auf die die Erderwärmung weltweit betrachtet idealerweise begrenzt werden
-                    soll.-->
+                    ist die <strong>Trendlinie</strong>, die hier das lokale Ausmaß der Erwärmung
+                    anzeigt. Für den Monat {curMonthName}
+                    in {station.name} liegt der lineare Trend gerade bei {fmtTemp(
+                        +trendTemp.toFixed(1)
+                    )} Erwärmung (seit 1961).
+                </p>
+                <p>
+                    Wichtig: Dieser Wert kann nicht mit dem globalen Ziel von höchstens
+                    1,5°C-Erderwärmung verglichen werden. Letzterer bezieht sich auf die
+                    Erderwärmung seit 1881. (Den Zeitraum können wir in unserer Grafik jedoch nicht
+                    verwenden, weil es damals noch kaum Wetterstationen gab.)
                 </p>
             </div>
         </Section>
@@ -241,7 +250,8 @@
                         true
                     )}-{fmtRain(monthlyStats[curMonth].base.precip_hi, true)}). Hinweis: Im letzten
                     Balken für den {curMonthName}
-                    {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen.
+                    {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen. Deshalb fließt dieser
+                    Monat noch nicht in den linearen Trend mit ein.
                 </figcaption>
             </figure>
         </Section>
@@ -249,9 +259,9 @@
     <Section gray>
         <div class="paragraph_content">
             <p>
-                Fällt die Trendlinie ab, heißt das, dass dieser Monat immer trockener wird im
-                Vergleich zum Referenzzeitraum von 1961-1990. Steigt sie an, heißt das, dass es
-                häufiger regnet als im Vergleich zum Referenzzeitraum.
+                Fällt die Trendlinie ab, heißt das: Dieser Monat wird immer trockener im Vergleich
+                zum Referenzzeitraum von 1961-1990. Steigt sie an, heißt das: Es regnet häufiger als
+                im Referenzzeitraum.
             </p>
 
             <p>
@@ -279,5 +289,12 @@
 
     h3 {
         margin-top: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    @media (max-width: 767px) {
+        h2 {
+            margin-top: 2rem;
+        }
     }
 </style>

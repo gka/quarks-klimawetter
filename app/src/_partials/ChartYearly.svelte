@@ -86,10 +86,11 @@
         );
     });
 
+    // @todo  check that current month not included
     $: regLin = regressionLinear()
         .x(d => d.year)
         .y(d => d[show])
-        .domain([minYear - 1, maxYear + 1])(data);
+        .domain([minYear - 1, maxYear])(data);
 
     export let trend;
     $: {
@@ -270,13 +271,13 @@
                     class="trend"
                     transform="translate({[xScale(regLin[1][0]), yScale(regLin[1][1])]})"
                 >
-                    <tspan x="5" class="is-bold">langjähriger</tspan>
-                    <tspan dy="15" class="is-bold" x="5"
-                        >Trend: {show === 'temp'
+                    <tspan x="10" class="is-bold">Trend</tspan>
+                    <tspan dy="15" class="is-bold" x="10">seit 1961:</tspan>
+                    <tspan class="is-bold" x="10" dy="15"
+                        >{show === 'temp'
                             ? fmtTemp(trend, { forcePlus: true })
                             : fmtRain(trend, { forcePlus: true })}</tspan
                     >
-                    <tspan x="5" dy="15">seit 1961</tspan>
                 </text>
             {/if}
 

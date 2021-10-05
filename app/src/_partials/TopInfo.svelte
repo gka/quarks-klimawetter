@@ -67,7 +67,7 @@
     $: {
         copySentence =
             tempClass === 'normal'
-                ? ''
+                ? `Mit ${fmtTemp(curDay.TXK)} ist es heute normal warm.`
                 : `Mit ${fmtTemp(curDay.TXK)} ist es heute ${station.prep} ${
                       station.name
                   } ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${`etwa ${fmtTemp(
@@ -88,7 +88,8 @@
             <div class="flex" style="margin-bottom:10px">
                 <div><i class="g-icon">🌡️</i></div>
                 <div>
-                    {isToday ? 'Heute ist' : 'Es war'} mit max. <span>{fmtTemp(curDay.TXK)}</span>
+                    {isToday ? 'Heute ist es' : 'Es war'} mit max.
+                    <span>{fmtTemp(curDay.TXK)}</span>
                     <b class="temp-{tempClass}">{tempSentence}</b>. {#if tempRecord}<span
                             class="temp-record">{@html tempRecord}</span
                         >{/if}
