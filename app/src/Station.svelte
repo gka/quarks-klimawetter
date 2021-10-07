@@ -52,8 +52,8 @@
                 Auf dieser Seite erfährst du, ob das aktuelle Wetter in deiner Region mit dem der
                 letzten Jahrzehnte vergleichbar ist – oder davon abweicht. Genauer genommen
                 vergleichen wir das aktuelle Wetter mit dem Zeitraum 1961-1990, weil dieser Zeitraum
-                noch wenig vom Klimawandel betroffen war und als internationaler Referenzzeitraum
-                gilt.
+                noch wenig vom menschengemachten Klimawandel betroffen war und als internationaler
+                Referenzzeitraum gilt.
             </p>
 
             <p>
