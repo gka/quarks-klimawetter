@@ -108,8 +108,8 @@
         transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days)]})"
         r="4"
         class="rain"
-        class:above={lastRain.rain30days > lastRain.context.rain30days_hi}
-        class:below={lastRain.rain30days < lastRain.context.rain30days_lo}
+        class:above-={lastRain.rain30days > lastRain.context.rain30days_hi}
+        class:below-={lastRain.rain30days < lastRain.context.rain30days_lo}
     />
     <!-- <text transform="translate({[xScale(lastContext.date)+5, yScale(lastRain.rain30days)+4]})" class="rain">{lastRain.year}</text> -->
 {/if}
@@ -189,18 +189,37 @@
         class="last-day"
         class:above={lastRain.rain30days > lastRain.context.rain30days_hi}
         class:below={lastRain.rain30days < lastRain.context.rain30days_lo}
-        transform="translate({[xScale(lastRain.date), yScale(lastRain.rain30days) - 28]})"
+        transform="translate({[
+            xScale(lastRain.date),
+            lastRain.rain30days >
+            (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
+                ? yScale(Math.max(lastRain.rain30days, lastRain.context.rain30days_hi)) - 28
+                : yScale(Math.min(lastRain.rain30days, lastRain.context.rain30days_lo)) + 28
+        ]})"
     >
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
-                <tspan x="0">{fmtRain(lastRain.rain30days)}</tspan>
-                <tspan x="0" dy="17"
+                <tspan x="-4">{fmtRain(lastRain.rain30days)}</tspan>
+                <tspan x="-4" dy="17"
                     >{dayjs(lastRain.date).subtract(30, 'day').format('D.M.')}-{dayjs(
                         lastRain.date
                     ).format('D.M.')}</tspan
                 >
             </text>
         {/each}
+        {#if lastRain.rain30days < lastRain.context.rain30days_hi && lastRain.rain30days > lastRain.context.rain30days_lo}
+            <line
+                style="stroke:black; opacity:0.5"
+                y1={lastRain.rain30days >
+                (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
+                    ? 25
+                    : -15}
+                y2={lastRain.rain30days >
+                (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
+                    ? yScale(lastRain.rain30days) - yScale(lastRain.context.rain30days_hi) + 28
+                    : yScale(lastRain.rain30days) - yScale(lastRain.context.rain30days_lo) - 28}
+            />
+        {/if}
     </g>
 {/if}
 

@@ -14,6 +14,7 @@
 
     import { innerWidth, minDate, maxDate } from '$lib/stores';
 
+    export let height;
     $: height = isMobile
         ? 420
         : Math.max(350, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1)) +
@@ -86,11 +87,12 @@
         );
     });
 
-    // @todo  check that current month not included
+    // exclude current year from trend
+    $: dataBeforeThisYear = data.filter(d => d.year < new Date().getFullYear());
     $: regLin = regressionLinear()
         .x(d => d.year)
         .y(d => d[show])
-        .domain([minYear - 1, maxYear])(data);
+        .domain([minYear - 1, maxYear + 1])(dataBeforeThisYear);
 
     export let trend;
     $: {

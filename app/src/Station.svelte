@@ -36,6 +36,7 @@
 
     let trendTemp = 0;
     let trendPrecip = 0;
+    let tempHistHeight;
 </script>
 
 <div class="quarks-wetterklima">
@@ -175,15 +176,14 @@
             </h3>
 
             <figure style="position: relative;">
-                <!-- @todo: responsive thermometer -->
                 <img
-                    width="30"
                     alt=""
                     src="https://data.wdr.de/quarks-klima-wetter/static/thermometer.svg"
-                    style="position: absolute; left: -50px;width:30px;top:80px"
+                    style="position: absolute; left: -60px;height:{tempHistHeight}px;top:-13px"
                 />
                 <ChartYearly
                     month={curMonth}
+                    bind:height={tempHistHeight}
                     data={monthlyData}
                     context={monthlyStats[curMonth].base}
                     includeZero={true}

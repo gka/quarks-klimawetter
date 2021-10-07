@@ -177,7 +177,12 @@
         class="last-day"
         class:above={lastDay.TXK > lastDay.context.TXK_hi}
         class:below={lastDay.TXK < lastDay.context.TXK_lo}
-        transform="translate({[xScale(lastDay.date) + 4, yScale(lastDay.TXK) - 30]})"
+        transform="translate({[
+            xScale(lastDay.date),
+            lastDay.TXK > (lastDay.context.TXK_hi + lastDay.context.TXK_lo) * 0.5
+                ? yScale(Math.max(lastDay.TXK, lastDay.context.TXK_hi)) - 28
+                : yScale(Math.min(lastDay.TXK, lastDay.context.TXK_lo)) + 28
+        ]})"
     >
         {#each [0, 1] as i}
             <text class:buffer={i === 0}>
@@ -185,6 +190,17 @@
                 <tspan x="0" dy="17">{dayjs(lastDay.date).format('D. MMM')}</tspan>
             </text>
         {/each}
+        {#if lastDay.TXK < lastDay.context.TXK_hi && lastDay.TXK > lastDay.context.TXK_lo}
+            <line
+                style="stroke:black; opacity:0.5"
+                y1={lastDay.TXK > (lastDay.context.TXK_hi + lastDay.context.TXK_lo) * 0.5
+                    ? 25
+                    : -15}
+                y2={lastDay.TXK > (lastDay.context.TXK_hi + lastDay.context.TXK_lo) * 0.5
+                    ? yScale(lastDay.TXK) - yScale(lastDay.context.TXK_hi) + 28
+                    : yScale(lastDay.TXK) - yScale(lastDay.context.TXK_lo) - 28}
+            />
+        {/if}
     </g>
 {/if}
 

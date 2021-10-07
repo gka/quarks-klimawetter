@@ -20,7 +20,6 @@
         lookup = stations.slice(0);
         const res = await fetch(`${dataUrl}/cities.json`, { mode: 'cors' });
         const cities = await res.json();
-        console.log(cities.length);
         cities.forEach(city => {
             // check if we have a weather station with the same name
             const s = stations.find(
@@ -50,22 +49,21 @@
         { id: '02968', lbl: 'Köln-Stammheim' },
         { id: '01420', lbl: 'Frankfurt' },
         { id: '03379', lbl: 'München' },
-        { id: '05792', lbl: 'Zugspitze' },
-
+        { id: '05792', lbl: 'Zugspitze' }
     ].map(d => ({ ...d, ...stations.find(e => e.id === d.id) }));
 </script>
 
 <div class="station-select">
-        <Typeahead
-            label="Wetterstation in deiner Region auswählen:"
-            placeholder={active || ''}
-            inputAfterSelect="keep"
-            data={lookup}
-            bind:value={selected}
-            {extract}
-            bind:result
-            on:select={handleSelect}
-        />
+    <Typeahead
+        label="Wetterstation in deiner Region auswählen:"
+        placeholder={active || ''}
+        inputAfterSelect="keep"
+        data={lookup}
+        bind:value={selected}
+        {extract}
+        bind:result
+        on:select={handleSelect}
+    />
 </div>
 <div class="small">
     {#each hl as station}
