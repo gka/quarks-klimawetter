@@ -14,8 +14,8 @@
 
     let isLocalHost = false;
 
-    // const dataUrl = 'https://data.vis4.net/dwd';
-    const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/static/data';
+    const dataUrl = 'https://data.vis4.net/dwd';
+    // const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/static/data';
     // const dataUrl = '/data';
 
     async function fetchJSON(url) {
