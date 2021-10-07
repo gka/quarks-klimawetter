@@ -204,7 +204,7 @@
     </g>
 {/if}
 
-<g class="legend" transform="translate({[width - 140, endIsWinter ? 70 : height - 110]})">
+<g class="legend" transform="translate({[width - 140, endIsWinter ? 70 : height - 130]})">
     <rect x="-10" y="-10" height="55" width="140" fill="white" opacity="0.8" />
     <g>
         <rect class="hotter" width="15" height="15" />
@@ -213,6 +213,10 @@
     <g transform="translate(0,20)">
         <rect class="colder" width="15" height="15" />
         <text x="20" y="12">kälter als normal</text>
+    </g>
+    <g transform="translate(0,40)">
+        <rect class="context" width="15" height="15" />
+        <text x="20" y="12">normal</text>
     </g>
 </g>
 

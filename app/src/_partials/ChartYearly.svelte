@@ -79,6 +79,12 @@
 
     $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');
 
+    export let missingData;
+
+    $: missingData = d3range(minYear, maxYear + 1).filter(
+        yr => !dataFiltered.find(d => d.year === yr)
+    );
+
     $: dataFiltered = data.filter((d, i) => {
         return (
             d.year <= maxYear &&
@@ -142,9 +148,7 @@
 </script>
 
 <svelte:window bind:innerWidth={$innerWidth} />
-<!-- <div style="text-align: right; position: relative; top: -10px">
-    <label><input type="checkbox" bind:checked="{showTrend}"> zeige langjährigen Trend</label>
-</div> -->
+
 <div bind:this={chart} class="chart" bind:clientWidth>
     <svg {height}>
         <defs>
@@ -254,6 +258,11 @@
                             width="16"
                             height={height - padding.top - padding.bottom}
                         />
+                    </g>
+                {/each}
+                {#each missingData as yr}
+                    <g class="missing" transform="translate({[xScale(yr), yScale(0)]})">
+                        <text>*</text>
                     </g>
                 {/each}
             </g>
@@ -477,5 +486,10 @@
     }
     .g-tooltip {
         pointer-events: none;
+    }
+    g.missing text {
+        fill: var(--gray-dark);
+        font-size: 14px;
+        text-anchor: middle;
     }
 </style>

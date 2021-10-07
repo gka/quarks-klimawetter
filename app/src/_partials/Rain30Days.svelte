@@ -223,7 +223,7 @@
     </g>
 {/if}
 
-<g class="legend" transform="translate({[width - 180, endIsLow ? 40 : height - 110]})">
+<g class="legend" transform="translate({[width - 180, endIsLow ? 40 : height - 130]})">
     <rect x="-10" y="-10" height="55" width="190" fill="white" opacity="0.8" />
     <g>
         <rect class="more-rain" width="15" height="15" />
@@ -232,6 +232,10 @@
     <g transform="translate(0,20)">
         <rect class="less-rain" width="15" height="15" />
         <text x="20" y="12">weniger Regen als normal</text>
+    </g>
+    <g transform="translate(0,40)">
+        <rect class="context" width="15" height="15" />
+        <text x="20" y="12">normal</text>
     </g>
 </g>
 

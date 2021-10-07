@@ -37,6 +37,9 @@
     let trendTemp = 0;
     let trendPrecip = 0;
     let tempHistHeight;
+
+    let missingTemp;
+    let missingPrecip;
 </script>
 
 <div class="quarks-wetterklima">
@@ -187,6 +190,7 @@
                     data={monthlyData}
                     context={monthlyStats[curMonth].base}
                     includeZero={true}
+                    bind:missingData={missingTemp}
                     bind:trend={trendTemp}
                     {numYears}
                     label="Durchschnittliche\nTageshöchsttemperatur\nim {curMonthName} in °C"
@@ -200,7 +204,13 @@
                         true
                     )}). Hinweis: Der letzte Balken für den {curMonthName}
                     {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden. Deshalb fließt
-                    dieser Monat noch nicht in den linearen Trend mit ein.
+                    dieser Monat noch nicht in den linearen Trend mit ein.{#if missingTemp && missingTemp.length}<br
+                        />* Daten für {missingTemp.length === 1 ? 'das Jahr' : 'die Jahre'}
+                        {missingTemp.length > 1
+                            ? `${missingTemp.slice(-1).join(', ')} und ${
+                                  missingTemp[missingTemp.length - 1]
+                              }`
+                            : missingTemp[0]} fehlen in den Wetteraufzeichnungen.{/if}
                 </figcaption>
             </figure>
         </Section>
@@ -239,6 +249,7 @@
                     data={monthlyData}
                     context={monthlyStats[curMonth].base}
                     includeZero={true}
+                    bind:missingData={missingPrecip}
                     {numYears}
                     bind:trend={trendPrecip}
                     unit="mm"
@@ -251,7 +262,13 @@
                     )}-{fmtRain(monthlyStats[curMonth].base.precip_hi, true)}). Hinweis: Im letzten
                     Balken für den {curMonthName}
                     {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen. Deshalb fließt dieser
-                    Monat noch nicht in den linearen Trend mit ein.
+                    Monat noch nicht in den linearen Trend mit ein.{#if missingPrecip && missingPrecip.length}<br
+                        />* Daten für {missingPrecip.length === 1 ? 'das Jahr' : 'die Jahre'}
+                        {missingPrecip.length > 1
+                            ? `${missingPrecip.slice(-1).join(', ')} und ${
+                                  missingPrecip[missingPrecip.length - 1]
+                              }`
+                            : missingPrecip[0]} fehlen in den Wetteraufzeichnungen.{/if}
                 </figcaption>
             </figure>
         </Section>
