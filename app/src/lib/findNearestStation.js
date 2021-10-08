@@ -2,7 +2,7 @@ export function findNearestStation(stations, callback) {
     navigator.geolocation.getCurrentPosition(
         position => {
             const { latitude, longitude } = position.coords;
-            const station = findNearestStationLL(stations, latitude, longitude)
+            const station = findNearestStationLL(stations, latitude, longitude);
             callback(station);
         },
         () => {}
@@ -16,9 +16,7 @@ export function findNearestStationLL(stations, lat, lon) {
     });
     return stations.sort((a, b) => a.dist - b.dist)[0];
 }
-
-
-function latLonDist(lat1, lon1, lat2, lon2) {
+export function latLonDist(lat1, lon1, lat2, lon2) {
     const p = 0.017453292519943295; // This is  Math.PI / 180
     const c = Math.cos;
     const a =

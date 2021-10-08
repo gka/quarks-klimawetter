@@ -2,7 +2,7 @@
     import Typeahead from 'svelte-typeahead';
     import fuzzy from 'fuzzy';
     import { createEventDispatcher, onMount } from 'svelte';
-    import { findNearestStationLL } from '$lib/findNearestStation';
+    import { findNearestStationLL, latLonDist } from '$lib/findNearestStation';
 
     const dispatch = createEventDispatcher();
     // import { goto } from '$app/navigation';
@@ -13,6 +13,9 @@
     export let selected;
     export let dataUrl;
     let result;
+
+    let userSelectedCity;
+    let nearestStation;
 
     let lookup = [];
 
@@ -31,15 +34,24 @@
 
     const extract = d => d.origName || d.name;
 
+    function select(station, userCity) {
+        console.log({ station, userCity });
+        nearestStation = userCity ? station : null;
+        userSelectedCity = userCity;
+        dispatch('select', station);
+    }
+
     function handleSelect(item) {
+        console.log('handleSelect', item.detail.original);
         let station = item.detail.original;
         if (!station.id) {
             const city = station;
             // find nearest station
             station = findNearestStationLL(stations, city.lat, city.lon);
             selected = station.name;
+            return select(station, city);
         }
-        dispatch('select', station);
+        return select(station);
     }
     $: hl = [
         // { id: '02115', lbl: 'Helgoland' },
@@ -66,12 +78,26 @@
     />
 </div>
 <div class="small">
+    z.B.
     {#each hl as station}
         <a on:click|preventDefault={() => dispatch('select', station)} href="#/{station.slug}"
             >{station.lbl}</a
         > &nbsp;
     {/each}
 </div>
+{#if userSelectedCity}
+    <p>
+        In {userSelectedCity.name} gibt es leider keine Wetterstation, die lange genug Daten aufzeichnet.
+        Deshalb zeigen wir die nächstgelegene Wetterstation in {nearestStation.name} an (ca. {Math.ceil(
+            latLonDist(
+                userSelectedCity.lat,
+                userSelectedCity.lon,
+                nearestStation.lat,
+                nearestStation.lon
+            )
+        )} km Luftlinie).
+    </p>
+{/if}
 
 <style>
     .station-select :global(label) {

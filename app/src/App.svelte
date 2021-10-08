@@ -3,6 +3,7 @@
     import StationSelect from './_partials/StationSelect.svelte';
     import TimeControls from './_partials/TimeControls.svelte';
     import { findNearestStation } from '$lib/findNearestStation';
+    import { range as d3range } from 'd3-array';
     import dayjs from 'dayjs';
     import { onMount } from 'svelte';
     import Section from './_partials/Section.svelte';
@@ -67,7 +68,15 @@
             fetchJSON(`${dataUrl}/stations/${s.id}.json`),
             fetchJSON(`${dataUrl}/stations/${s.id}-ctx.json`)
         ]);
+        const lastDate = data[data.length - 1].date;
         s.data = data
+            .concat(
+                d3range(5).map(d => ({
+                    date: dayjs(lastDate)
+                        .add(d + 1, 'day')
+                        .toDate()
+                }))
+            )
             .map(d => {
                 const day = dayjs(d.date).format('MM-DD');
                 return {
@@ -78,6 +87,7 @@
                 };
             })
             .sort((a, b) => a.date - b.date);
+
         monthly.forEach(m => {
             // check if that month is already in monthlyStat
             if (monthlyHist[m.month - 1].stats.slice(-1)[0].year < m.year) {
