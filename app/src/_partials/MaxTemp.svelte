@@ -237,7 +237,8 @@
     text.context {
         font-size: 14px;
         text-anchor: start;
-        fill: var(--gray-dark);
+        fill: var(--gray);
+        font-family: sans_bold;
     }
     circle {
         fill: var(--gray-dark);

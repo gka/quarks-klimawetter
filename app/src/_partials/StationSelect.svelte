@@ -35,14 +35,12 @@
     const extract = d => d.origName || d.name;
 
     function select(station, userCity) {
-        console.log({ station, userCity });
         nearestStation = userCity ? station : null;
         userSelectedCity = userCity;
         dispatch('select', station);
     }
 
     function handleSelect(item) {
-        console.log('handleSelect', item.detail.original);
         let station = item.detail.original;
         if (!station.id) {
             const city = station;
@@ -87,8 +85,8 @@
 </div>
 {#if userSelectedCity}
     <p>
-        In {userSelectedCity.name} gibt es leider keine Wetterstation, die lange genug Daten aufzeichnet.
-        Deshalb zeigen wir die nächstgelegene Wetterstation in {nearestStation.name} an (ca. {Math.ceil(
+        In {userSelectedCity.name} gibt es leider keine passende Wetterstation. Deshalb zeigen wir die
+        nächstgelegene Wetterstation in {nearestStation.name} an (ca. {Math.ceil(
             latLonDist(
                 userSelectedCity.lat,
                 userSelectedCity.lon,
@@ -100,12 +98,23 @@
 {/if}
 
 <style>
+    .station-select {
+        margin-bottom: 0.5em;
+    }
     .station-select :global(label) {
         font-size: 1.15rem;
         font-family: sans_bold;
     }
+
+    .station-select :global(input) {
+        font-size: 1.5rem;
+        font-family: sans_reg;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 0.75rem 1rem;
+    }
     .small {
-        font-size: 0.85rem;
+        font-size: 0.95rem;
         margin-bottom: 2rem;
     }
 </style>
