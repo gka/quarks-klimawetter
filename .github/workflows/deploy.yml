@@ -25,25 +25,37 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - name: Set env for staging
+      - uses: actions/checkout@v2
+
+      - name: Set environment variables for staging
         if: endsWith(github.ref, '/main')
         run: |
           echo "STAGE=staging" >> $GITHUB_ENV
           echo "CLOUDFRONT_ID=E3P3XR7HDT16MO" >> $GITHUB_ENV
-      - name: Set env for production
+
+      - name: Set environment variables for production
         if: endsWith(github.ref, '/production')
         run: |
           echo "STAGE=prod" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci --production
-      - run: npm install -g serverless
-      - run: npx serverless deploy
+          cache-dependency-path: scraper/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci --production
+
+      - name: Install serverless
+        run: npm install -g serverless
+
+      - name: Deploy with serverless
+        run: npx serverless deploy
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
   app:
     runs-on: ubuntu-latest
@@ -57,23 +69,40 @@ jobs:
         node-version: [14.x]
 
     steps:
-      - name: Set env for staging
+      - uses: actions/checkout@v2
+
+      - name: Set environment variables for staging
         if: endsWith(github.ref, '/main')
         run: |
           echo "BUCKET_NAME=quarks-klimawetter-data-staging" >> $GITHUB_ENV
-          echo "DATA_URL=https://quarks-klimawetter-data-staging.s3.eu-central-1.amazonaws.com/" >> $GITHUB_ENV
-      - name: Set env for production
+          echo "DATA_URL=https://quarks-klimawetter-data-staging.s3.eu-central-1.amazonaws.com" >> $GITHUB_ENV
+      - name: Set environment variables for production
         if: endsWith(github.ref, '/production')
         run: |
           echo "BUCKET_NAME=quarks-klimawetter-data-prod" >> $GITHUB_ENV
-          echo "DATA_URL=https://quarks-klimawetter-data-prod.s3.eu-central-1.amazonaws.com/" >> $GITHUB_ENV
+          echo "DATA_URL=https://quarks-klimawetter-data-prod.s3.eu-central-1.amazonaws.com" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v2
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@v1
+        with:
+          version: 2
+          verbose: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
-      - run: npm ci
-      - run: npm run build
-      - run: npx serverless deploy
+          cache-dependency-path: app/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build with rollup
+        run: npm run build
+
+      - name: Deploy on AWS
+        run: npm run deploy-aws
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

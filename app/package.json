@@ -10,7 +10,7 @@
         "format": "prettier --write --plugin-search-dir=. src",
         "publish": "rollup -c && sshpass -p $QUARKS_PWD scp -r public/build/ user_quarks@185.201.147.235:./httpdocs/",
         "sync-data": "aws s3 cp --recursive s3://data.vis4.net/dwd static/data --profile dwd-scraper",
-        "deploy-aws": "aws s3 cp --recursive public/build s3://$BUCKET_NAME/app --acl 'public-read'"
+        "deploy-aws": "aws s3 cp --recursive public/build s3://$BUCKET_NAME/app --acl public-read --region eu-central-1"
     },
     "repository": {
         "type": "git",
