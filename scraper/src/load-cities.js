@@ -1,24 +1,20 @@
 const fs = require('fs');
-const path = require('path');
 const got = require('got');
 const AdmZip = require('adm-zip');
 const { promisify } = require('util');
 const stream = require('stream');
-const pipeline = promisify(stream.pipeline);
-const mkdirp = require('mkdirp');
 const temp = require('temp');
 
-const outDir = path.join(__dirname, '..', 'out');
+const { saveFile } = require('./io.js');
 
-mkdirp.sync(outDir);
-
+const pipeline = promisify(stream.pipeline);
 // make sure temporary files get deleted
 temp.track();
 
 const url = 'http://download.geonames.org/export/dump/cities5000.zip';
 
-(async () => {
-    temp.open('cities', async (err, info) => {
+module.exports = async () => {
+    return new Promise((resolve, reject) => temp.open('cities', async (err, info) => {
         try {
             await pipeline(got.stream(url), fs.createWriteStream(info.path));
             // extract
@@ -34,10 +30,12 @@ const url = 'http://download.geonames.org/export/dump/cities5000.zip';
                         lat: +row[4],
                         lon: +row[5]
                     }));
-                fs.writeFileSync(path.join(outDir, 'cities.json'), JSON.stringify(data));
+                await saveFile('cities.json', JSON.stringify(data));
             }
+            resolve();
         } catch (err) {
-            console.error('Could not read ', url, err);
+            console.error('Could not read', url, 'due to', err);
+            reject(err);
         }
-    });
-})();
+    }));
+};

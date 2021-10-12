@@ -1,0 +1,79 @@
+# This workflow will do a clean install of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
+
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main, production]
+  pull_request:
+    branches: []
+
+jobs:
+  scraper:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: scraper
+
+    env:
+      SENTRY_DSN: https://9520ec24ffa94990a6269382f5082154@o261812.ingest.sentry.io/6003860
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Set env for staging
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "STAGE=staging" >> $GITHUB_ENV
+          echo "CLOUDFRONT_ID=E3P3XR7HDT16MO" >> $GITHUB_ENV
+      - name: Set env for production
+        if: endsWith(github.ref, '/production')
+        run: |
+          echo "STAGE=prod" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci --production
+      - run: npm install -g serverless
+      - run: npx serverless deploy
+
+  app:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: app
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: Set env for staging
+        if: endsWith(github.ref, '/main')
+        run: |
+          echo "BUCKET_NAME=quarks-klimawetter-data-staging" >> $GITHUB_ENV
+          echo "DATA_URL=https://quarks-klimawetter-data-staging.s3.eu-central-1.amazonaws.com/" >> $GITHUB_ENV
+      - name: Set env for production
+        if: endsWith(github.ref, '/production')
+        run: |
+          echo "BUCKET_NAME=quarks-klimawetter-data-prod" >> $GITHUB_ENV
+          echo "DATA_URL=https://quarks-klimawetter-data-prod.s3.eu-central-1.amazonaws.com/" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npx serverless deploy

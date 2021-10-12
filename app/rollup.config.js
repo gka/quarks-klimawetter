@@ -5,6 +5,7 @@ import alias from '@rollup/plugin-alias';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import injectProcessEnv from 'rollup-plugin-inject-process-env';
 import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
@@ -65,6 +66,11 @@ export default {
             dedupe: ['svelte']
         }),
         commonjs(),
+
+        // inject environment variables
+        injectProcessEnv({
+            DATA_URL: process.env.DATA_URL,
+        }),
 
         // In dev mode, call `npm run start` once
         // the bundle has been generated

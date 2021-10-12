@@ -15,7 +15,7 @@
 
     let isLocalHost = false;
 
-    const dataUrl = 'https://data.vis4.net/dwd';
+    const dataUrl = process.env.DATA_URL;
     // const dataUrl = 'https://data.wdr.de/quarks-klima-wetter/static/data';
     // const dataUrl = '/data';
 
@@ -65,8 +65,8 @@
             s = stations.find(d => d.slug === s.slug);
         }
         const [{ data, monthly }, { monthly: monthlyHist, daily }, fc] = await Promise.all([
-            fetchJSON(`${dataUrl}/stations/${s.id}.json`),
-            fetchJSON(`${dataUrl}/stations/${s.id}-ctx.json`)
+            fetchJSON(`${dataUrl}/stations/weather/${s.id}.json`),
+            fetchJSON(`${dataUrl}/stations/context/${s.id}.json`)
         ]);
         const lastDate = data[data.length - 1].date;
         s.data = data

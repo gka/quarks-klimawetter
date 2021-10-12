@@ -7,20 +7,26 @@ const stream = require('stream');
 const dayjs = require('dayjs');
 const { dsvFormat } = require('d3-dsv');
 const { max, sum } = require('d3-array');
-const pipeline = promisify(stream.pipeline);
 const { parallelLimit } = require('async');
 const { readFile, writeFile } = require('fs/promises');
 const mkdirp = require('mkdirp');
 const path = require('path');
 
-const cacheDir = path.join(__dirname, '..', 'cache');
-mkdirp.sync(cacheDir);
+const { USE_CACHE } = require('./env.js');
+
+const pipeline = promisify(stream.pipeline);
+
+let cacheDir;
+
+if (USE_CACHE) {
+    cacheDir = path.join(__dirname, '..', 'cache');
+    mkdirp.sync(cacheDir);
+}
 
 // make sure temporary files get deleted
 temp.track();
 
 const DAYS_FUTURE = 7;
-module.exports = { loadStationData, loadStationHist };
 
 const today = dayjs().startOf('day');
 
@@ -37,11 +43,17 @@ async function loadStationHist(stationId) {
     return sumRain(dwdData);
 }
 
+module.exports = {
+    loadStationData,
+    loadStationHist,
+};
+
 async function downloadDwdData(stationId, historical = false) {
-    if (historical) {
+    if (USE_CACHE && historical) {
         // try loading data from cache
         try {
             const raw = await readFile(path.join(cacheDir, `${stationId}-hist.json`), 'utf-8');
+            console.log('Loaded cached data for station', stationId);
             if (raw) return JSON.parse(raw);
         } catch (err) {
             // no cache
@@ -66,7 +78,7 @@ async function downloadDwdData(stationId, historical = false) {
                             TXK: +row[' TXK'],
                             source: 'dwd/recent'
                         }));
-                    if (historical) {
+                    if (USE_CACHE && historical) {
                         // write cache
                         await writeFile(
                             path.join(cacheDir, `${stationId}-hist.json`),
@@ -76,16 +88,16 @@ async function downloadDwdData(stationId, historical = false) {
                     resolve(data);
                 }
             } catch (err) {
-                console.error('Could not read ', url);
+                console.error('Could not read', url, 'due to', err);
+                reject(err);
             }
         });
     });
 }
 
 async function getDwdDataUrl(stationId, historical = false) {
-    const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${
-        historical ? 'historical' : 'recent'
-    }/`;
+    const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${historical ? 'historical' : 'recent'
+        }/`;
     if (historical && !histStationIndex) {
         // we need to load html index to figure out ZIP filename
         const { body } = await got(baseUrl);
@@ -99,9 +111,8 @@ async function getDwdDataUrl(stationId, historical = false) {
                 histStationIndex.set(id, `${from}_${to}`);
             });
     }
-    return `${baseUrl}tageswerte_KL_${stationId}_${
-        historical ? `${histStationIndex.get(stationId)}_hist` : 'akt'
-    }.zip`;
+    return `${baseUrl}tageswerte_KL_${stationId}_${historical ? `${histStationIndex.get(stationId)}_hist` : 'akt'
+        }.zip`;
 }
 
 function downloadBrightskyData(stationId, minDate) {
@@ -126,7 +137,7 @@ function downloadBrightskyData(stationId, minDate) {
                     };
                 }
             } catch (err) {
-                console.error('Could not read ', url);
+                console.error('Could not read', url, 'due to', err);
                 return {
                     date: dateFmt,
                     TXK: undefined,
@@ -135,7 +146,7 @@ function downloadBrightskyData(stationId, minDate) {
             }
         });
     }
-    return parallelLimit(tasks, 10);
+    return parallelLimit(tasks, 5);
 }
 
 function sumRain(data) {
@@ -170,13 +181,4 @@ function sumRain(data) {
 
 function parse(val) {
     return val < -900 ? 0 : val || 0;
-}
-
-if (process.argv[1] === __filename) {
-    // test script
-    (async () => {
-        // const data = await loadStationData('01964');
-        const data = await loadStationHist('01964');
-        console.log(data.slice(0, 7), data.slice(-7));
-    })();
 }

@@ -6,3 +6,11 @@
 scraper-old/out/*
 data/*
 app/public/data
+
+/scraper/node_modules
+/app/node_modules
+/cache
+/out
+
+.env
+.serverless

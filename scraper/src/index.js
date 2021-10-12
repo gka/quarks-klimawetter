@@ -1,11 +1,6 @@
-const argv = require('yargs/yargs')(process.argv.slice(2)).argv;
+const yargs = require('yargs');
 const path = require('path');
-const { writeFile } = require('fs/promises');
-const mkdirp = require('mkdirp');
-const { loadStationData, loadStationHist } = require('./loadStationData');
-const loadStations = require('./loadStations');
-const analyzeContext = require('./analyzeContext');
-const { round, tempQuartileRange } = require('./shared');
+const withSentry = require("serverless-sentry-lib");
 const {
     mean,
     sum,
@@ -15,27 +10,38 @@ const {
     extent
 } = require('d3-array');
 const dayjs = require('dayjs');
+const { parallelLimit } = require('async');
 
-const outDir = argv.out || path.join(__dirname, '..', 'out');
+const { loadStationData, loadStationHist } = require('./loadStationData.js');
+const loadStations = require('./loadStations.js');
+const loadCities = require('./load-cities.js');
+const analyzeContext = require('./analyzeContext.js');
+const { round, tempQuartileRange } = require('./shared.js');
+const { saveFile } = require('./io.js');
+
+const argv = yargs(process.argv.slice(2)).argv;
+
 const baseMinYear = 1961;
 
-mkdirp.sync(path.join(outDir, 'stations'));
 
 async function loadContext(stations) {
-    for (station of stations) {
+    const promises = stations.map((station) => (async () => {
         console.log(station.id, station.slug);
         const hist = await loadStationHist(station.id);
         // compute stats for each day
         const ctx = analyzeContext(hist, baseMinYear);
-        await writeFile(
-            path.join(outDir, 'stations', `${station.id}-ctx.json`),
-            JSON.stringify(ctx, null, 3)
+        await saveFile(
+            path.join('stations', 'context', `${station.id}.json`),
+            JSON.stringify(ctx)
         );
-    }
+    }));
+
+    await parallelLimit(promises, 4);
 }
 
+
 async function loadWeather(stations) {
-    for (station of stations) {
+    for (const station of stations) {
         console.log(station.id, station.slug);
         const stationData = {
             station,
@@ -57,9 +63,9 @@ async function loadWeather(stations) {
                 row.source = srcs[row.source];
             });
 
-            await writeFile(
-                path.join(outDir, 'stations', `${station.id}.json`),
-                JSON.stringify(stationData, null, 3)
+            await saveFile(
+                path.join('stations', 'weather', `${station.id}.json`),
+                JSON.stringify(stationData)
             );
         } else {
             station.ignore = true;
@@ -93,12 +99,63 @@ function aggregateMonthly(data) {
     return out;
 }
 
-(async () => {
+// AWS Lambda handlers
+const scrapeContext = withSentry(async function (event, context) {
+    console.info('Scraping context');
+
+    console.info('Loading stations...');
     const stations = await loadStations(baseMinYear);
-    await writeFile(path.join(outDir, 'stations.json'), JSON.stringify(stations, null, 3));
+    await saveFile("stations.json", JSON.stringify(stations));
+
+    console.info('Loading context...');
+    await loadContext(stations);
+
+    console.info('Done!');
+    return context.logStreamName;
+});
+
+
+const scrapeWeather = withSentry(async function (event, context) {
+    console.info('Scraping weather');
+
+    console.info('Loading stations...');
+    const stations = await loadStations(baseMinYear);
+
+    console.info('Loading weather...');
+    await loadWeather(stations);
+
+    console.info('Done!');
+    return context.logStreamName;
+});
+
+
+const scrapeCities = withSentry(async function (event, context) {
+    console.info('Scraping Cities');
+
+    console.info('Loading Cities...');
+    await loadCities();
+
+    console.info('Done!');
+    return context.logStreamName;
+});
+
+
+// direct invocation
+(async () => {
     if (!!argv.context) {
+        const stations = await loadStations(baseMinYear);
+        await saveFile('stations.json', JSON.stringify(stations));
         await loadContext(stations);
-    } else {
+    } else if (!!argv.weather) {
+        const stations = await loadStations(baseMinYear);
         await loadWeather(stations);
+    } else if (!!argv.cities) {
+        await loadCities();
     }
 })();
+
+module.exports = {
+    scrapeContext,
+    scrapeWeather,
+    scrapeCities
+};
