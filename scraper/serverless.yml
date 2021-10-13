@@ -26,6 +26,16 @@ provider:
               - s3:*
           Resource: 'arn:aws:s3:::${self:service}-data-${self:provider.stage}/*'
 
+        - Effect: Allow
+          Action:
+              - 'cloudfront:ListDistributions'
+              - 'cloudfront:ListInvalidations'
+              - 'cloudfront:GetDistribution'
+              - 'cloudfront:GetDistributionConfig'
+              - 'cloudfront:GetInvalidation'
+              - 'cloudfront:CreateInvalidation'
+          Resource: '*'
+
 functions:
     scrapeWeather:
         handler: src/index.scrapeWeather
