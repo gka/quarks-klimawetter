@@ -65,7 +65,8 @@ async function loadWeather(stations) {
 
             await saveFile(
                 path.join('stations', 'weather', `${station.id}.json`),
-                JSON.stringify(stationData)
+                JSON.stringify(stationData),
+                { maxAge: 60 },
             );
         } else {
             station.ignore = true;

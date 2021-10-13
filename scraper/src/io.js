@@ -25,13 +25,18 @@ const cloudfront = USE_BUCKET ? new AWS.CloudFront({
     region: 'eu-central-1',
 }) : null;
 
-async function saveFile(filepath, content) {
+async function saveFile(filepath, content, options) {
+    const {
+        maxAge,
+    } = (options || {});
+
     if (USE_BUCKET) {
         const params = {
             Bucket: process.env.BUCKET_DATA_NAME,
             Key: filepath,
             Body: content,
             ACL: 'public-read',
+            CacheControl: `public, max-age=${maxAge || 3600}`,
         };
         await s3.upload(params).promise();
     } else {
