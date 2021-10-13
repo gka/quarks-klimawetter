@@ -17,7 +17,7 @@ const loadStations = require('./loadStations.js');
 const loadCities = require('./load-cities.js');
 const analyzeContext = require('./analyzeContext.js');
 const { round, tempQuartileRange } = require('./shared.js');
-const { saveFile } = require('./io.js');
+const { saveFile, createInvalidation } = require('./io.js');
 
 const argv = yargs(process.argv.slice(2)).argv;
 
@@ -107,8 +107,14 @@ const scrapeContext = withSentry(async function (event, context) {
     const stations = await loadStations(baseMinYear);
     await saveFile("stations.json", JSON.stringify(stations));
 
+    console.info('Creating CloudFront invalidation for stations.json...');
+    await createInvalidation('/stations.json');
+
     console.info('Loading context...');
     await loadContext(stations);
+
+    console.info('Creating CloudFront invalidation for context...');
+    await createInvalidation('/stations/context/*');
 
     console.info('Done!');
     return context.logStreamName;
@@ -124,6 +130,9 @@ const scrapeWeather = withSentry(async function (event, context) {
     console.info('Loading weather...');
     await loadWeather(stations);
 
+    console.info('Creating CloudFront invalidation for weather...');
+    await createInvalidation('/stations/weather/*');
+
     console.info('Done!');
     return context.logStreamName;
 });
@@ -134,6 +143,9 @@ const scrapeCities = withSentry(async function (event, context) {
 
     console.info('Loading Cities...');
     await loadCities();
+
+    console.info('Creating CloudFront invalidation for cities...');
+    await createInvalidation('/cities.json');
 
     console.info('Done!');
     return context.logStreamName;

@@ -37,6 +37,7 @@ jobs:
         if: endsWith(github.ref, '/production')
         run: |
           echo "STAGE=prod" >> $GITHUB_ENV
+          echo "CLOUDFRONT_ID=E33PDSCJELKDGW" >> $GITHUB_ENV
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
@@ -75,12 +76,14 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "BUCKET_NAME=quarks-klimawetter-data-staging" >> $GITHUB_ENV
-          echo "DATA_URL=https://quarks-klimawetter-data-staging.s3.eu-central-1.amazonaws.com" >> $GITHUB_ENV
+          echo "DATA_URL=https://dp5hnd2sruz49.cloudfront.net" >> $GITHUB_ENV
+          echo "CLOUDFRONT_ID=E3P3XR7HDT16MO" >> $GITHUB_ENV
       - name: Set environment variables for production
         if: endsWith(github.ref, '/production')
         run: |
           echo "BUCKET_NAME=quarks-klimawetter-data-prod" >> $GITHUB_ENV
-          echo "DATA_URL=https://quarks-klimawetter-data-prod.s3.eu-central-1.amazonaws.com" >> $GITHUB_ENV
+          echo "DATA_URL=https://d3ii9yxxdpt0ws.cloudfront.net" >> $GITHUB_ENV
+          echo "CLOUDFRONT_ID=E33PDSCJELKDGW" >> $GITHUB_ENV
 
       - name: Install AWS CLI
         uses: unfor19/install-aws-cli-action@v1
@@ -103,6 +106,12 @@ jobs:
 
       - name: Deploy on AWS
         run: npm run deploy-aws
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Create CloudFront invalidation
+        run: npm run invalidate-cloudfront
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

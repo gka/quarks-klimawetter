@@ -2,7 +2,7 @@ const fs = require('fs/promises');
 const path = require('path');
 
 const mkdirp = require('mkdirp');
-const aws = require('aws-sdk');
+const AWS = require('aws-sdk');
 const yargs = require('yargs');
 
 const { USE_BUCKET } = require('./env.js');
@@ -17,7 +17,11 @@ if (!USE_BUCKET) {
     mkdirp.sync(path.join(outDirLocal, 'stations', 'context'));
 }
 
-const s3 = USE_BUCKET ? new aws.S3({
+const s3 = USE_BUCKET ? new AWS.S3({
+    region: 'eu-central-1',
+}) : null;
+
+const cloudfront = USE_BUCKET ? new AWS.CloudFront({
     region: 'eu-central-1',
 }) : null;
 
@@ -35,6 +39,23 @@ async function saveFile(filepath, content) {
     }
 }
 
+async function createInvalidation(path) {
+    if (USE_BUCKET) {
+        const params = {
+            DistributionId: process.env.CLOUDFRONT_ID,
+            InvalidationBatch: {
+                CallerReference: `${Date.now()}`,
+                Paths: {
+                    Quantity: 1,
+                    Items: [path],
+                },
+            },
+        };
+        await cloudfront.createInvalidation(params).promise();
+    }
+}
+
 module.exports = {
     saveFile,
+    createInvalidation,
 };
