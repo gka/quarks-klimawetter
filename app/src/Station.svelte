@@ -226,10 +226,10 @@
                     )} Erwärmung (seit 1961).
                 </p>
                 <p>
-                    Wichtig: Dieser Wert kann nicht mit dem globalen Ziel von höchstens
-                    1,5°C-Erderwärmung verglichen werden. Letzterer bezieht sich auf die
-                    Erderwärmung seit 1881. (Den Zeitraum können wir in unserer Grafik jedoch nicht
-                    verwenden, weil es damals noch kaum Wetterstationen gab.)
+                    <strong>Wichtig:</strong> Dieser Wert kann nicht mit dem globalen Ziel von höchstens
+                    1,5°C-Erderwärmung verglichen werden. Letzterer bezieht sich auf die Erderwärmung
+                    seit 1881. (Den Zeitraum können wir in unserer Grafik jedoch nicht verwenden, weil
+                    es damals noch kaum Wetterstationen gab.)
                 </p>
             </div>
         </Section>
