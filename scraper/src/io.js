@@ -35,7 +35,6 @@ async function saveFile(filepath, content, options) {
             Bucket: process.env.BUCKET_DATA_NAME,
             Key: filepath,
             Body: content,
-            ACL: 'public-read',
             CacheControl: `public, max-age=${maxAge || 3600}`,
         };
         await s3.upload(params).promise();
