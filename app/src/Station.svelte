@@ -182,7 +182,7 @@
                 <img
                     alt=""
                     src="https://data.wdr.de/quarks-klima-wetter/static/thermometer.svg"
-                    style="position: absolute; left: -60px;height:{tempHistHeight}px;top:-13px"
+                    style="position: absolute; left: -60px; height: {tempHistHeight}px; top: -13px; width: auto;"
                 />
                 <ChartYearly
                     month={curMonth}
