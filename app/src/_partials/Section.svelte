@@ -13,6 +13,12 @@
 
 <style>
     .padtop {
-        padding-top: 35px;
+        padding-top: 65px;
+    }
+
+    @media (max-width: 767.98px) {
+        .padtop {
+            padding-top: 15px;
+        }
     }
 </style>
