@@ -1,16 +1,22 @@
 <script>
     import dayjs from 'dayjs';
-    import { maxDate, innerWidth } from '$lib/stores';
+    import { maxDate, chartWidth } from '$lib/stores';
     import { fmtTemp, fmtRain } from '$lib/formats';
     import ChartDaily from './_partials/ChartDaily.svelte';
     import ChartYearly from './_partials/ChartYearly.svelte';
     import TopInfo from './_partials/TopInfo.svelte';
     import InfoBox from './_partials/InfoBox.svelte';
     import Section from './_partials/Section.svelte';
+    import { onMount, tick } from 'svelte';
 
     export let station;
     export let data;
     export let monthlyStats;
+
+    let clientWidth;
+    $: {
+        $chartWidth = clientWidth;
+    }
 
     $: curDay = data.find(
         d => dayjs($maxDate).format('YYYY-MM-DD') === dayjs(d.date).format('YYYY-MM-DD')
@@ -25,12 +31,18 @@
         $maxDate = dayjs(curDay.date).add(delta, by).toDate();
     }
 
-    $: numYears = $innerWidth < 550 ? 20 : 40;
+    $: numYears = clientWidth < 550 ? 20 : 40;
 
     let monthlyData = [];
     $: {
         monthlyData = monthlyStats[curMonth].stats.slice(0);
     }
+
+    onMount(async () => {
+        // force re-rendering on mount
+        await tick();
+        $chartWidth = $chartWidth - 1;
+    });
 
     let copySentence;
 
@@ -74,7 +86,7 @@
             war
         </h3>
 
-        <figure>
+        <figure bind:clientWidth>
             <ChartDaily
                 unit="°C"
                 label="Tageshöchst-\ntemperatur in °C"
@@ -182,7 +194,7 @@
                 <img
                     alt=""
                     src="https://data.wdr.de/quarks-klima-wetter/static/thermometer.svg"
-                    style="position: absolute; left: -60px; height: {tempHistHeight}px; top: -13px; width: auto;"
+                    style="position: absolute; width: auto; left: -60px;height:{tempHistHeight}px;top:-13px"
                 />
                 <ChartYearly
                     month={curMonth}
@@ -312,6 +324,11 @@
     @media (max-width: 767px) {
         h2 {
             margin-top: 2rem;
+        }
+
+        h3 {
+            margin-top: 1rem;
+            margin-bottom: 2rem;
         }
     }
 </style>

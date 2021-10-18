@@ -8,17 +8,11 @@
     import { fmtTemp, fmtRain } from '$lib/formats';
 
     let chart;
-    let chartWidth = 720;
-    let clientWidth = 720;
-    $: isMobile = chartWidth < 500;
 
-    import { innerWidth, minDate, maxDate } from '$lib/stores';
+    import { isMobile, chartWidth, minDate, maxDate } from '$lib/stores';
 
     export let height;
-    $: height = isMobile
-        ? 420
-        : Math.max(350, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1)) +
-          (range ? 50 : 0);
+    $: height = $isMobile ? 420 : 350 + (range ? 50 : 0);
 
     export let month = 0;
     export let data = [];
@@ -37,9 +31,9 @@
     export let show;
     export let range = false;
 
-    $: padding = { top: 50, right: 120, bottom: 30, left: $innerWidth < 400 ? 30 : 40 };
+    $: padding = { top: 50, right: 120, bottom: 30, left: $isMobile ? 30 : 40 };
 
-    $: xRange = [padding.left, chartWidth - padding.right];
+    $: xRange = [padding.left, $chartWidth - padding.right];
 
     $: xScale = scaleLinear().domain([minYear, maxYear]).range(xRange);
 
@@ -69,13 +63,13 @@
         yExtent = [min, Math.max(max, min + (show === 'temp' ? minTempRange : minprecipRange))];
     }
 
-    $: xTicks = xScale.ticks(Math.round(chartWidth / 60));
+    $: xTicks = xScale.ticks(Math.round($chartWidth / 60));
     $: yTicks = yScale.ticks(7);
 
     let format = d => d;
     let formatMobile = d => `'${String(d).substr(2)}`;
 
-    $: timeFormat = isMobile ? formatMobile : format;
+    $: timeFormat = $isMobile ? formatMobile : format;
 
     $: monthDisplay = dayjs(new Date(2020, month, 1)).format('MMM');
 
@@ -109,20 +103,9 @@
         .x(d => xScale(d.year))
         .y(d => yScale(d[show]));
 
-    afterUpdate(async () => {
-        if (clientWidth && clientWidth !== chartWidth) {
-            chartWidth = clientWidth;
-            isMobile = chartWidth < 500;
-            await tick();
-            chartWidth = chartWidth;
-        }
-    });
-
     onMount(async () => {
         // force re-rendering on mount
         padding.left = padding.left + 1;
-        await tick();
-        chartWidth = chartWidth - 1;
     });
 
     let selected;
@@ -138,18 +121,18 @@
               [214, 0]
           ];
 
-    $: legendBg = isMobile
-        ? [chartWidth - 140 - (show === 'temp' ? 0 : 5), 0, 140, 60]
-        : [chartWidth - padding.right - 200, 0, 140, 55];
+    $: legendBg = $isMobile
+        ? [$chartWidth - 140 - (show === 'temp' ? 0 : 5), 0, 140, 60]
+        : [$chartWidth - padding.right - 200, 0, 140, 55];
 
     function select(d) {
         selected = d;
     }
 </script>
 
-<svelte:window bind:innerWidth={$innerWidth} />
+<svelte:window />
 
-<div bind:this={chart} class="chart" bind:clientWidth>
+<div bind:this={chart} class="chart">
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
@@ -205,7 +188,7 @@
             <rect
                 class="context"
                 y={yScale(contextShow.hi)}
-                width={chartWidth}
+                width={$chartWidth}
                 height={yScale(contextShow.lo) - yScale(contextShow.hi)}
             />
 
