@@ -111,7 +111,7 @@
 {/if}
 
 <div>
-    <Section>
+    <Section wrapsSearchbox={true}>
         {#await loadStations()}
             <p>Loading stations</p>
         {:then stations}
