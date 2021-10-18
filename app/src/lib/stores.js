@@ -11,7 +11,8 @@ export const maxDate = writable(new Date());
 export const innerWidth = writable(1000);
 export const chartWidth = writable(720);
 
-export const showDays = derived(innerWidth, $cw => ($cw < 500 ? 30 : 60));
+export const isMobile = derived(chartWidth, $cw => $cw < 500);
+export const showDays = derived(isMobile, $isMobile => ($isMobile ? 30 : 60));
 
 export const minDate = derived([maxDate, showDays], ([$a, $showDays]) => {
     return new Date($a.getTime() - $showDays * 864e5);

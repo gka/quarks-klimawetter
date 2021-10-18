@@ -7,17 +7,10 @@
     import Rain30Days from './Rain30Days.svelte';
 
     let chart;
-    let chartWidth = 720;
-    let clientWidth;
 
-    import { innerWidth, minDate, maxDate } from '$lib/stores';
+    import { isMobile, chartWidth, minDate, maxDate } from '$lib/stores';
 
-    $: height = isMobile
-        ? 420
-        : Math.max(
-              350,
-              Math.min(450, chartWidth * (chartWidth > 800 ? 0.35 : chartWidth > 500 ? 0.7 : 1))
-          );
+    $: height = $isMobile ? 450 : 400;
 
     export let data = [];
     export let includeZero = true;
@@ -27,12 +20,12 @@
 
     $: padding = {
         top: 50,
-        right: isMobile ? 40 : 80,
+        right: $isMobile ? 40 : 80,
         bottom: 60,
-        left: $innerWidth < 400 ? 30 : 40
+        left: $isMobile ? 30 : 40
     };
 
-    $: xRange = [padding.left, chartWidth - padding.right];
+    $: xRange = [padding.left, $chartWidth - padding.right];
 
     $: xScale = scaleTime()
         .domain([$minDate, dayjs($maxDate).add(14, 'day').toDate()])
@@ -52,7 +45,7 @@
 
     $: yExtent = extent(yValues).map((d, i) => (show === 'temp' ? d + [-2, 0][i] : d));
 
-    $: xTicks = xScale.ticks(Math.round((chartWidth - padding.right - padding.left) / 40));
+    $: xTicks = xScale.ticks(Math.round(($chartWidth - padding.right - padding.left) / 40));
     $: yTicks = yScale.ticks(8);
 
     const midMonth = d => {
@@ -78,23 +71,10 @@
         // force re-rendering on mount
         padding.left = padding.left + 1;
         await tick();
-        chartWidth = chartWidth - 1;
-    });
-
-    $: isMobile = chartWidth < 500;
-
-    afterUpdate(async () => {
-        if (clientWidth && clientWidth !== chartWidth) {
-            chartWidth = clientWidth;
-            await tick();
-            chartWidth = chartWidth;
-        }
     });
 </script>
 
-<svelte:window bind:innerWidth={$innerWidth} />
-
-<div bind:this={chart} class="chart" bind:clientWidth>
+<div bind:this={chart} class="chart">
     <svg {height}>
         <defs>
             <linearGradient id="white" x1="0" x2="0" y1="0" y2="1">
@@ -144,9 +124,9 @@
             <line class="zero" transform="translate(0,{yScale(0)})" x2="100%" />
 
             {#if show === 'TXK'}
-                <MaxTemp width={chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
+                <MaxTemp width={$chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
             {:else if show === 'rain30days'}
-                <Rain30Days width={chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
+                <Rain30Days width={$chartWidth} {height} {xScale} {yScale} data={dataFiltered} />
             {/if}
         </g>
     </svg>
