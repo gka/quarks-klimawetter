@@ -2,7 +2,7 @@ const got = require('got');
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 
-async function loadStations(baseMinYear) {
+module.exports = async function loadStations(baseMinYear) {
     const url =
         'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt';
     const raw = (await got(url, { encoding: 'latin1' })).body;
@@ -37,5 +37,3 @@ function parseFixedWidth(data, { skip = 0, widths = [], names = [], trim = true 
         return d;
     });
 }
-
-module.exports = loadStations;

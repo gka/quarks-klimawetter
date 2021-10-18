@@ -6,5 +6,6 @@ function round(d) {
 const tempQuartileRange = 50;
 
 module.exports = {
-    round, tempQuartileRange
+    round,
+    tempQuartileRange,
 };

@@ -100,7 +100,7 @@
                 <div>
                     In den letzten 30 Tagen hat es <b class="rain-{precipClass}">{precipSentence}</b
                     >
-                    (<span>{fmtRain(curDay.rain30days)}/qm</span>).
+                    (<span>{@html fmtRain(curDay.rain30days).replace(' ', '&nbsp;')}/qm</span>).
                 </div>
             </div>
         </div>

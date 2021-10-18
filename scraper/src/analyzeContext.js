@@ -1,5 +1,4 @@
 const dayjs = require('dayjs');
-const { round, tempQuartileRange } = require('./shared');
 const {
     mean,
     sum,
@@ -12,6 +11,7 @@ const {
 } = require('d3-array');
 const { ascendingKey } = require('d3-jetpack');
 
+const { round, tempQuartileRange } = require('./shared.js');
 
 
 const DAYS = [];
@@ -21,7 +21,7 @@ while (day.year() === 2021) {
     day = day.add(1, 'day');
 }
 
-function analyzeContext(data, baseMinYear) {
+module.exports = function analyzeContext(data, baseMinYear) {
     // add some useful date keys
     data.forEach(row => {
         const date = dayjs(row.date);
@@ -124,20 +124,4 @@ function getMonthlyContext(data, month, baseMinYear) {
         stats,
         base: monthlyBase
     };
-}
-
-
-
-module.exports = analyzeContext;
-
-if (process.argv[1] === __filename) {
-    // test script
-    const { loadStationHist } = require('./loadStationData');
-    (async () => {
-        const hist = await loadStationHist('00400');
-
-        const { daily, monthly } = analyzeContext(hist, 1961);
-        // console.log(daily);
-        console.log(monthly[5].stats.slice(34,36));
-    })();
 }

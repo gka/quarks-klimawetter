@@ -1,0 +1,60 @@
+service: quarks-klimawetter
+useDotenv: true
+variablesResolutionMode: 20210326
+
+package:
+    exclude:
+        - cache/**
+        - out/**
+
+provider:
+    name: aws
+    region: eu-central-1
+    runtime: nodejs14.x
+    stage: ${env:STAGE}
+    lambdaHashingVersion: 20201221
+    environment:
+        BUCKET_DATA_NAME: '${self:service}-data-${self:provider.stage}'
+        CLOUDFRONT_ID: '${env:CLOUDFRONT_ID}'
+        USE_CACHE: 0
+        USE_BUCKET: 1
+        SENTRY_ENVIRONMENT: ${self:provider.stage}
+        SENTRY_DSN: ${env:SENTRY_DSN}
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - s3:*
+          Resource: 'arn:aws:s3:::${self:service}-data-${self:provider.stage}/*'
+
+        - Effect: Allow
+          Action:
+              - 'cloudfront:ListDistributions'
+              - 'cloudfront:ListInvalidations'
+              - 'cloudfront:GetDistribution'
+              - 'cloudfront:GetDistributionConfig'
+              - 'cloudfront:GetInvalidation'
+              - 'cloudfront:CreateInvalidation'
+          Resource: '*'
+
+functions:
+    scrapeWeather:
+        handler: src/index.scrapeWeather
+        timeout: 900
+        events:
+            - schedule:
+                  name: ${self:service}-${self:provider.stage}-scrapeWeather
+                  rate: cron(5 0,3,6,9,12,15,18,21 ? * * *)
+                  enabled: true
+
+    scrapeContext:
+        handler: src/index.scrapeContext
+        timeout: 900
+        events:
+            - schedule:
+                  name: ${self:service}-${self:provider.stage}-scrapeContext
+                  rate: cron(5 1 1,15 * ? *)
+                  enabled: true
+
+    scrapeCities:
+        handler: src/index.scrapeCities
+        timeout: 900

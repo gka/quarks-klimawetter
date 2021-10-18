@@ -24,9 +24,9 @@
         <p>
             Der <strong>graue Bereich</strong> in unseren Diagrammen zeigt also, welches Wetter von
             1961-1990 am häufigsten war. Wie wir den grauen Bereich genau eingegrenzt haben,
-            erfährst du unter <a href="#datengrundlage">Unsere Datengrundlage</a>. Liegt die
-            aktuelle Temperatur oder der aktuelle Niederschlag außerhalb des grauen Bereichs, ist es
-            somit überdurchschnittlich warm/kalt bzw. regnerisch/trocken.
+            erfährst du unter <a href="#datengrundlage-wetterklima">Unsere Datengrundlage</a>. Liegt
+            die aktuelle Temperatur oder der aktuelle Niederschlag außerhalb des grauen Bereichs,
+            ist es somit überdurchschnittlich warm/kalt bzw. regnerisch/trocken.
         </p>
     </div>
 </div>
