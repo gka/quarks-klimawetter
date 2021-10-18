@@ -5,7 +5,11 @@
 </script>
 
 <div class="wpb_wrapper">
-    <div class:padtop={!nopadding} class:pargraph_grey={gray}>
+    <div
+        class:padtop={!nopadding}
+        class:wraps_searchbox={wrapsSearchbox}
+        class:pargraph_grey={gray}
+    >
         <div class="paragraph_spacing" class:wraps_searchbox={wrapsSearchbox}>
             <slot />
         </div>
@@ -15,6 +19,9 @@
 <style>
     .padtop {
         padding-top: 65px;
+    }
+    .padtop.wraps_searchbox {
+        padding-top: 5px;
     }
 
     @media (max-width: 767.98px) {
