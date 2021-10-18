@@ -6,8 +6,6 @@ name: Deploy to AWS
 on:
   push:
     branches: [main, production]
-  pull_request:
-    branches: []
 
 jobs:
   scraper:
