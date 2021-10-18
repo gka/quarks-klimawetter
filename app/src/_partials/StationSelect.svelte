@@ -1,6 +1,5 @@
 <script>
     import Typeahead from 'svelte-typeahead';
-    import fuzzy from 'fuzzy';
     import { createEventDispatcher, onMount } from 'svelte';
     import { findNearestStationLL, latLonDist } from '$lib/findNearestStation';
 
