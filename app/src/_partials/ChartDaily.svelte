@@ -20,7 +20,7 @@
 
     $: padding = {
         top: 50,
-        right: $isMobile ? 40 : 80,
+        right: $isMobile ? 80 : 80,
         bottom: 60,
         left: $isMobile ? 30 : 40
     };
