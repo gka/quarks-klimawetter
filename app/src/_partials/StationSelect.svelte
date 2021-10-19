@@ -24,9 +24,7 @@
         const cities = await res.json();
         cities.forEach(city => {
             // check if we have a weather station with the same name
-            const s = stations.find(
-                e => e.name.toLowerCase().indexOf(city.name.toLowerCase()) >= 0
-            );
+            const s = stations.find(e => e.name.toLowerCase() == city.name.toLowerCase());
             if (!s) lookup.push(city);
         });
     });
