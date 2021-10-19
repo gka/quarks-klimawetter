@@ -49,9 +49,9 @@
             : 'durchschnittlich viel geregnet';
 
     $: tempClass =
-        curDay.TXK > curDay.context.TXK_hi
+        curDay.TXK - curDay.context.TXK_hi > 0.15
             ? 'high'
-            : curDay.TXK < curDay.context.TXK_lo
+            : curDay.context.TXK_lo - curDay.TXK > 0.15
             ? 'low'
             : 'normal';
 
