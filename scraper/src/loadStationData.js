@@ -74,8 +74,8 @@ async function downloadDwdData(stationId, historical = false) {
                         .map(row => ({
                             date: dayjs(row.MESS_DATUM.trim()).format('YYYY-MM-DD'),
                             diff: today.diff(row.MESS_DATUM.trim(), 'day'),
-                            RSK: +row[' RSK'],
-                            TXK: +row[' TXK'],
+                            RSK: +row[' RSK'] !== -999 ? +row[' RSK'] : undefined,
+                            TXK: +row[' TXK'] !== -999 ? +row[' TXK'] : undefined,
                             source: 'dwd/recent'
                         }));
                     if (USE_CACHE && historical) {
@@ -131,8 +131,8 @@ function downloadBrightskyData(stationId, minDate) {
                     return {
                         date: dateFmt,
                         diff: today.diff(dateFmt, 'day'),
-                        TXK,
-                        RSK,
+                        TXK: (TXK !== -999 ? TXK : undefined),
+                        RSK: (RSK !== -999 ? RSK : undefined),
                         source: `dwd/${res.sources[0].observation_type}`
                     };
                 }
