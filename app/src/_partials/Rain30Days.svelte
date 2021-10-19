@@ -54,6 +54,7 @@
     let selected;
 
     $: lastContext = data[data.length - 1]; // .find(d => dayjs(d.date).diff($maxDate, 'd') == 10);
+    $: endIsVeryLow = height - yScale(lastRain.rain30days) < 130;
 
     $: inRange = data.filter(
         d => !isNaN(d.rain30days) !== null && d.date >= $minDate && d.date <= $maxDate
@@ -191,8 +192,7 @@
         class:below={lastRain.rain30days < lastRain.context.rain30days_lo}
         transform="translate({[
             xScale(lastRain.date),
-            lastRain.rain30days >
-            (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
+            !endIsLow || endIsVeryLow
                 ? yScale(Math.max(lastRain.rain30days, lastRain.context.rain30days_hi)) - 28
                 : yScale(Math.min(lastRain.rain30days, lastRain.context.rain30days_lo)) + 28
         ]})"
@@ -207,15 +207,11 @@
                 >
             </text>
         {/each}
-        {#if lastRain.rain30days < lastRain.context.rain30days_hi && lastRain.rain30days > lastRain.context.rain30days_lo}
+        {#if (lastRain.rain30days < lastRain.context.rain30days_hi && lastRain.rain30days > lastRain.context.rain30days_lo) || endIsVeryLow}
             <line
                 style="stroke:black; opacity:0.5"
-                y1={lastRain.rain30days >
-                (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
-                    ? 25
-                    : -15}
-                y2={lastRain.rain30days >
-                (lastRain.context.rain30days_hi + lastRain.context.rain30days_lo) * 0.5
+                y1={!endIsLow || endIsVeryLow ? 25 : -15}
+                y2={!endIsLow || endIsVeryLow
                     ? yScale(lastRain.rain30days) - yScale(lastRain.context.rain30days_hi) + 28
                     : yScale(lastRain.rain30days) - yScale(lastRain.context.rain30days_lo) - 28}
             />
