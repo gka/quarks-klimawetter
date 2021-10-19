@@ -26,7 +26,7 @@ module.exports = async () => {
                     .map(line => line.split('\t'))
                     .filter(row => row[8] === 'DE')
                     .map(row => ({
-                        name: row[2],
+                        name: row[1],
                         lat: +row[4],
                         lon: +row[5]
                     }));
