@@ -52,6 +52,8 @@
 
     let missingTemp;
     let missingPrecip;
+
+    let hasRecordTemp;
 </script>
 
 <div class="quarks-wetterklima">
@@ -93,8 +95,12 @@
                 {data}
                 yMin={-5}
                 yMax={30}
+                bind:hasRecordTemp
                 show="TXK"
             />
+            {#if hasRecordTemp}
+                <figcaption><b>R</b> markiert Tage mit Rekordtemperaturen.</figcaption>
+            {/if}
         </figure>
 
         {#if copySentence}

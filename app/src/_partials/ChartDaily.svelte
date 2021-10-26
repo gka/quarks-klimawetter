@@ -67,6 +67,11 @@
         return d.date > $minDate;
     });
 
+    export let hasRecordTemp;
+    $: {
+        hasRecordTemp = !!dataFiltered.find(d => d.TXK > d.context.TXK_records.hi[2].TXK);
+    }
+
     onMount(async () => {
         // force re-rendering on mount
         padding.left = padding.left + 1;
