@@ -3,8 +3,8 @@ function round(d) {
 }
 
 const quantileConfig = {
-	low: 0.15,
-	high: 0.85,
+	low: 0.20,
+	high: 0.80,
 }
 
 module.exports = {
