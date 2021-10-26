@@ -11,7 +11,7 @@ const {
 } = require('d3-array');
 const { ascendingKey } = require('d3-jetpack');
 
-const { round, tempQuartileRange } = require('./shared.js');
+const { round, quantileConfig } = require('./shared.js');
 
 
 const DAYS = [];
@@ -71,16 +71,16 @@ function getDailyContext(data, day, baseMinYear) {
         day,
         TXK: round(mean(tempValues)),
         TXK_10: round(quantileSorted(tempValues, 0.1)),
-        TXK_lo: round(quantileSorted(tempValues, 0.25)),
-        TXK_hi: round(quantileSorted(tempValues, 0.75)),
+        TXK_lo: round(quantileSorted(tempValues, quantileConfig.low)),
+        TXK_hi: round(quantileSorted(tempValues, quantileConfig.high)),
         TXK_90: round(quantileSorted(tempValues, 0.9)),
         TXK_records: {
             lo: records.slice(0, 3),
             hi: records.slice(-3)
         },
         rain30days: round(mean(rainValues)),
-        rain30days_lo: round(quantileSorted(rainValues, 0.25)),
-        rain30days_hi: round(quantileSorted(rainValues, 0.75))
+        rain30days_lo: round(quantileSorted(rainValues, quantileConfig.low)),
+        rain30days_hi: round(quantileSorted(rainValues, quantileConfig.high))
     };
     return res;
 }
@@ -108,17 +108,17 @@ function getMonthlyContext(data, month, baseMinYear) {
             year: key,
             temp: avgMaxTemp,
             temp_range: tempRange,
-            temp_lo: round(quantileSorted(tempValues, 0.5 - (tempQuartileRange / 100) * 0.5)),
-            temp_hi: round(quantileSorted(tempValues, 0.5 + (tempQuartileRange / 100) * 0.5)),
+            temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
+            temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
             precip: round(sumPrecip, 1)
         });
     });
     const base = stats.filter(d => d.year >= baseMinYear && d.year < baseMinYear + 30);
     const monthlyBase = {
-        temp_lo: round(quantile(base, 0.5 - (tempQuartileRange / 100) * 0.5, d => d.temp)),
-        temp_hi: round(quantile(base, 0.5 + (tempQuartileRange / 100) * 0.5, d => d.temp)),
-        precip_lo: round(quantile(base, 0.5 - (tempQuartileRange / 100) * 0.5, d => d.precip)),
-        precip_hi: round(quantile(base, 0.5 + (tempQuartileRange / 100) * 0.5, d => d.precip))
+        temp_lo: round(quantile(base, quantileConfig.low, d => d.temp)),
+        temp_hi: round(quantile(base, quantileConfig.high, d => d.temp)),
+        precip_lo: round(quantile(base, quantileConfig.low, d => d.precip)),
+        precip_hi: round(quantile(base, quantileConfig.high, d => d.precip))
     };
     return {
         stats,

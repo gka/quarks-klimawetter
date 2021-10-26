@@ -16,7 +16,7 @@ const { loadStationData, loadStationHist } = require('./loadStationData.js');
 const loadStations = require('./loadStations.js');
 const loadCities = require('./load-cities.js');
 const analyzeContext = require('./analyzeContext.js');
-const { round, tempQuartileRange } = require('./shared.js');
+const { round, quantileConfig } = require('./shared.js');
 const { saveFile, createInvalidation } = require('./io.js');
 
 const argv = yargs(process.argv.slice(2)).argv;
@@ -92,8 +92,8 @@ function aggregateMonthly(data) {
             month: +key.split('-')[1],
             temp: avgMaxTemp,
             temp_range: tempRange,
-            temp_lo: round(quantileSorted(tempValues, 0.5 - (tempQuartileRange / 100) * 0.5)),
-            temp_hi: round(quantileSorted(tempValues, 0.5 + (tempQuartileRange / 100) * 0.5)),
+            temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
+            temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
             precip: round(sumPrecip, 1)
         });
     });
