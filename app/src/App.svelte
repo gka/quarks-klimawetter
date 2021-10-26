@@ -102,10 +102,6 @@
     }
 </script>
 
-<svelte:head>
-    <title>Quarks Wetterklima</title>
-</svelte:head>
-
 {#if isLocalHost}
     <TimeControls />
 {/if}
