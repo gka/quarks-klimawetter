@@ -58,3 +58,5 @@ functions:
     scrapeCities:
         handler: src/index.scrapeCities
         timeout: 900
+        environment:
+            CITIES_SHEETS_URL: ${env:CITIES_SHEETS_URL}
