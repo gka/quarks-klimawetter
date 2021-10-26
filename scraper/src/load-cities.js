@@ -10,7 +10,7 @@ module.exports = async () => {
     const data = csvParse(response.body, row => {
         delete row.duplicate;
         row.lat = +row.lat;
-        row.lng = +row.lng;
+        row.lon = +row.lon;
         return row;
     });
     await saveFile('cities.json', JSON.stringify(data));
