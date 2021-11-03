@@ -20,6 +20,7 @@ module.exports = async function loadStations(baseMinYear) {
             lat: +station.lat,
             lon: +station.lon
         }))
+        .filter(station => !["Hameln"].includes(station.name))
         .filter(d => dayjs(d.from).year() <= baseMinYear && dayjs().diff(d.to, 'day') < 5)
         .sort((a, b) => (a.slug > b.slug ? 1 : b.slug > a.slug ? -1 : 0));
 }
