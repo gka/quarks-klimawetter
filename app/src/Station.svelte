@@ -122,7 +122,7 @@
 
         <figure>
             <ChartDaily
-                label="Niederschlagsmenge je qm\nkumuliert über 30 Tage in mm"
+                label="Niederschlagsmenge\nkumuliert über 30 Tage in mm"
                 unit="mm"
                 {data}
                 includeZero={true}
@@ -133,7 +133,7 @@
 
         <div class="paragraph_content">
             <p>
-                Über die vergangenen 30 Tage hat es {fmtRain(curDay.rain30days, true)} je Quadratmeter
+                Über die vergangenen 30 Tage hat es {fmtRain(curDay.rain30days, true)}
                 geregnet. Das ist {curDay.rain30days > curDay.context.rain30days_hi
                     ? 'besonders viel '
                     : curDay.rain30days < curDay.context.rain30days_lo
