@@ -67,6 +67,15 @@ function getDailyContext(data, day, baseMinYear) {
         .sort(ascendingKey('TXK'))
         .map(d => ({ year: d.year, TXK: d.TXK }));
 
+    const snow30days = data.filter(
+        d =>
+            d.year >= baseMinYear &&
+            d.year < baseMinYear + 30 &&
+            d.day === day &&
+            d.rain30days !== null &&
+            !isNaN(d.rain30days)
+    ).some(d => d.snow30days);
+
     const res = {
         day,
         TXK: round(mean(tempValues)),
@@ -80,7 +89,8 @@ function getDailyContext(data, day, baseMinYear) {
         },
         rain30days: round(mean(rainValues)),
         rain30days_lo: round(quantileSorted(rainValues, quantileConfig.low)),
-        rain30days_hi: round(quantileSorted(rainValues, quantileConfig.high))
+        rain30days_hi: round(quantileSorted(rainValues, quantileConfig.high)),
+        snow30days,
     };
     return res;
 }
@@ -110,7 +120,8 @@ function getMonthlyContext(data, month, baseMinYear) {
             temp_range: tempRange,
             temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
             temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
-            precip: round(sumPrecip, 1)
+            precip: round(sumPrecip, 1),
+            has_snow: value.some(d => d.has_snow),
         });
     });
     const base = stats.filter(d => d.year >= baseMinYear && d.year < baseMinYear + 30);
@@ -118,7 +129,8 @@ function getMonthlyContext(data, month, baseMinYear) {
         temp_lo: round(quantile(base, quantileConfig.low, d => d.temp)),
         temp_hi: round(quantile(base, quantileConfig.high, d => d.temp)),
         precip_lo: round(quantile(base, quantileConfig.low, d => d.precip)),
-        precip_hi: round(quantile(base, quantileConfig.high, d => d.precip))
+        precip_hi: round(quantile(base, quantileConfig.high, d => d.precip)),
+        has_snow: base.some(d => d.has_snow),
     };
     return {
         stats,

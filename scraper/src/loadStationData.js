@@ -76,6 +76,8 @@ async function downloadDwdData(stationId, historical = false) {
                             diff: today.diff(row.MESS_DATUM.trim(), 'day'),
                             RSK: +row[' RSK'] !== -999 ? +row[' RSK'] : undefined,
                             TXK: +row[' TXK'] !== -999 ? +row[' TXK'] : undefined,
+                            has_snow: +row['RSKF'] !== -999 ? [7, 8].includes(+row['RSKF']) : undefined,
+                            //has_rain: +row['RSKF'] !== -999 ? [1, 6, 8].includes(+row['RSKF']) : undefined,
                             source: 'dwd/recent'
                         }));
                     if (USE_CACHE && historical) {
@@ -133,6 +135,8 @@ function downloadBrightskyData(stationId, minDate) {
                         diff: today.diff(dateFmt, 'day'),
                         TXK: (TXK !== -999 ? TXK : undefined),
                         RSK: (RSK !== -999 ? RSK : undefined),
+                        has_snow: res.weather.some(d => ['snow', 'sleet', 'hail'].includes(d.condition)),
+                        //has_rain: res.weather.some(d => ['rain', 'sleet', 'thunderstorm'].includes(d.condition)),
                         source: `dwd/${res.sources[0].observation_type}`
                     };
                 }
@@ -150,26 +154,42 @@ function downloadBrightskyData(stationId, minDate) {
 }
 
 function sumRain(data) {
-    let sumRain = 0;
     let cleanDataSince = 0;
+    let snowDays = [];
+    let rainAmounts = [];
+
     return data
         .sort((a, b) => b.diff - a.diff)
         .map((row, i) => {
+            // check if days are consecutive
             if (
                 // row.RSK < 0 ||
                 // row.RSK === undefined ||
                 i > 0 &&
                 row.diff - data[i - 1].diff !== -1
             ) {
+                // skip row and reset aggregators
+
                 cleanDataSince = i + 1;
-                sumRain = 0;
-            } else {
-                // do we want to treat missing data as zero
-                sumRain += parse(row.RSK);
-                if (i > cleanDataSince + 30) {
-                    sumRain -= parse(data[i - 30].RSK);
-                    row.rain30days = i < 30 ? undefined : +sumRain.toFixed(1);
-                }
+                snowDays = [];
+                rainAmounts = [];
+
+                return row;
+            }
+
+            // do we want to treat missing data as zero?
+            // we are doing it right now
+            rainAmounts.push(parse(row.RSK));
+            snowDays.push(row.has_snow);
+
+            if (snowDays.length > 30) {
+                rainAmounts.shift();
+                snowDays.shift();
+            }
+
+            if (i > cleanDataSince + 30) {
+                row.rain30days = i < 30 ? undefined : +sum(rainAmounts).toFixed(1);
+                row.snow30days = i < 30 ? undefined : snowDays.some(d => d);
             }
             return row;
         })

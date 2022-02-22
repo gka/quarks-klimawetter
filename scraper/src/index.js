@@ -94,7 +94,8 @@ function aggregateMonthly(data) {
             temp_range: tempRange,
             temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
             temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
-            precip: round(sumPrecip, 1)
+            precip: round(sumPrecip, 1),
+            has_snow: value.some(d => d.has_snow),
         });
     });
     return out;
