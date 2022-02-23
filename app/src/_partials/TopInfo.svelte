@@ -41,12 +41,14 @@
               )} im Jahr ${curDay.context.TXK_records.lo[0].year}.`
             : false;
 
+    $: precipLabel = curDay.snow30days ? 'geregnet oder geschneit' : 'geregnet';
+
     $: precipSentence =
         curDay.rain30days > curDay.context.rain30days_hi
-            ? 'überdurchschnittlich viel geregnet'
+            ? `überdurchschnittlich viel ${precipLabel}`
             : curDay.rain30days < curDay.context.rain30days_lo
-            ? 'überdurchschnittlich wenig geregnet'
-            : 'durchschnittlich viel geregnet';
+            ? `überdurchschnittlich wenig ${precipLabel}`
+            : `durchschnittlich viel ${precipLabel}`;
 
     $: tempClass =
         curDay.TXK > curDay.context.TXK_hi
