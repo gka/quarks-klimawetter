@@ -27,6 +27,9 @@ Resources:
               - 'cloudformation:PreviewStackUpdate'
               - 'cloudformation:CreateStack'
               - 'cloudformation:UpdateStack'
+              - 'cloudformation:CreateChangeSet'
+              - 'cloudformation:DeleteChangeSet'
+              - 'cloudformation:ExecuteChangeSet'
             Resource:
               - !Sub 'arn:aws:cloudformation:${AWS::Region}:${AWS::AccountId}:stack/${ServiceName}-*'
 
