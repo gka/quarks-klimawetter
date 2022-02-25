@@ -49,6 +49,7 @@ functions:
     scrapeContext:
         handler: src/index.scrapeContext
         timeout: 900
+        memorySize: 2048
         events:
             - schedule:
                   name: ${self:service}-${self:provider.stage}-scrapeContext
