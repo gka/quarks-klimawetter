@@ -108,6 +108,9 @@ function getMonthlyContext(data, month, baseMinYear) {
         d => d.year
     ).forEach((value, key) => {
         const tempNoNA = value.filter(d => d.TXK !== null && !isNaN(d.TXK) && d.TXK > -999);
+        if (tempNoNA.length == 0) {
+            return;
+        }
         const avgMaxTemp = round(mean(tempNoNA, d => d.TXK));
         const tempRange = extent(tempNoNA, d => d.TXK).map(round);
         const tempValues = tempNoNA
