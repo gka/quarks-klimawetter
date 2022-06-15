@@ -1,14 +1,7 @@
 const yargs = require('yargs');
 const path = require('path');
-const withSentry = require("serverless-sentry-lib");
-const {
-    mean,
-    sum,
-    quantileSorted,
-    ascending,
-    group,
-    extent
-} = require('d3-array');
+const withSentry = require('serverless-sentry-lib');
+const { mean, sum, quantileSorted, ascending, group, extent } = require('d3-array');
 const dayjs = require('dayjs');
 const { parallelLimit } = require('async');
 
@@ -17,28 +10,24 @@ const loadStations = require('./loadStations.js');
 const loadCities = require('./load-cities.js');
 const analyzeContext = require('./analyzeContext.js');
 const { round, quantileConfig } = require('./shared.js');
-const { saveFile, createInvalidation } = require('./io.js');
+const { saveFile, loadFile, createInvalidation } = require('./io.js');
+const { notifyRecords } = require('./recordNotifications.js');
 
 const argv = yargs(process.argv.slice(2)).argv;
 
 const baseMinYear = 1961;
 
-
 async function loadContext(stations) {
-    const promises = stations.map((station) => (async () => {
+    const promises = stations.map(station => async () => {
         console.log(station.id, station.slug);
         const hist = await loadStationHist(station.id);
         // compute stats for each day
         const ctx = analyzeContext(hist, baseMinYear);
-        await saveFile(
-            path.join('stations', 'context', `${station.id}.json`),
-            JSON.stringify(ctx)
-        );
-    }));
+        await saveFile(path.join('stations', 'context', `${station.id}.json`), JSON.stringify(ctx));
+    });
 
     await parallelLimit(promises, 4);
 }
-
 
 async function loadWeather(stations) {
     for (const station of stations) {
@@ -66,7 +55,7 @@ async function loadWeather(stations) {
             await saveFile(
                 path.join('stations', 'weather', `${station.id}.json`),
                 JSON.stringify(stationData),
-                { maxAge: 60 },
+                { maxAge: 60 }
             );
         } else {
             station.ignore = true;
@@ -76,10 +65,7 @@ async function loadWeather(stations) {
 
 function aggregateMonthly(data) {
     const out = [];
-    group(
-        data,
-        d => dayjs(d.date).format('YYYY-MM')
-    ).forEach((value, key) => {
+    group(data, d => dayjs(d.date).format('YYYY-MM')).forEach((value, key) => {
         const avgMaxTemp = round(mean(value, d => d.TXK));
         const tempRange = extent(value, d => d.TXK).map(round);
         const tempValues = value
@@ -95,7 +81,7 @@ function aggregateMonthly(data) {
             temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
             temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
             precip: round(sumPrecip, 1),
-            has_snow: value.some(d => d.has_snow),
+            has_snow: value.some(d => d.has_snow)
         });
     });
     return out;
@@ -107,7 +93,7 @@ const scrapeContext = withSentry(async function (event, context) {
 
     console.info('Loading stations...');
     const stations = await loadStations(baseMinYear);
-    await saveFile("stations.json", JSON.stringify(stations));
+    await saveFile('stations.json', JSON.stringify(stations));
 
     console.info('Creating CloudFront invalidation for stations.json...');
     await createInvalidation('/stations.json');
@@ -121,7 +107,6 @@ const scrapeContext = withSentry(async function (event, context) {
     console.info('Done!');
     return context.logStreamName;
 });
-
 
 const scrapeWeather = withSentry(async function (event, context) {
     console.info('Scraping weather');
@@ -139,7 +124,6 @@ const scrapeWeather = withSentry(async function (event, context) {
     return context.logStreamName;
 });
 
-
 const scrapeCities = withSentry(async function (event, context) {
     console.info('Scraping Cities');
 
@@ -152,7 +136,6 @@ const scrapeCities = withSentry(async function (event, context) {
     console.info('Done!');
     return context.logStreamName;
 });
-
 
 // direct invocation
 (async () => {
