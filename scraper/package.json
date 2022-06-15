@@ -10,7 +10,8 @@
         "drop-cache": "rm cache/*.json",
         "weather": "node -r dotenv/config src/index.js --weather",
         "context": "node -r dotenv/config src/index.js --context",
-        "cities": "node -r dotenv/config src/index.js --cities"
+        "cities": "node -r dotenv/config src/index.js --cities",
+        "notify-records": "node -r dotenv/config src/index.js --notifyRecords"
     },
     "keywords": [],
     "author": "",

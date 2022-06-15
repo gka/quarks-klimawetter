@@ -43,6 +43,20 @@ async function saveFile(filepath, content, options) {
     }
 }
 
+async function loadFile(filepath) {
+    if (USE_BUCKET) {
+        const params = {
+            Bucket: process.env.BUCKET_DATA_NAME,
+            Key: filepath,
+        };
+        const data = await s3.getObject(params).promise();
+        return data.Body.toString();
+    } else {
+        const buf = await fs.readFile(path.join(outDirLocal, filepath));
+        return buf.toString();
+    }
+}
+
 async function createInvalidation(path) {
     if (USE_BUCKET) {
         const params = {
@@ -61,5 +75,6 @@ async function createInvalidation(path) {
 
 module.exports = {
     saveFile,
+    loadFile,
     createInvalidation,
 };

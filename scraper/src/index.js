@@ -137,6 +137,17 @@ const scrapeCities = withSentry(async function (event, context) {
     return context.logStreamName;
 });
 
+const sendRecordsNotifications = withSentry(async function (event, context) {
+    console.info('Loading stations...');
+    const stations = await loadStations(baseMinYear);
+
+    console.info('Sending record notifications...');
+    await notifyRecords(stations);
+
+    console.info('Done!');
+    return context.logStreamName;
+});
+
 // direct invocation
 (async () => {
     if (!!argv.context) {
@@ -148,11 +159,15 @@ const scrapeCities = withSentry(async function (event, context) {
         await loadWeather(stations);
     } else if (!!argv.cities) {
         await loadCities();
+    } else if (!!argv.notifyRecords) {
+        const stations = await loadStations(baseMinYear);
+        await notifyRecords(stations);
     }
 })();
 
 module.exports = {
     scrapeContext,
     scrapeWeather,
-    scrapeCities
+    scrapeCities,
+    sendRecordsNotifications
 };

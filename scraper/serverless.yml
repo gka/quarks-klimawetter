@@ -61,3 +61,14 @@ functions:
         timeout: 900
         environment:
             CITIES_SHEETS_URL: ${env:CITIES_SHEETS_URL}
+
+    sendRecordsNotifications:
+        handler: src/index.sendRecordsNotifications
+        timeout: 900
+        environment:
+            TEAMS_WEBHOOK: ${env:TEAMS_WEBHOOK}
+        events:
+            - schedule:
+                  name: ${self:service}-${self:provider.stage}-sendRecordsNotifications
+                  rate: cron(20 9 ? * * *)
+                  enabled: true

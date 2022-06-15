@@ -30,18 +30,20 @@ jobs:
         run: |
           echo "STAGE=staging" >> $GITHUB_ENV
           echo "CLOUDFRONT_ID=E3P3XR7HDT16MO" >> $GITHUB_ENV
+          echo "TEAMS_WEBHOOK=${{ secrets.TEAMS_WEBHOOK_STAGING }}" >> $GITHUB_ENV
 
       - name: Set environment variables for production
         if: endsWith(github.ref, '/production')
         run: |
           echo "STAGE=prod" >> $GITHUB_ENV
           echo "CLOUDFRONT_ID=E33PDSCJELKDGW" >> $GITHUB_ENV
+          echo "TEAMS_WEBHOOK=${{ secrets.TEAMS_WEBHOOK_PROD }}" >> $GITHUB_ENV
 
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: scraper/package-lock.json
 
       - name: Install dependencies
@@ -94,7 +96,7 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: "npm"
+          cache: 'npm'
           cache-dependency-path: app/package-lock.json
 
       - name: Install dependencies
