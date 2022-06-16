@@ -69,7 +69,12 @@
 
     export let hasRecordTemp;
     $: {
-        hasRecordTemp = !!dataFiltered.find(d => d.TXK > d.context.TXK_records.hi[2].TXK);
+        hasRecordTemp = !!dataFiltered.find(
+            d => ((
+                d.TXK > d.context.TXK_records.hi[2].TXK ||
+                d.context.TXK_records.hi[2].year == dayjs(d.date).year()
+            ) && dayjs(d.date) < dayjs())
+        );
     }
 
     onMount(async () => {

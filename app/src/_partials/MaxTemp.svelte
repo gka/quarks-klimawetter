@@ -123,7 +123,10 @@
 
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
-    {#if d.TXK > d.context.TXK_records.hi[2].TXK}
+    {#if (
+        d.TXK > d.context.TXK_records.hi[2].TXK ||
+        d.context.TXK_records.hi[2].year == dayjs(d.date).year()
+    ) && dayjs(d.date) < dayjs()}
         <g transform="translate({[xScale(d.date), yScale(d.TXK)]})">
             <text y="-10" class="record">R</text>
         </g>
