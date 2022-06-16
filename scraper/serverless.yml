@@ -43,7 +43,7 @@ functions:
         events:
             - schedule:
                   name: ${self:service}-${self:provider.stage}-scrapeWeather
-                  rate: cron(5 0,3,6,9,12,15,18,21 ? * * *)
+                  rate: cron(45 0,3,6,7,9,12,15,18,21 ? * * *)
                   enabled: true
 
     scrapeContext:
@@ -70,5 +70,5 @@ functions:
         events:
             - schedule:
                   name: ${self:service}-${self:provider.stage}-sendRecordsNotifications
-                  rate: cron(20 9 ? * * *)
+                  rate: cron(0 7,8 ? * * *)
                   enabled: true

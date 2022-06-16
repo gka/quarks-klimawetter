@@ -3,6 +3,8 @@ const path = require('path');
 const withSentry = require('serverless-sentry-lib');
 const { mean, sum, quantileSorted, ascending, group, extent } = require('d3-array');
 const dayjs = require('dayjs');
+const dayjs_utc = require('dayjs/plugin/utc');
+const dayjs_timezone = require('dayjs/plugin/timezone');
 const { parallelLimit } = require('async');
 
 const { loadStationData, loadStationHist } = require('./loadStationData.js');
@@ -12,6 +14,10 @@ const analyzeContext = require('./analyzeContext.js');
 const { round, quantileConfig } = require('./shared.js');
 const { saveFile, loadFile, createInvalidation } = require('./io.js');
 const { notifyRecords } = require('./recordNotifications.js');
+
+// Load dayjs plugins
+dayjs.extend(dayjs_utc);
+dayjs.extend(dayjs_timezone);
 
 const argv = yargs(process.argv.slice(2)).argv;
 
@@ -138,6 +144,23 @@ const scrapeCities = withSentry(async function (event, context) {
 });
 
 const sendRecordsNotifications = withSentry(async function (event, context) {
+    console.info('Notify about possible record temps for today');
+
+    // We have to check this for DST reasons, AWS only allows us to schedule events in UTC
+    console.info('Check if time is correct...');
+    const targetTimes = [dayjs().tz('Europe/Berlin').hour(9).minute(0).second(0).millisecond(0)];
+    const currentTime = dayjs().tz('Europe/Berlin');
+
+    // Check if any of the target times is under 5mins away from the current time,
+    // or we get the "force" flag in through the event
+    if (
+        targetTimes.every(targetTime => Math.abs(currentTime.diff(targetTime, 'minutes')) > 5) &&
+        !event.force
+    ) {
+        console.info('Time is not correct, skipping...');
+        return context.logStreamName;
+    }
+
     console.info('Loading stations...');
     const stations = await loadStations(baseMinYear);
 
