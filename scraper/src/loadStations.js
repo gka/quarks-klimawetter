@@ -20,10 +20,15 @@ module.exports = async function loadStations(baseMinYear) {
             lat: +station.lat,
             lon: +station.lon
         }))
-        .filter(station => !["Hameln", "Flensburg (Schäferhaus)", "Düsseldorf"].includes(station.name))
+        .filter(
+            station =>
+                !['Hameln', 'Flensburg (Schäferhaus)', 'Düsseldorf', 'Hornisgrinde'].includes(
+                    station.name
+                )
+        )
         .filter(d => dayjs(d.from).year() <= baseMinYear && dayjs().diff(d.to, 'day') < 5)
         .sort((a, b) => (a.slug > b.slug ? 1 : b.slug > a.slug ? -1 : 0));
-}
+};
 
 function parseFixedWidth(data, { skip = 0, widths = [], names = [], trim = true }) {
     const rows = data.split('\n').slice(skip);
