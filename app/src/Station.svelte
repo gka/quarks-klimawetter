@@ -233,7 +233,7 @@
                     dieser Monat noch nicht in den linearen Trend mit ein.{#if missingTemp && missingTemp.length}<br
                         />* Daten für {missingTemp.length === 1 ? 'das Jahr' : 'die Jahre'}
                         {missingTemp.length > 1
-                            ? `${missingTemp.slice(-1).join(', ')} und ${
+                            ? `${missingTemp.slice(0, -1).join(', ')} und ${
                                   missingTemp[missingTemp.length - 1]
                               }`
                             : missingTemp[0]} fehlen in den Wetteraufzeichnungen.{/if}
@@ -291,7 +291,7 @@
                     Monat noch nicht in den linearen Trend mit ein.{#if missingPrecip && missingPrecip.length}<br
                         />* Daten für {missingPrecip.length === 1 ? 'das Jahr' : 'die Jahre'}
                         {missingPrecip.length > 1
-                            ? `${missingPrecip.slice(-1).join(', ')} und ${
+                            ? `${missingPrecip.slice(0, -1).join(', ')} und ${
                                   missingPrecip[missingPrecip.length - 1]
                               }`
                             : missingPrecip[0]} fehlen in den Wetteraufzeichnungen.{/if}
