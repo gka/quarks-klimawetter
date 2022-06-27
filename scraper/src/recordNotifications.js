@@ -55,51 +55,64 @@ async function sendNotification(records) {
         };
     }
 
-    const containers = records.map(record => ({
-        type: 'Container',
-        items: [
-            {
-                type: 'FactSet',
-                facts: [
-                    {
-                        title: 'Wetterstation',
-                        value: record.station.name
-                    },
-                    {
-                        title: 'Typ',
-                        value: record.type == 'hi' ? 'Wärmerekord' : 'Kälterekord'
-                    },
-                    {
-                        title: 'Jahr des bisherigen Rekords',
-                        value: record.previous.year
-                    },
-                    {
-                        title: 'Bisheriger Rekord',
-                        value: formatTemperature(record.previous.TXK)
-                    },
-                    {
-                        title: 'Neuer Rekord',
-                        value: formatTemperature(record.TXK)
-                    }
-                ]
-            },
-            {
-                type: 'ActionSet',
-                actions: [
-                    {
-                        type: 'Action.OpenUrl',
-                        title: 'Ansehen',
-                        url: `https://www.quarks.de/umwelt/klimawandel/wetter-oder-klimawandel-2/#/${record.station.slug}`
-                    }
-                ]
-            }
-        ],
-        spacing: 'Large',
-        separator: true
-    }));
+    let containers;
 
-    if (containers.length > 0) {
-        containers[0].separator = false;
+    if (records.length < 10) {
+        containers = records.map(record => ({
+            type: 'Container',
+            items: [
+                {
+                    type: 'FactSet',
+                    facts: [
+                        {
+                            title: 'Wetterstation',
+                            value: record.station.name
+                        },
+                        {
+                            title: 'Typ',
+                            value: record.type == 'hi' ? 'Wärmerekord' : 'Kälterekord'
+                        },
+                        {
+                            title: 'Jahr des bisherigen Rekords',
+                            value: record.previous.year
+                        },
+                        {
+                            title: 'Bisheriger Rekord',
+                            value: formatTemperature(record.previous.TXK)
+                        },
+                        {
+                            title: 'Neuer Rekord',
+                            value: formatTemperature(record.TXK)
+                        }
+                    ]
+                },
+                {
+                    type: 'ActionSet',
+                    actions: [
+                        {
+                            type: 'Action.OpenUrl',
+                            title: 'Ansehen',
+                            url: `https://www.quarks.de/umwelt/klimawandel/wetter-oder-klimawandel-2/#/${record.station.slug}`
+                        }
+                    ]
+                }
+            ],
+            spacing: 'Large',
+            separator: true
+        }));
+        if (containers.length > 0) {
+            containers[0].separator = false;
+        }
+    } else {
+        containers = records.map(record => ({
+            type: 'TextBlock',
+            text: `${record.type == 'hi' ? '🔥' : '🧊'} [${
+                record.station.name
+            }](https://www.quarks.de/umwelt/klimawandel/wetter-oder-klimawandel-2/#/${
+                record.station.slug
+            })`,
+            wrap: true
+        }));
     }
 
     const card = makeCard([header, subtitle, ...containers]);
