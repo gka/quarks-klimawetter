@@ -118,7 +118,9 @@ async function sendNotification(records) {
     }
 }
 
-async function notifyRecords(stations) {
+async function notifyRecords() {
+    const stations = JSON.parse(await loadFile('stations.json'));
+
     const promises = stations.map(station => async () => {
         const ctx = JSON.parse(
             await loadFile(path.join('stations', 'context', `${station.id}.json`))

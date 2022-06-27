@@ -183,8 +183,7 @@ const sendRecordsNotifications = withSentry(async function (event, context) {
     } else if (!!argv.cities) {
         await loadCities();
     } else if (!!argv.notifyRecords) {
-        const stations = await loadStations(baseMinYear);
-        await notifyRecords(stations);
+        await notifyRecords();
     }
 })();
 
