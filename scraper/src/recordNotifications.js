@@ -135,12 +135,18 @@ async function notifyRecords() {
     const stations = JSON.parse(await loadFile('stations.json'));
 
     const promises = stations.map(station => async () => {
-        const ctx = JSON.parse(
-            await loadFile(path.join('stations', 'context', `${station.id}.json`))
-        );
-        const weather = JSON.parse(
-            await loadFile(path.join('stations', 'weather', `${station.id}.json`))
-        );
+        let ctx, weather;
+        try {
+            ctx = JSON.parse(
+                await loadFile(path.join('stations', 'context', `${station.id}.json`))
+            );
+            weather = JSON.parse(
+                await loadFile(path.join('stations', 'weather', `${station.id}.json`))
+            );
+        } catch {
+            console.log(`Failed to load data for station ${JSON.stringify(station, null, 2)}`);
+            return;
+        }
 
         const today = dayjs().startOf('day');
         const todayFmtFull = today.format('YYYY-MM-DD');
