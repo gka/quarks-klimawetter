@@ -45,7 +45,7 @@ async function loadStationHist(stationId) {
 
 module.exports = {
     loadStationData,
-    loadStationHist,
+    loadStationHist
 };
 
 async function downloadDwdData(stationId, historical = false) {
@@ -76,7 +76,8 @@ async function downloadDwdData(stationId, historical = false) {
                             diff: today.diff(row.MESS_DATUM.trim(), 'day'),
                             RSK: +row[' RSK'] !== -999 ? +row[' RSK'] : undefined,
                             TXK: +row[' TXK'] !== -999 ? +row[' TXK'] : undefined,
-                            has_snow: +row['RSKF'] !== -999 ? [7, 8].includes(+row['RSKF']) : undefined,
+                            has_snow:
+                                +row['RSKF'] !== -999 ? [7, 8].includes(+row['RSKF']) : undefined,
                             //has_rain: +row['RSKF'] !== -999 ? [1, 6, 8].includes(+row['RSKF']) : undefined,
                             source: 'dwd/recent'
                         }));
@@ -98,8 +99,9 @@ async function downloadDwdData(stationId, historical = false) {
 }
 
 async function getDwdDataUrl(stationId, historical = false) {
-    const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${historical ? 'historical' : 'recent'
-        }/`;
+    const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${
+        historical ? 'historical' : 'recent'
+    }/`;
     if (historical && !histStationIndex) {
         // we need to load html index to figure out ZIP filename
         const { body } = await got(baseUrl);
@@ -113,8 +115,9 @@ async function getDwdDataUrl(stationId, historical = false) {
                 histStationIndex.set(id, `${from}_${to}`);
             });
     }
-    return `${baseUrl}tageswerte_KL_${stationId}_${historical ? `${histStationIndex.get(stationId)}_hist` : 'akt'
-        }.zip`;
+    return `${baseUrl}tageswerte_KL_${stationId}_${
+        historical ? `${histStationIndex.get(stationId)}_hist` : 'akt'
+    }.zip`;
 }
 
 function downloadBrightskyData(stationId, minDate) {
@@ -133,9 +136,11 @@ function downloadBrightskyData(stationId, minDate) {
                     return {
                         date: dateFmt,
                         diff: today.diff(dateFmt, 'day'),
-                        TXK: (TXK !== -999 ? TXK : undefined),
-                        RSK: (RSK !== -999 ? RSK : undefined),
-                        has_snow: res.weather.some(d => ['snow', 'sleet', 'hail'].includes(d.condition)),
+                        TXK: TXK !== -999 ? TXK : undefined,
+                        RSK: RSK !== -999 ? RSK : undefined,
+                        has_snow: res.weather.some(d =>
+                            ['snow', 'sleet', 'hail'].includes(d.condition)
+                        ),
                         //has_rain: res.weather.some(d => ['rain', 'sleet', 'thunderstorm'].includes(d.condition)),
                         source: `dwd/${res.sources[0].observation_type}`
                     };
