@@ -149,13 +149,13 @@ async function notifyRecords() {
         const weatherToday = weather.data.filter(d => d.date === todayFmtFull)[0];
         const ctxToday = ctx.daily[todayFmtDay];
 
+        if ([weatherToday, ctxToday].includes(undefined)) {
+            console.log(`No data today for station ${JSON.stringify(station, null, 2)}`);
+            return;
+        }
+
         const TXK_hi = ctxToday.TXK_records.hi[2];
         const TXK_lo = ctxToday.TXK_records.lo[0];
-
-        if (station.name == 'Bremen') {
-            console.log(weatherToday);
-            console.log(TXK_hi);
-        }
 
         if (weatherToday.TXK >= TXK_hi.TXK) {
             return {
