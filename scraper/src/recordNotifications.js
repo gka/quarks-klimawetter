@@ -160,6 +160,11 @@ async function notifyRecords() {
             return;
         }
 
+        if (!weather.sources.includes('dwd/forecast')) {
+            console.log(`No forecast data today for station ${JSON.stringify(station, null, 2)}`);
+            return;
+        }
+
         const TXK_hi = ctxToday.TXK_records.hi[2];
         const TXK_lo = ctxToday.TXK_records.lo[0];
 
