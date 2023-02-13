@@ -23,7 +23,7 @@ const argv = yargs(process.argv.slice(2)).argv;
 
 const baseMinYear = 1961;
 
-async function loadContext(stations) {
+async function loadContext (stations) {
     const promises = stations.map(station => async () => {
         console.log(station.id, station.slug);
         const hist = await loadStationHist(station.id);
@@ -35,14 +35,14 @@ async function loadContext(stations) {
     await parallelLimit(promises, 4);
 }
 
-async function loadWeather(stations) {
+async function loadWeather (stations) {
     for (const station of stations) {
         console.log(station.id, station.slug);
         const stationData = {
             station,
             last_update: new Date(),
             data: await loadStationData(station.id),
-            sources: []
+            sources: [],
         };
         if (stationData.data) {
             station.last_date = stationData.data.slice(-1)[0].date;
@@ -61,7 +61,7 @@ async function loadWeather(stations) {
             await saveFile(
                 path.join('stations', 'weather', `${station.id}.json`),
                 JSON.stringify(stationData),
-                { maxAge: 60 }
+                { maxAge: 60 },
             );
         } else {
             station.ignore = true;
@@ -69,7 +69,7 @@ async function loadWeather(stations) {
     }
 }
 
-function aggregateMonthly(data) {
+function aggregateMonthly (data) {
     const out = [];
     group(data, d => dayjs(d.date).format('YYYY-MM')).forEach((value, key) => {
         const avgMaxTemp = round(mean(value, d => d.TXK));
@@ -87,7 +87,7 @@ function aggregateMonthly(data) {
             temp_lo: round(quantileSorted(tempValues, quantileConfig.low)),
             temp_hi: round(quantileSorted(tempValues, quantileConfig.high)),
             precip: round(sumPrecip, 1),
-            has_snow: value.some(d => d.has_snow)
+            has_snow: value.some(d => d.has_snow),
         });
     });
     return out;
@@ -148,7 +148,10 @@ const sendRecordsNotifications = withSentry(async function (event, context) {
 
     // We have to check this for DST reasons, AWS only allows us to schedule events in UTC
     console.info('Check if time is correct...');
-    const targetTimes = [dayjs().tz('Europe/Berlin').hour(9).minute(0).second(0).millisecond(0)];
+    const targetTimes = [
+        dayjs().tz('Europe/Berlin').hour(9).minute(0).second(0).millisecond(0),
+        //dayjs().tz('Europe/Berlin').hour(18).minute(0).second(0).millisecond(0)
+    ];
     const currentTime = dayjs().tz('Europe/Berlin');
 
     // Check if any of the target times is under 5mins away from the current time,
@@ -191,5 +194,5 @@ module.exports = {
     scrapeContext,
     scrapeWeather,
     scrapeCities,
-    sendRecordsNotifications
+    sendRecordsNotifications,
 };

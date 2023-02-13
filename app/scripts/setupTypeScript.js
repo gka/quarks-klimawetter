@@ -5,7 +5,7 @@
   <script lang="ts">
   	export let name: string;
   </script>
- 
+
   As well as validating the code for CI.
   */
 
@@ -27,12 +27,12 @@ packageJSON.devDependencies = Object.assign(packageJSON.devDependencies, {
     '@rollup/plugin-typescript': '^8.0.0',
     typescript: '^4.0.0',
     tslib: '^2.0.0',
-    '@tsconfig/svelte': '^2.0.0'
+    '@tsconfig/svelte': '^2.0.0',
 });
 
 // Add script for checking
 packageJSON.scripts = Object.assign(packageJSON.scripts, {
-    check: 'svelte-check --tsconfig ./tsconfig.json'
+    check: 'svelte-check --tsconfig ./tsconfig.json',
 });
 
 // Write the package JSON
@@ -59,7 +59,7 @@ rollupConfig = rollupConfig.replace(
     `'rollup-plugin-terser';`,
     `'rollup-plugin-terser';
 import sveltePreprocess from 'svelte-preprocess';
-import typescript from '@rollup/plugin-typescript';`
+import typescript from '@rollup/plugin-typescript';`,
 );
 
 // Replace name of entry point
@@ -68,13 +68,13 @@ rollupConfig = rollupConfig.replace(`'src/main.js'`, `'src/main.ts'`);
 // Add preprocessor
 rollupConfig = rollupConfig.replace(
     'compilerOptions:',
-    'preprocess: sveltePreprocess({ sourceMap: !production }),\n\t\t\tcompilerOptions:'
+    'preprocess: sveltePreprocess({ sourceMap: !production }),\n\t\t\tcompilerOptions:',
 );
 
 // Add TypeScript
 rollupConfig = rollupConfig.replace(
     'commonjs(),',
-    'commonjs(),\n\t\ttypescript({\n\t\t\tsourceMap: !production,\n\t\t\tinlineSources: !production\n\t\t}),'
+    'commonjs(),\n\t\ttypescript({\n\t\t\tsourceMap: !production,\n\t\t\tinlineSources: !production\n\t\t}),',
 );
 fs.writeFileSync(rollupConfigPath, rollupConfig);
 
@@ -117,7 +117,7 @@ fs.writeFileSync(
     `{
   "recommendations": ["svelte.svelte-vscode"]
 }
-`
+`,
 );
 
 console.log('Converted to TypeScript.');

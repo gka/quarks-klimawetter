@@ -56,7 +56,7 @@
         { id: '02968', lbl: 'Köln-Stammheim' },
         { id: '01420', lbl: 'Frankfurt' },
         { id: '03379', lbl: 'München' },
-        { id: '05792', lbl: 'Zugspitze' }
+        { id: '05792', lbl: 'Zugspitze' },
     ].map(d => ({ ...d, ...stations.find(e => e.id === d.id) }));
 </script>
 
@@ -88,8 +88,8 @@
                 userSelectedCity.lat,
                 userSelectedCity.lon,
                 nearestStation.lat,
-                nearestStation.lon
-            )
+                nearestStation.lon,
+            ),
         )} km Luftlinie).
     </p>
 {/if}

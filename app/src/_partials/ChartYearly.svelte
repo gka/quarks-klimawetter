@@ -43,7 +43,7 @@
 
     $: contextShow = {
         lo: context[show + '_lo'],
-        hi: context[show + '_hi']
+        hi: context[show + '_hi'],
     };
 
     $: yValues = [
@@ -52,7 +52,7 @@
             : dataFiltered.map(d => d[show])),
         contextShow.lo,
         contextShow.hi,
-        ...(includeZero ? [0] : [])
+        ...(includeZero ? [0] : []),
     ].filter(d => d !== undefined);
 
     const minTempRange = 28;
@@ -76,7 +76,7 @@
     export let missingData;
 
     $: missingData = d3range(minYear, maxYear + 1).filter(
-        yr => !dataFiltered.find(d => d.year === yr)
+        yr => !dataFiltered.find(d => d.year === yr),
     );
 
     $: dataFiltered = data.filter((d, i) => {
@@ -113,12 +113,12 @@
         ? [
               [0, 0],
               [0, 20],
-              [0, 40]
+              [0, 40],
           ]
         : [
               [show === 'temp' ? 0 : 5, 0],
               [140, 0],
-              [214, 0]
+              [214, 0],
           ];
 
     $: legendBg = $isMobile
@@ -258,7 +258,7 @@
                     class="trend"
                     d="M{[xScale(regLin[0][0]), yScale(regLin[0][1])]} L{[
                         xScale(regLin[1][0]),
-                        yScale(regLin[1][1])
+                        yScale(regLin[1][1]),
                     ]}"
                 />
                 <text

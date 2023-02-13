@@ -7,7 +7,7 @@ const STATION_BLACKLIST = [
     'Flensburg (Schäferhaus)',
     'Düsseldorf',
     'Hornisgrinde',
-    'Bochum'
+    'Bochum',
 ];
 
 module.exports = async function loadStations (baseMinYear) {
@@ -17,7 +17,7 @@ module.exports = async function loadStations (baseMinYear) {
     return parseFixedWidth(raw, {
         skip: 3,
         widths: [5, 9, 9, 15, 12, 10, 42, 22],
-        names: ['id', 'from', 'to', 'altitude', 'lat', 'lon', 'name', 'state']
+        names: ['id', 'from', 'to', 'altitude', 'lat', 'lon', 'name', 'state'],
     })
         .map(station => ({
             ...station,
@@ -26,14 +26,14 @@ module.exports = async function loadStations (baseMinYear) {
             slug: slugify(station.name, { lower: true, locale: 'de', remove: /[()\/]/ }),
             altitude: +station.altitude,
             lat: +station.lat,
-            lon: +station.lon
+            lon: +station.lon,
         }))
         .filter(station => !STATION_BLACKLIST.includes(station.name))
         .filter(d => dayjs(d.from).year() <= baseMinYear && dayjs().diff(d.to, 'day') < 5)
         .sort((a, b) => (a.slug > b.slug ? 1 : b.slug > a.slug ? -1 : 0));
 };
 
-function parseFixedWidth(data, { skip = 0, widths = [], names = [], trim = true }) {
+function parseFixedWidth (data, { skip = 0, widths = [], names = [], trim = true }) {
     const rows = data.split('\n').slice(skip);
     return rows.map(row => {
         const d = {};

@@ -17,18 +17,20 @@ if (!USE_BUCKET) {
     mkdirp.sync(path.join(outDirLocal, 'stations', 'context'));
 }
 
-const s3 = USE_BUCKET ? new AWS.S3({
-    region: 'eu-central-1',
-}) : null;
+const s3 = USE_BUCKET
+    ? new AWS.S3({
+          region: 'eu-central-1',
+      })
+    : null;
 
-const cloudfront = USE_BUCKET ? new AWS.CloudFront({
-    region: 'eu-central-1',
-}) : null;
+const cloudfront = USE_BUCKET
+    ? new AWS.CloudFront({
+          region: 'eu-central-1',
+      })
+    : null;
 
-async function saveFile(filepath, content, options) {
-    const {
-        maxAge,
-    } = (options || {});
+async function saveFile (filepath, content, options) {
+    const { maxAge } = options || {};
 
     if (USE_BUCKET) {
         const params = {
@@ -43,7 +45,7 @@ async function saveFile(filepath, content, options) {
     }
 }
 
-async function loadFile(filepath) {
+async function loadFile (filepath) {
     if (USE_BUCKET) {
         const params = {
             Bucket: process.env.BUCKET_DATA_NAME,
@@ -57,7 +59,7 @@ async function loadFile(filepath) {
     }
 }
 
-async function createInvalidation(path) {
+async function createInvalidation (path) {
     if (USE_BUCKET) {
         const params = {
             DistributionId: process.env.CLOUDFRONT_ID,

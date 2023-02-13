@@ -32,23 +32,23 @@ const today = dayjs().startOf('day');
 
 let histStationIndex;
 
-async function loadStationData(stationId) {
+async function loadStationData (stationId) {
     const dwdData = await downloadDwdData(stationId, false);
     const brightskyData = await downloadBrightskyData(stationId, dwdData.slice(-1)[0].date);
     return sumRain([...dwdData, ...brightskyData]).filter(d => d.TXK !== undefined);
 }
 
-async function loadStationHist(stationId) {
+async function loadStationHist (stationId) {
     const dwdData = await downloadDwdData(stationId, true);
     return sumRain(dwdData);
 }
 
 module.exports = {
     loadStationData,
-    loadStationHist
+    loadStationHist,
 };
 
-async function downloadDwdData(stationId, historical = false) {
+async function downloadDwdData (stationId, historical = false) {
     if (USE_CACHE && historical) {
         // try loading data from cache
         try {
@@ -79,13 +79,13 @@ async function downloadDwdData(stationId, historical = false) {
                             has_snow:
                                 +row['RSKF'] !== -999 ? [7, 8].includes(+row['RSKF']) : undefined,
                             //has_rain: +row['RSKF'] !== -999 ? [1, 6, 8].includes(+row['RSKF']) : undefined,
-                            source: 'dwd/recent'
+                            source: 'dwd/recent',
                         }));
                     if (USE_CACHE && historical) {
                         // write cache
                         await writeFile(
                             path.join(cacheDir, `${stationId}-hist.json`),
-                            JSON.stringify(data)
+                            JSON.stringify(data),
                         );
                     }
                     resolve(data);
@@ -98,7 +98,7 @@ async function downloadDwdData(stationId, historical = false) {
     });
 }
 
-async function getDwdDataUrl(stationId, historical = false) {
+async function getDwdDataUrl (stationId, historical = false) {
     const baseUrl = `https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/${
         historical ? 'historical' : 'recent'
     }/`;
@@ -120,7 +120,7 @@ async function getDwdDataUrl(stationId, historical = false) {
     }.zip`;
 }
 
-function downloadBrightskyData(stationId, minDate) {
+function downloadBrightskyData (stationId, minDate) {
     let date = dayjs(minDate);
     const tasks = [];
     for (let i = DAYS_FUTURE; i > 0; i--) {
@@ -139,10 +139,10 @@ function downloadBrightskyData(stationId, minDate) {
                         TXK: TXK !== -999 ? TXK : undefined,
                         RSK: RSK !== -999 ? RSK : undefined,
                         has_snow: res.weather.some(d =>
-                            ['snow', 'sleet', 'hail'].includes(d.condition)
+                            ['snow', 'sleet', 'hail'].includes(d.condition),
                         ),
                         //has_rain: res.weather.some(d => ['rain', 'sleet', 'thunderstorm'].includes(d.condition)),
-                        source: `dwd/${res.sources[0].observation_type}`
+                        source: `dwd/${res.sources[0].observation_type}`,
                     };
                 }
             } catch (err) {
@@ -150,7 +150,7 @@ function downloadBrightskyData(stationId, minDate) {
                 return {
                     date: dateFmt,
                     TXK: undefined,
-                    RSK: undefined
+                    RSK: undefined,
                 };
             }
         });
@@ -158,7 +158,7 @@ function downloadBrightskyData(stationId, minDate) {
     return parallelLimit(tasks, 5);
 }
 
-function sumRain(data) {
+function sumRain (data) {
     let cleanDataSince = 0;
     let snowDays = [];
     let rainAmounts = [];
@@ -204,6 +204,6 @@ function sumRain(data) {
         });
 }
 
-function parse(val) {
+function parse (val) {
     return val < -900 ? 0 : val || 0;
 }

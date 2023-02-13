@@ -5,5 +5,5 @@ const USE_BUCKET = parseBool('USE_BUCKET');
 
 module.exports = {
     USE_CACHE,
-    USE_BUCKET
+    USE_BUCKET,
 };

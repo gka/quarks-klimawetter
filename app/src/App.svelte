@@ -46,7 +46,7 @@
                     loadStation({ slug: location.hash.substr(2) });
                 }
             },
-            false
+            false,
         );
         return stations;
     }
@@ -66,7 +66,7 @@
         }
         const [{ data, monthly }, { monthly: monthlyHist, daily }, fc] = await Promise.all([
             fetchJSON(`${dataUrl}/stations/weather/${s.id}.json`),
-            fetchJSON(`${dataUrl}/stations/context/${s.id}.json`)
+            fetchJSON(`${dataUrl}/stations/context/${s.id}.json`),
         ]);
         const lastDate = data[data.length - 1].date;
         s.data = data
@@ -83,7 +83,7 @@
                     ...d,
                     day,
                     date: new Date(d.date),
-                    context: daily[day]
+                    context: daily[day],
                 };
             })
             .sort((a, b) => a.date - b.date);

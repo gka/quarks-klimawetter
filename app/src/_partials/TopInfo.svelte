@@ -17,9 +17,9 @@
     $: tempRecord =
         curDay.TXK > curDay.context.TXK_records.hi[2].TXK
             ? `Das ist ${fmtTemp(
-                  curDay.TXK - curDay.context.TXK_records.hi[2].TXK
+                  curDay.TXK - curDay.context.TXK_records.hi[2].TXK,
               )} <b>heißer als der bisherige Hitzerekord</b> von ${fmtTemp(
-                  curDay.context.TXK_records.hi[2].TXK
+                  curDay.context.TXK_records.hi[2].TXK,
               )} im Jahr ${curDay.context.TXK_records.hi[2].year}.`
             : curDay.TXK === curDay.context.TXK_records.hi[2].TXK
             ? `Das ist <b>genauso heiß wie der bisherige Hitzerekord</b> von ${curDay.context.TXK_records.hi[2].year}.`
@@ -29,15 +29,15 @@
               } liegt bei ${fmtTemp(curDay.context.TXK_records.hi[2].TXK)}).`
             : curDay.TXK > curDay.context.TXK_records.hi[0].TXK
             ? `Das ist <b>die dritthöchste Temperatur</b>, die hier je gemessen wurde (nach ${fmtTemp(
-                  curDay.context.TXK_records.hi[2].TXK
+                  curDay.context.TXK_records.hi[2].TXK,
               )} im Jahr ${curDay.context.TXK_records.hi[2].year} und ${fmtTemp(
-                  curDay.context.TXK_records.hi[1].TXK
+                  curDay.context.TXK_records.hi[1].TXK,
               )} im Jahr ${curDay.context.TXK_records.hi[1].year}).`
             : curDay.TXK < curDay.context.TXK_records.lo[0].TXK
             ? `Das ist ${fmtTemp(
-                  curDay.context.TXK_records.lo[0].TXK - curDay.TXK
+                  curDay.context.TXK_records.lo[0].TXK - curDay.TXK,
               )} <b>kälter als der bisherige Kälterekord</b> von ${fmtTemp(
-                  curDay.context.TXK_records.lo[0].TXK
+                  curDay.context.TXK_records.lo[0].TXK,
               )} im Jahr ${curDay.context.TXK_records.lo[0].year}.`
             : false;
 
@@ -75,8 +75,10 @@
                   } ${tempSentence}. Im Vergleich zum Referenzzeitraum ist es heute also ${`etwa ${fmtTemp(
                       Math.round(
                           curDay.TXK -
-                              (tempClass === 'high' ? curDay.context.TXK_hi : curDay.context.TXK_lo)
-                      )
+                              (tempClass === 'high'
+                                  ? curDay.context.TXK_hi
+                                  : curDay.context.TXK_lo),
+                      ),
                   )} ${curDay.TXK > curDay.context.TXK ? 'wärmer' : 'kälter'}`}.`;
     }
 </script>

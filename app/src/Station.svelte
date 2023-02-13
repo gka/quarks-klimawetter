@@ -19,7 +19,7 @@
     }
 
     $: curDay = data.find(
-        d => dayjs($maxDate).format('YYYY-MM-DD') === dayjs(d.date).format('YYYY-MM-DD')
+        d => dayjs($maxDate).format('YYYY-MM-DD') === dayjs(d.date).format('YYYY-MM-DD'),
     );
 
     $: curMonth = curDay.date.getMonth();
@@ -40,7 +40,9 @@
 
     $: precipLabelPast = curDay.snow30days ? 'geregnet oder geschneit' : 'geregnet';
     $: precipLabel = curDay.snow30days ? 'regnet oder schneit' : 'regnet';
-    $: precipLabelMonth = monthlyData.some(data => data.has_snow) ? 'geregnet oder geschneit' : 'geregnet';
+    $: precipLabelMonth = monthlyData.some(data => data.has_snow)
+        ? 'geregnet oder geschneit'
+        : 'geregnet';
 
     onMount(async () => {
         // force re-rendering on mount
@@ -117,8 +119,8 @@
 
         <div class="paragraph_headline" style="margin-top: 70px;">
             <h3>
-                🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'} {precipLabel} es
-                momentan
+                🌧️ So {curDay.rain30days < curDay.context.rain30days_lo ? 'wenig' : 'viel'}
+                {precipLabel} es momentan
                 {station.prep} <u>{station.name}</u> im Vergleich zu einer Zeit, die noch wenig vom Klimawandel
                 betroffen war
             </h3>
@@ -149,10 +151,10 @@
                                 curDay.rain30days -
                                     (curDay.rain30days < curDay.context.rain30days_lo
                                         ? curDay.context.rain30days_lo
-                                        : curDay.context.rain30days_hi)
-                            )
+                                        : curDay.context.rain30days_hi),
+                            ),
                         ),
-                        true
+                        true,
                     )}/qm {curDay.rain30days < curDay.context.rain30days_lo ? 'weniger' : 'mehr'} als
                     im Referenzzeitraum.{:else}.{/if}
             </p>
@@ -165,14 +167,13 @@
                 Ein Punkt auf der Niederschlagslinie steht nicht für die Niederschlagsmenge an
                 diesem Tag, sondern für den gesammelten Niederschlag der letzten 30 Tage. Gab es in
                 dieser Zeit mindestens einmal Schnee oder Schneeregen, kennzeichnen wir das durch
-                den Zusatz "oder geschneit".
-
-                Dass wir den Niederschlag über 30 Tage betrachten, hat einen guten Grund: Einzelne
-                Regentage unterliegen sehr starken Schwankungen. Das betrifft sowohl die Regenmenge
-                pro Regentag als auch die Häufigkeit der Regentage in einem Monat oder sogar in
-                einem Jahr. Wir stellen deshalb in unserem Diagramm dar, wie viel Niederschlag
-                kumuliert (das heißt: gehäuft) über die vergangenen 30 Tage gefallen ist. Den
-                kumulierten Niederschlags-Wert vergleichen wir mit dem Referenzzeitraum 1961-1990.
+                den Zusatz "oder geschneit". Dass wir den Niederschlag über 30 Tage betrachten, hat
+                einen guten Grund: Einzelne Regentage unterliegen sehr starken Schwankungen. Das
+                betrifft sowohl die Regenmenge pro Regentag als auch die Häufigkeit der Regentage in
+                einem Monat oder sogar in einem Jahr. Wir stellen deshalb in unserem Diagramm dar,
+                wie viel Niederschlag kumuliert (das heißt: gehäuft) über die vergangenen 30 Tage
+                gefallen ist. Den kumulierten Niederschlags-Wert vergleichen wir mit dem
+                Referenzzeitraum 1961-1990.
             </p>
         </div>
 
@@ -227,7 +228,7 @@
                     Der hellgraue Bereich zeigt die normalen Tageshöchsttemperaturen (1961-1991) im {curMonthName}
                     ({fmtTemp(monthlyStats[curMonth].base.temp_lo, true)}-{fmtTemp(
                         monthlyStats[curMonth].base.temp_hi,
-                        true
+                        true,
                     )}). Hinweis: Der letzte Balken für den {curMonthName}
                     {curYear} bildet nur Tage ab, an denen bisher Werte gemessen wurden. Deshalb fließt
                     dieser Monat noch nicht in den linearen Trend mit ein.{#if missingTemp && missingTemp.length}<br
@@ -248,7 +249,7 @@
                     ist die <strong>Trendlinie</strong>, die hier das lokale Ausmaß der Erwärmung
                     anzeigt. Für den Monat {curMonthName}
                     in {station.name} liegt der lineare Trend gerade bei {fmtTemp(
-                        +trendTemp.toFixed(1)
+                        +trendTemp.toFixed(1),
                     )} Erwärmung (seit 1961).
                 </p>
                 <p>
@@ -284,7 +285,7 @@
                 <figcaption>
                     Der hellgraue Bereich zeigt die normalen Monatsniederschläge im {curMonthName} ({fmtRain(
                         monthlyStats[curMonth].base.precip_lo,
-                        true
+                        true,
                     )}-{fmtRain(monthlyStats[curMonth].base.precip_hi, true)}). Hinweis: Im letzten
                     Balken für den {curMonthName}
                     {curYear} sind nur Daten bis zum heutigen Tag eingeschlossen. Deshalb fließt dieser

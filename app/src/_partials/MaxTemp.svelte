@@ -49,7 +49,7 @@
     $: aboveContextPath = area().x(contextPath.x()).y0(contextPath.y1()).y1(0).curve(curveBasis);
 
     $: inRange = data.filter(
-        d => !isNaN(d.TXK) !== null && d.date >= $minDate && d.date <= $maxDate
+        d => !isNaN(d.TXK) !== null && d.date >= $minDate && d.date <= $maxDate,
     );
 
     let selected;
@@ -123,10 +123,7 @@
 
 <!-- <path class="line contextAvgMax" d="{contextMaxTempPath(data)}" /> -->
 {#each data as d}
-    {#if (
-        d.TXK > d.context.TXK_records.hi[2].TXK ||
-        d.context.TXK_records.hi[2].year == dayjs(d.date).year()
-    ) && dayjs(d.date) < dayjs()}
+    {#if (d.TXK > d.context.TXK_records.hi[2].TXK || d.context.TXK_records.hi[2].year == dayjs(d.date).year()) && dayjs(d.date) < dayjs()}
         <g transform="translate({[xScale(d.date), yScale(d.TXK)]})">
             <text y="-10" class="record">R</text>
         </g>
@@ -169,7 +166,7 @@
                 <tspan x="0">Normal am {dayjs(selected.date).format('D. MMM')}:</tspan>
                 <tspan class="is-bold"
                     >{fmtTemp(selected.context.TXK_lo, true)}-{fmtTemp(
-                        selected.context.TXK_hi
+                        selected.context.TXK_hi,
                     )}</tspan
                 >
             </text>
@@ -184,7 +181,7 @@
             xScale(lastDay.date),
             lastDay.TXK > (lastDay.context.TXK_hi + lastDay.context.TXK_lo) * 0.5
                 ? yScale(Math.max(lastDay.TXK, lastDay.context.TXK_hi)) - 28
-                : yScale(Math.min(lastDay.TXK, lastDay.context.TXK_lo)) + 28
+                : yScale(Math.min(lastDay.TXK, lastDay.context.TXK_lo)) + 28,
         ]})"
     >
         {#each [0, 1] as i}

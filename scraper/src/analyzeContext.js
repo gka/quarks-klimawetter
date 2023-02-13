@@ -7,12 +7,11 @@ const {
     ascending,
     group,
     range,
-    extent
+    extent,
 } = require('d3-array');
 const { ascendingKey } = require('d3-jetpack');
 
 const { round, quantileConfig } = require('./shared.js');
-
 
 const DAYS = [];
 let day = dayjs('2021-01-01');
@@ -21,7 +20,7 @@ while (day.year() === 2021) {
     day = day.add(1, 'day');
 }
 
-module.exports = function analyzeContext(data, baseMinYear) {
+module.exports = function analyzeContext (data, baseMinYear) {
     // add some useful date keys
     data.forEach(row => {
         const date = dayjs(row.date);
@@ -39,9 +38,9 @@ module.exports = function analyzeContext(data, baseMinYear) {
         monthly[month] = getMonthlyContext(data, month, baseMinYear);
     });
     return { daily, monthly };
-}
+};
 
-function getDailyContext(data, day, baseMinYear) {
+function getDailyContext (data, day, baseMinYear) {
     const datesTemp = data.filter(
         d =>
             d.year >= baseMinYear &&
@@ -49,7 +48,7 @@ function getDailyContext(data, day, baseMinYear) {
             d.day === day &&
             d.TXK !== null &&
             !isNaN(d.TXK) &&
-            d.TXK !== -999
+            d.TXK !== -999,
     );
     const datesRain = data.filter(
         d =>
@@ -57,7 +56,7 @@ function getDailyContext(data, day, baseMinYear) {
             d.year < baseMinYear + 30 &&
             d.day === day &&
             d.rain30days !== null &&
-            !isNaN(d.rain30days)
+            !isNaN(d.rain30days),
     );
     let tempValues = datesTemp.map(d => d.TXK).sort(ascending);
     let rainValues = datesRain.map(d => d.rain30days).sort(ascending);
@@ -67,14 +66,16 @@ function getDailyContext(data, day, baseMinYear) {
         .sort(ascendingKey('TXK'))
         .map(d => ({ year: d.year, TXK: d.TXK }));
 
-    const snow30days = data.filter(
-        d =>
-            d.year >= baseMinYear &&
-            d.year < baseMinYear + 30 &&
-            d.day === day &&
-            d.rain30days !== null &&
-            !isNaN(d.rain30days)
-    ).some(d => d.snow30days);
+    const snow30days = data
+        .filter(
+            d =>
+                d.year >= baseMinYear &&
+                d.year < baseMinYear + 30 &&
+                d.day === day &&
+                d.rain30days !== null &&
+                !isNaN(d.rain30days),
+        )
+        .some(d => d.snow30days);
 
     const res = {
         day,
@@ -85,7 +86,7 @@ function getDailyContext(data, day, baseMinYear) {
         TXK_90: round(quantileSorted(tempValues, 0.9)),
         TXK_records: {
             lo: records.slice(0, 3),
-            hi: records.slice(-3)
+            hi: records.slice(-3),
         },
         rain30days: round(mean(rainValues)),
         rain30days_lo: round(quantileSorted(rainValues, quantileConfig.low)),
@@ -101,11 +102,11 @@ function getDailyContext(data, day, baseMinYear) {
  * @param {number} baseMinYear begin of 30-year context period
  * @returns {object}
  */
-function getMonthlyContext(data, month, baseMinYear) {
+function getMonthlyContext (data, month, baseMinYear) {
     const stats = [];
     group(
         data.filter(d => d.month === month),
-        d => d.year
+        d => d.year,
     ).forEach((value, key) => {
         const tempNoNA = value.filter(d => d.TXK !== null && !isNaN(d.TXK) && d.TXK > -999);
         if (tempNoNA.length == 0) {
@@ -113,9 +114,7 @@ function getMonthlyContext(data, month, baseMinYear) {
         }
         const avgMaxTemp = round(mean(tempNoNA, d => d.TXK));
         const tempRange = extent(tempNoNA, d => d.TXK).map(round);
-        const tempValues = tempNoNA
-            .map(d => d.TXK)
-            .sort(ascending);
+        const tempValues = tempNoNA.map(d => d.TXK).sort(ascending);
         const sumPrecip = sum(value, d => (d.RSK !== -999 ? d.RSK : 0));
         stats.push({
             year: key,
@@ -137,6 +136,6 @@ function getMonthlyContext(data, month, baseMinYear) {
     };
     return {
         stats,
-        base: monthlyBase
+        base: monthlyBase,
     };
 }
