@@ -2,7 +2,15 @@ const got = require('got');
 const slugify = require('slugify');
 const dayjs = require('dayjs');
 
-module.exports = async function loadStations(baseMinYear) {
+const STATION_BLACKLIST = [
+    'Hameln',
+    'Flensburg (Schäferhaus)',
+    'Düsseldorf',
+    'Hornisgrinde',
+    'Bochum'
+];
+
+module.exports = async function loadStations (baseMinYear) {
     const url =
         'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt';
     const raw = (await got(url, { encoding: 'latin1' })).body;
@@ -20,12 +28,7 @@ module.exports = async function loadStations(baseMinYear) {
             lat: +station.lat,
             lon: +station.lon
         }))
-        .filter(
-            station =>
-                !['Hameln', 'Flensburg (Schäferhaus)', 'Düsseldorf', 'Hornisgrinde'].includes(
-                    station.name
-                )
-        )
+        .filter(station => !STATION_BLACKLIST.includes(station.name))
         .filter(d => dayjs(d.from).year() <= baseMinYear && dayjs().diff(d.to, 'day') < 5)
         .sort((a, b) => (a.slug > b.slug ? 1 : b.slug > a.slug ? -1 : 0));
 };
