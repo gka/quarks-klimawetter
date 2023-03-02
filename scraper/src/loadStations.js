@@ -12,7 +12,7 @@ const STATION_BLACKLIST = [
 
 module.exports = async function loadStations (baseMinYear) {
     const url =
-        'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/historical/KL_Tageswerte_Beschreibung_Stationen.txt';
+        'https://opendata.dwd.de/climate_environment/CDC/observations_germany/climate/daily/kl/recent/KL_Tageswerte_Beschreibung_Stationen.txt';
     const raw = (await got(url, { encoding: 'latin1' })).body;
     return parseFixedWidth(raw, {
         skip: 3,
